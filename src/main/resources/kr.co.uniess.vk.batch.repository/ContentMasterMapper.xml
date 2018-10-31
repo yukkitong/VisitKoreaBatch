@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    API response keys ...
+-->
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.ContentMasterMapper">
+    <select id="findOne" parameterType="string" resultType="string">
+        SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
+    </select>
+
+    <insert id="insert" parameterType="hashmap">
+        <selectKey keyProperty="now" resultType="date" order="BEFORE">
+            SELECT NOW() FROM DUAL
+        </selectKey>
+        <selectKey keyProperty="COT_ID" resultType="string" order="AFTER">
+            SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
+        </selectKey>
+        INSERT INTO CONTENT_MASTER (
+            COT_ID,
+            CONTENT_ID,
+            CONTENT_TYPE,
+            CONTENT_STATUS,
+            TITLE,
+            DISPLAY_TITLE,
+            READ_COUNT,
+            SHOW_FLAG,
+            CREATE_USR_ID,
+            DEPT,
+            DEPT_VIEW,
+            TEL,
+            CREATE_DATE,
+            MODIFIED_DATE
+        ) VALUES (
+            #{cotId},
+            #{contentId},
+            #{contentTypeId},
+            #{contentStatus},
+            #{title},
+            #{displayTitle},
+            #{readCount},
+            #{showFlag},
+            #{createUsrId},
+            #{dept},
+            #{deptView},
+            #{tel},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        <selectKey keyProperty="now" resultType="date" order="BEFORE">
+            SELECT NOW() FROM DUAL
+        </selectKey>
+        UPDATE CONTENT_MASTER
+        <set>
+            <if test="cotId != null">COT_ID = #{cotId},</if>
+            <if test="contentTypeId != null">CONTENT_TYPE = #{contentTypeId},</if>
+            <if test="contentStatus != null">CONTENT_STATUS = #{contentStatus},</if>
+            <if test="title != null">TITLE = #{title},</if>
+            <if test="displayTitle != null">DISPLAY_TITLE = #{displayTitle},</if>
+            <if test="readCount != null">READ_COUNT = #{readCount},</if>
+            <if test="showFlag != null">SHOW_FLAG = #{showFlag},</if>
+            <if test="createUsrId != null">CREATE_USR_ID = #{createUsrId},</if>
+            <if test="dept != null">DEPT = #{dept},</if>
+            <if test="deptView != null">DEPT_VIEW = #{deptView},</if>
+            <if test="tel != null">TEL = #{tel},</if>
+            MODIFIED_DATE = NOW()
+        </set>
+         WHERE CONTENT_ID = #{contentId}
+    </update>
+</mapper>
