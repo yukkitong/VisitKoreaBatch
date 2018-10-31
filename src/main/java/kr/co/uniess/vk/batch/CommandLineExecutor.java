@@ -265,6 +265,7 @@ public class CommandLineExecutor implements CommandLineRunner {
 
     private static Callable<List<Map<String, Object>>> createTourAPIInfoCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
+        TypeReference<List<Map<String, Object>>> typeReference = new TypeReference<List<Map<String, Object>>>() {};
         return () -> {
             List<Map<String, Object>> resultList = new ArrayList<>();
             while (true) {
@@ -272,7 +273,7 @@ public class CommandLineExecutor implements CommandLineRunner {
                 JsonNode root = mapper.readTree(client.getDetailInfoURL());
                 JsonNode item = root.findPath("item");
                 if (item.isArray()) {
-                    List<Map<String, Object>> items = mapper.readValue(item.toString(), new TypeReference<List<Map<String, Object>>>() {});
+                    List<Map<String, Object>> items = mapper.readValue(item.toString(), typeReference);
                     resultList.addAll(items);
                 }
 
@@ -289,7 +290,7 @@ public class CommandLineExecutor implements CommandLineRunner {
 
     private static Callable<List<Image>> createTourAPIImageCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Image>> type = new TypeReference<List<Image>>() {};
+        TypeReference<List<Image>> typeReference = new TypeReference<List<Image>>() {};
         return () -> {
             List<Image> resultList = new ArrayList<>();
             while (true) {
@@ -298,7 +299,7 @@ public class CommandLineExecutor implements CommandLineRunner {
                 JsonNode item = root.findPath("item");
                 if (item.isArray()) {
                     String itemString = item.toString();
-                    List<Image> items = mapper.readValue(itemString, type);
+                    List<Image> items = mapper.readValue(itemString, typeReference);
                     resultList.addAll(items);
                 }
 
