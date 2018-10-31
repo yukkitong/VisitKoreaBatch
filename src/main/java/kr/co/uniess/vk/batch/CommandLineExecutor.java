@@ -203,7 +203,7 @@ public class CommandLineExecutor implements CommandLineRunner {
      */
     private static Callable<List<Master>> createTourAPIMasterCallable(TourApiClient.TourApiClientBuilder builder, long start, long end) {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Master>> type = new TypeReference<List<Master>>() {};
+        TypeReference<List<Master>> typeReference = new TypeReference<List<Master>>() {};
         return () -> {
             List<Master> resultList = new ArrayList<>();
 
@@ -214,7 +214,7 @@ public class CommandLineExecutor implements CommandLineRunner {
                 JsonNode item = root.findPath("item");
                 if (item.isArray()) {
                     String itemString = item.toString();
-                    List<Master> items = mapper.readValue(itemString, type);
+                    List<Master> items = mapper.readValue(itemString, typeReference);
                     for (Master i : items) {
                         if (i.getModifiedDate() >= start && i.getModifiedDate() < end) {
                             resultList.add(i);
