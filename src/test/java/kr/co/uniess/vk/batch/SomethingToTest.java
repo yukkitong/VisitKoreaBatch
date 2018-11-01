@@ -1,8 +1,10 @@
 package kr.co.uniess.vk.batch;
 
+import kr.co.uniess.vk.batch.repository.TestMapper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -13,7 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class SomethingToTest {
 
 //    @Test
@@ -34,25 +37,31 @@ public class SomethingToTest {
 //        Assert.assertEquals("20181028", formattedYesterday);
 //    }
 
-    @Test
-    public void testPageCountFormula() {
-        final int totalItemRows = 12345;
-        final int rowsPerPage = 30;
-        Assert.assertEquals(412, (int) Math.ceil((double) totalItemRows / rowsPerPage));
-    }
+//    @Test
+//    public void testPageCountFormula() {
+//        final int totalItemRows = 12345;
+//        final int rowsPerPage = 30;
+//        Assert.assertEquals(412, (int) Math.ceil((double) totalItemRows / rowsPerPage));
+//    }
+//
+//    @Test
+//    public void testCreateFile() {
+//        String path = "/home/jason/workspace-3/VistitKoreaBatch/TOUR_API_20181031/tour-api-result.json";
+//        File file = new File(path);
+//        try {
+//            boolean created = file.createNewFile();
+//            Assert.assertTrue(created);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    @Autowired
+    TestMapper testMapper;
 
     @Test
-    public void testCreateFile() {
-        String path = "/home/jason/workspace-3/VistitKoreaBatch/TOUR_API_20181031/tour-api-result.json";
-        File file = new File(path);
-        try {
-            boolean created = file.createNewFile();
-            Assert.assertTrue(created);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void testTestMapper() {
+        int count = testMapper.countImages();
+        Assert.assertNotSame(0, count);
     }
-
-
 }

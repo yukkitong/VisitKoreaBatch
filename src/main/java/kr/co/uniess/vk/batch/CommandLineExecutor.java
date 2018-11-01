@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.concurrent.*;
 
 @Component
-@MapperScan(basePackages = "kr.co.uniess.vk.batch.repository")
 public class CommandLineExecutor implements CommandLineRunner {
 
     private final Logger logger = LoggerFactory.getLogger(CommandLineExecutor.class);
