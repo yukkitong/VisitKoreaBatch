@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -25,7 +26,7 @@ public class TouristIntroVO {
     private String useSeason;
     private String useTime;
 
-    public static TouristIntroVO valueOf(String cotId, Map<String, Object> map) {
+    public static TouristIntroVO valueOf(String cotId, ApiData map) {
         TouristIntroVO vo = new TouristIntroVO();
         vo.cotId = cotId;
         // TODO

@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -14,7 +15,7 @@ public class DetailInfoVO {
     private String contentBody;
     private Integer serialNum;
 
-    public static DetailInfoVO valueOf(String cotId, Map<String, Object> map) {
+    public static DetailInfoVO valueOf(String cotId, ApiData map) {
         DetailInfoVO vo = new DetailInfoVO();
         vo.cotId = cotId;
         // TODO

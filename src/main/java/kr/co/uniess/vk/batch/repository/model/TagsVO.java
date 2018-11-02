@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -40,7 +41,7 @@ public class TagsVO {
     public final static String TAG_ID_COURSE = "8ddf2f14-a1c7-11e8-8165-020027310001";
 
 
-    public static TagsVO valueOf(Map<String, Object> map) {
+    public static TagsVO valueOf(ApiData map) {
         TagsVO vo = new TagsVO();
         // TODO
         return vo;

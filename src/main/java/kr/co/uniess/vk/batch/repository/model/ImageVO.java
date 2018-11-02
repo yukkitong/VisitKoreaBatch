@@ -1,6 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
-import kr.co.uniess.vk.batch.component.model.Image;
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -28,18 +28,11 @@ public class ImageVO {
         }
     }
 
-    public static ImageVO valueOf(String cotId, Map<String, Object> map) {
+    public static ImageVO valueOf(String cotId, ApiData map) {
         ImageVO vo = new ImageVO();
         vo.cotId = cotId;
         // TODO
-        return vo;
-    }
-
-    public static ImageVO valueOf(String cotId, Image image) {
-        ImageVO vo = new ImageVO();
-        vo.cotId = cotId;
-        // TODO
-        vo.url = image.getOriginimgurl();
+        vo.url = map.get("originimgurl").toString();
         return vo;
     }
 }

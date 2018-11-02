@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -29,7 +30,7 @@ public class  FestivalIntroVO {
      private String subEvent;
      private String useFee;
 
-    public static FestivalIntroVO valueOf(String cotId, Map<String, Object> map) {
+    public static FestivalIntroVO valueOf(String cotId, ApiData map) {
         FestivalIntroVO vo = new FestivalIntroVO();
         vo.cotId = cotId;
         // TODO

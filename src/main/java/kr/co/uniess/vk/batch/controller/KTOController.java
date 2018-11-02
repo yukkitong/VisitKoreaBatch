@@ -1,6 +1,6 @@
 package kr.co.uniess.vk.batch.controller;
 
-import kr.co.uniess.vk.batch.component.model.Image;
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import kr.co.uniess.vk.batch.component.model.Master;
 import kr.co.uniess.vk.batch.repository.model.*;
 import kr.co.uniess.vk.batch.service.*;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +52,7 @@ public class KTOController {
     private TagsService tagsService;
 
 
-    public void process(HashMap<Master, HashMap<String, Object>> data) {
+    public void process(Map<Master, ApiData> data) {
         if (data == null) return;
         // Update database base on the results
         for (Master master : data.keySet()) {
@@ -67,10 +66,10 @@ public class KTOController {
     }
 
     @SuppressWarnings("unchecked")
-    public void insert(Master master, HashMap<String, Object> data) {
+    public void insert(Master master, Map<String, Object> data) {
         logger.info(":::INSERT:::" + master);
 
-        ContentMasterVO content = ContentMasterVO.valueOf((Map<String, Object>) data.get("master"));
+        ContentMasterVO content = ContentMasterVO.valueOf((ApiData) data.get("master"));
         int count = contentMasterService.insert(content);
         if (count != 1) {
             // TODO throw an error
@@ -81,12 +80,12 @@ public class KTOController {
         final int contentType = content.getContentType();
 
         // database master
-        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master")); // TODO data
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((ApiData) data.get("master")); // TODO data
 
         // image
         ImageVO firstImageVo = null, firstImage2Vo = null;
-        List<Image> imageList = (List<Image>) data.get("image");
-        for (Image image : imageList) {
+        List<ApiData> imageList = (List<ApiData>) data.get("image");
+        for (ApiData image : imageList) {
             ImageVO imageVo = ImageVO.valueOf(cotId, image);
             if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
                 firstImageVo = imageVo;
@@ -110,7 +109,7 @@ public class KTOController {
         databaseMasterService.insert(dataBaseMasterVo);
 
         // intro
-        Map<String, Object> introMap = (Map<String, Object>) data.get("intro");
+        ApiData introMap = (ApiData) data.get("intro");
         switch (contentType) {
             case TYPE_TOURIST:
                 introService.insertTouristIntro(TouristIntroVO.valueOf(cotId, introMap));
@@ -139,11 +138,11 @@ public class KTOController {
         }
 
         // info
-        List<Map<String, Object>> infoList = (List<Map<String, Object>>) data.get("info");
+        List<ApiData> infoList = (List<ApiData>) data.get("info");
         switch (content.getContentType()) {
             case TYPE_COURSE: {
                 List<CourseInfoVO> list = new ArrayList<>(infoList.size());
-                for (Map<String, Object> item : infoList) {
+                for (ApiData item : infoList) {
                     list.add(CourseInfoVO.valueOf(cotId, item));
                 }
                 infoService.insertCourseInfoList(list);
@@ -151,7 +150,7 @@ public class KTOController {
             }
             case TYPE_ACCOMMODATION: {
                 List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
-                for (Map<String, Object> item : infoList) {
+                for (ApiData item : infoList) {
                     list.add(AccommodationInfoVO.valueOf(cotId, item));
                 }
                 infoService.insertAccommodationInfoList(list);
@@ -159,7 +158,7 @@ public class KTOController {
             }
             default: {
                 List<DetailInfoVO> list = new ArrayList<>(infoList.size());
-                for (Map<String, Object> item : infoList) {
+                for (ApiData item : infoList) {
                     list.add(DetailInfoVO.valueOf(cotId, item));
                 }
                 infoService.insertDetailInfoList(list);
@@ -169,7 +168,7 @@ public class KTOController {
         //  department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(cotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (Map<String, Object>) data.get("withtour")));
+            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (ApiData) data.get("withtour")));
 
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
             departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
@@ -182,7 +181,7 @@ public class KTOController {
         }
 
         // department 한국관광품질인증
-        if (master.getTitle().contains("한국관광품질인증")) {
+        if (content.getTitle().contains("한국관광품질인증")) {
             String otdId = DepartmentContentVO.OTD_ID_INDUSTRYTOUR;
             departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
         }
@@ -191,38 +190,38 @@ public class KTOController {
 
 
         // TODO tag
-        if (master.getCat1().equals("A01") || master.getCat1().equals("A02")) {
+        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) {
 
-        } else if (master.getCat1().equals("A03")) {
+        } else if (dataBaseMasterVo.getCat1().equals("A03")) {
 
-        } else if (master.getCat1().equals("A04")) {
+        } else if (dataBaseMasterVo.getCat1().equals("A04")) {
 
-        } else if (master.getCat1().equals("A05")) {
+        } else if (dataBaseMasterVo.getCat1().equals("A05")) {
 
-        } else if (master.getCat1().equals("B02")) {
+        } else if (dataBaseMasterVo.getCat1().equals("B02")) {
 
-        } else if (master.getCat1().equals("C01")) {
+        } else if (dataBaseMasterVo.getCat1().equals("C01")) {
 
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void update(Master master, HashMap<String, Object> data) {
+    public void update(Master master, ApiData data) {
         logger.info(":::UPDATE:::" + master);
 
-        ContentMasterVO content = ContentMasterVO.valueOf((Map<String, Object>) data.get("master"));
+        ContentMasterVO content = ContentMasterVO.valueOf((ApiData) data.get("master"));
         contentMasterService.update(content);
 
         final String cotId = content.getCotId();
         final int contentType = content.getContentType();
 
         // database master
-        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master")); // TODO data
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((ApiData) data.get("master")); // TODO data
 
         // image
         ImageVO firstImageVo = null, firstImage2Vo = null;
-        List<Image> imageList = (List<Image>) data.get("image");
-        for (Image image : imageList) {
+        List<ApiData> imageList = (List<ApiData>) data.get("image");
+        for (ApiData image : imageList) {
             ImageVO imageVo = ImageVO.valueOf(cotId, image);
             if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
                 firstImageVo = imageVo;
@@ -230,10 +229,10 @@ public class KTOController {
             if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
                 firstImage2Vo = imageVo;
             }
-            if (imageService.findOneByCotId(cotId, image.getOriginimgurl()) == null) {
+            if (imageService.findOneByCotId(cotId, imageVo.getUrl()) == null) {
                 imageService.insert(imageVo);
             } else {
-                imageService.update(ImageVO.valueOf(cotId, image));
+                imageService.update(imageVo);
             }
         }
 
@@ -256,7 +255,7 @@ public class KTOController {
         }
 
         // intro
-        Map<String, Object> introMap = (Map<String, Object>) data.get("intro");
+        ApiData introMap = (ApiData) data.get("intro");
         switch (contentType) {
             case TYPE_TOURIST:
                 introService.updateTouristIntro(TouristIntroVO.valueOf(cotId, introMap));
@@ -285,20 +284,20 @@ public class KTOController {
         }
 
         // info
-        List<Map<String, Object>> infoList = (List<Map<String, Object>>) data.get("info");
+        List<ApiData> infoList = (List<ApiData>) data.get("info");
         switch (contentType) {
             case TYPE_COURSE:
-                for (Map<String, Object> item : infoList) {
+                for (ApiData item : infoList) {
                     infoService.updateCourseInfo(CourseInfoVO.valueOf(cotId, item));
                 }
                 break;
             case TYPE_ACCOMMODATION:
-                for (Map<String, Object> item : infoList) {
+                for (ApiData item : infoList) {
                     infoService.updateAccommodationInfo(AccommodationInfoVO.valueOf(cotId, item));
                 }
                 break;
             default:
-                for (Map<String, Object> item : infoList) {
+                for (ApiData item : infoList) {
                     infoService.updateDetailInfo(DetailInfoVO.valueOf(cotId, item));
                 }
         }
@@ -306,7 +305,7 @@ public class KTOController {
         // department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(cotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (Map<String, Object>) data.get("withtour")));
+            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (ApiData) data.get("withtour")));
 
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
             departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
@@ -322,32 +321,32 @@ public class KTOController {
         // TODO department 산업관광
 
         // TODO tag
-        if (master.getCat1().equals("A01") || master.getCat1().equals("A02")) {
+        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) {
 
-        } else if (master.getCat1().equals("A03")) {
+        } else if (dataBaseMasterVo.getCat1().equals("A03")) {
 
-        } else if (master.getCat1().equals("A04")) {
+        } else if (dataBaseMasterVo.getCat1().equals("A04")) {
 
-        } else if (master.getCat1().equals("A05")) {
+        } else if (dataBaseMasterVo.getCat1().equals("A05")) {
 
-        } else if (master.getCat1().equals("B02")) {
+        } else if (dataBaseMasterVo.getCat1().equals("B02")) {
 
-        } else if (master.getCat1().equals("C01")) {
+        } else if (dataBaseMasterVo.getCat1().equals("C01")) {
 
         }
     }
 
-    private static int getIntValue(Map<String, Object> map, String name) {
+    private static int getIntValue(ApiData map, String name) {
         String string = map.get(name).toString();
         return Integer.parseInt(string);
     }
 
-    private static long getLongValue(Map<String, Object> map, String name) {
+    private static long getLongValue(ApiData map, String name) {
         String string = map.get(name).toString();
         return Long.parseLong(string);
     }
 
-    private static float getFloatValue(Map<String, Object> map, String name) {
+    private static float getFloatValue(ApiData map, String name) {
         String string = map.get(name).toString();
         return Float.parseFloat(string);
     }

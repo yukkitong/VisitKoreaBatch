@@ -15,49 +15,29 @@ import lombok.Data;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Master {
-    @JsonProperty("modifiedtime")
-    @JsonDeserialize(using = DateDeserialize.class)
-    private long modifiedDate;
+    @JsonProperty("contentid")
+    private String contentId;
+
+    @JsonProperty("contenttypeid")
+    private int contentTypeId;
+
     @JsonProperty("createdtime")
     @JsonDeserialize(using = DateDeserialize.class)
     private long createdDate;
-    @JsonProperty("contentid")
-    private String contentId;
-    @JsonProperty("contenttypeid")
-    private int contentTypeId;
-    private String title;
-    private String firstimage;
-    private String firstimage2;
-    private String addr1;
-    private String addr2;
-    private String cat1;
-    private String cat2;
-    private String cat3;
-    private String areacode;
-    private String sigungucode;
-    private String zipcode;
-    private String tel;
-    private int mlevel;
-    private double mapx;
-    private double mapy;
-    private int readcount;
 
-    private boolean withTour;
-    private boolean greenTour;
-    private String mainimage;
-    private String booktour;
-    private String summary;
-    private String telname;
+    @JsonProperty("modifiedtime")
+    @JsonDeserialize(using = DateDeserialize.class)
+    private long modifiedDate;
 
     @JsonIgnore
-    private List<String> departments;
+    private boolean isWithTour;
+
     @JsonIgnore
-    private List<String> tags;
+    private boolean isGreenTour;
 
     @Override
     public boolean equals(Object o) {

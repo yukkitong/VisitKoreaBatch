@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 @Alias("accommodation")
 public class AccommodationIntroVO {
     private String cotId;
-    public static AccommodationIntroVO valueOf(String cotId, Map<String, Object> map) {
+    public static AccommodationIntroVO valueOf(String cotId, ApiData map) {
         AccommodationIntroVO vo = new AccommodationIntroVO();
         vo.cotId = cotId;
         // TODO

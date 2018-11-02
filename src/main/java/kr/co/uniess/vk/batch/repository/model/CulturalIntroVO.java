@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -23,7 +24,7 @@ public class CulturalIntroVO {
     private String useFee;
     private String useTime;
 
-    public static CulturalIntroVO valueOf(String cotId, Map<String, Object> map) {
+    public static CulturalIntroVO valueOf(String cotId, ApiData map) {
         CulturalIntroVO vo = new CulturalIntroVO();
         vo.cotId = cotId;
         // TODO

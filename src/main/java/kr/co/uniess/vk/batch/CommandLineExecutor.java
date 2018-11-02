@@ -95,18 +95,18 @@ public class CommandLineExecutor implements CommandLineRunner {
             result.addAll(greenTourList);
 
             // `result` 리스트에는 정해진 기간동안에 추가되거나 업데이트된 모든 마스터 정보가 포함되어있다.
-            HashMap<Master, HashMap<String, Object>> aggregationMap = new HashMap<>();
+            Map<Master, ApiData> aggregationMap = new HashMap<>();
             for (Master master : result) {
                 final String contentId = master.getContentId();
                 final int contentTypeId = master.getContentTypeId();
 
-                Future<Map<String, Object>> futureCommon = threadPool.submit(getKorServiceCommonCallable(contentId, contentTypeId));
-                Future<Map<String, Object>> futureIntro = threadPool.submit(getKorServiceIntroCallable(contentId, contentTypeId));
-                Future<List<Map<String, Object>>> futureInfoList = threadPool.submit(getKorServiceInfoCallable(contentId, contentTypeId));
-                Future<DetailWithTour> futureWithTour = threadPool.submit(getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
-                Future<List<Image>> futureImageList = threadPool.submit(getKorServiceImageCallable(contentId));
+                Future<ApiData> futureCommon = threadPool.submit(getKorServiceCommonCallable(contentId, contentTypeId));
+                Future<ApiData> futureIntro = threadPool.submit(getKorServiceIntroCallable(contentId, contentTypeId));
+                Future<List<ApiData>> futureInfoList = threadPool.submit(getKorServiceInfoCallable(contentId, contentTypeId));
+                Future<ApiData> futureWithTour = threadPool.submit(getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
+                Future<List<ApiData>> futureImageList = threadPool.submit(getKorServiceImageCallable(contentId));
 
-                HashMap<String, Object> item = new HashMap<>();
+                ApiData item = new ApiData();
                 item.put("master", master);
                 if (futureCommon.get() != null) {
                     item.put("common", futureCommon.get());
@@ -139,7 +139,7 @@ public class CommandLineExecutor implements CommandLineRunner {
 
             // TODO for TEST
             // Do process
-            // controller.process(aggregationMap);
+            controller.process(aggregationMap);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,23 +173,23 @@ public class CommandLineExecutor implements CommandLineRunner {
         return createTourAPIMasterCallable(TourApiClient.builder().path("GreenTourService/areaBasedList"), start, end);
     }
 
-    private static Callable<Map<String, Object>> getKorServiceCommonCallable(String contentId, int contentTypeId) {
+    private static Callable<ApiData> getKorServiceCommonCallable(String contentId, int contentTypeId) {
         return createTourAPICommonCallable(TourApiClient.builder().contentId(contentId).contentTypeId(contentTypeId));
     }
 
-    private static Callable<Map<String, Object>> getKorServiceIntroCallable(String contentId, int contentTypeId) {
+    private static Callable<ApiData> getKorServiceIntroCallable(String contentId, int contentTypeId) {
         return createTourAPIIntroCallable(TourApiClient.builder().contentId(contentId).contentTypeId(contentTypeId));
     }
 
-    private static Callable<List<Map<String, Object>>> getKorServiceInfoCallable(String contentId, int contentTypeId) {
+    private static Callable<List<ApiData>> getKorServiceInfoCallable(String contentId, int contentTypeId) {
         return createTourAPIInfoCallable(TourApiClient.builder().contentId(contentId).contentTypeId(contentTypeId));
     }
 
-    private static Callable<List<Image>> getKorServiceImageCallable(String contentId) {
+    private static Callable<List<ApiData>> getKorServiceImageCallable(String contentId) {
         return createTourAPIImageCallable(TourApiClient.builder().contentId(contentId));
     }
 
-    private static Callable<DetailWithTour> getKorWithServiceDetailWithTourCallable(String contentId, int contentTypeId) {
+    private static Callable<ApiData> getKorWithServiceDetailWithTourCallable(String contentId, int contentTypeId) {
         return createTourAPIWithTourCallable(TourApiClient.builder().contentId(contentId).contentTypeId(contentTypeId));
     }
 
@@ -236,43 +236,43 @@ public class CommandLineExecutor implements CommandLineRunner {
         };
     }
 
-    private static Callable<Map<String, Object>> createTourAPICommonCallable(TourApiClient.TourApiClientBuilder builder) {
+    private static Callable<ApiData> createTourAPICommonCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
         return () -> {
             TourApiClient client = builder.build();
             JsonNode root = mapper.readTree(client.getDetailCommonURL());
             JsonNode item = root.findPath("item");
             if (item.isObject()) {
-                return mapper.readValue(item.toString(), new TypeReference<Map<String, Object>>() {});
+                return mapper.readValue(item.toString(), new TypeReference<ApiData>() {});
             }
             return null;
         };
     }
 
-    private static Callable<Map<String, Object>> createTourAPIIntroCallable(TourApiClient.TourApiClientBuilder builder) {
+    private static Callable<ApiData> createTourAPIIntroCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
         return () -> {
             TourApiClient client = builder.build();
             JsonNode root = mapper.readTree(client.getDetailIntroURL());
             JsonNode item = root.findPath("item");
             if (item.isObject()) {
-                return mapper.readValue(item.toString(), new TypeReference<Map<String, Object>>() {});
+                return mapper.readValue(item.toString(), new TypeReference<ApiData>() {});
             }
             return null;
         };
     }
 
-    private static Callable<List<Map<String, Object>>> createTourAPIInfoCallable(TourApiClient.TourApiClientBuilder builder) {
+    private static Callable<List<ApiData>> createTourAPIInfoCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Map<String, Object>>> typeReference = new TypeReference<List<Map<String, Object>>>() {};
+        TypeReference<List<ApiData>> typeReference = new TypeReference<List<ApiData>>() {};
         return () -> {
-            List<Map<String, Object>> resultList = new ArrayList<>();
+            List<ApiData> resultList = new ArrayList<>();
             while (true) {
                 TourApiClient client = builder.build();
                 JsonNode root = mapper.readTree(client.getDetailInfoURL());
                 JsonNode item = root.findPath("item");
                 if (item.isArray()) {
-                    List<Map<String, Object>> items = mapper.readValue(item.toString(), typeReference);
+                    List<ApiData> items = mapper.readValue(item.toString(), typeReference);
                     resultList.addAll(items);
                 }
 
@@ -287,18 +287,18 @@ public class CommandLineExecutor implements CommandLineRunner {
         };
     }
 
-    private static Callable<List<Image>> createTourAPIImageCallable(TourApiClient.TourApiClientBuilder builder) {
+    private static Callable<List<ApiData>> createTourAPIImageCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Image>> typeReference = new TypeReference<List<Image>>() {};
+        TypeReference<List<ApiData>> typeReference = new TypeReference<List<ApiData>>() {};
         return () -> {
-            List<Image> resultList = new ArrayList<>();
+            List<ApiData> resultList = new ArrayList<>();
             while (true) {
                 TourApiClient client = builder.build();
                 JsonNode root = mapper.readTree(client.getDetailImageURL());
                 JsonNode item = root.findPath("item");
                 if (item.isArray()) {
                     String itemString = item.toString();
-                    List<Image> items = mapper.readValue(itemString, typeReference);
+                    List<ApiData> items = mapper.readValue(itemString, typeReference);
                     resultList.addAll(items);
                 }
 
@@ -313,7 +313,7 @@ public class CommandLineExecutor implements CommandLineRunner {
         };
     }
 
-    private static Callable<DetailWithTour> createTourAPIWithTourCallable(TourApiClient.TourApiClientBuilder builder) {
+    private static Callable<ApiData> createTourAPIWithTourCallable(TourApiClient.TourApiClientBuilder builder) {
         ObjectMapper mapper = new ObjectMapper();
         return () -> {
             TourApiClient client = builder.build();
@@ -321,7 +321,7 @@ public class CommandLineExecutor implements CommandLineRunner {
             JsonNode item = root.findPath("item");
             if (item.isObject()) {
                 String itemString = root.findPath("item").toString();
-                return mapper.readValue(itemString, DetailWithTour.class);
+                return mapper.readValue(itemString, new TypeReference<ApiData>() {});
             }
             return null;
         };

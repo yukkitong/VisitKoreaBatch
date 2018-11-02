@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -39,7 +40,7 @@ public class DatabaseMasterVO {
     private String setStatus;
     private Integer dongCode;
 
-    public static DatabaseMasterVO valueOf(Map<String, Object> map) {
+    public static DatabaseMasterVO valueOf(ApiData map) {
         DatabaseMasterVO vo = new DatabaseMasterVO();
         // TODO
         return vo;

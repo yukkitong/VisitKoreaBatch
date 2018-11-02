@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -11,7 +12,7 @@ public class CourseInfoVO {
 
     private String cotId;
 
-    public static CourseInfoVO valueOf(String cotId, Map<String, Object> map) {
+    public static CourseInfoVO valueOf(String cotId, ApiData map) {
         CourseInfoVO vo = new CourseInfoVO();
         vo.cotId = cotId;
         // TODO
