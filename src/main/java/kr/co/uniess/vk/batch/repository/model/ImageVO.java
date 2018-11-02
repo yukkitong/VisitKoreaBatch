@@ -22,7 +22,7 @@ public class ImageVO {
     private String isThubnail;  // not a typo!!
     private String md5;
 
-    public createAndSetImageId() {
+    public void createAndSetImageId() {
         if (imageId == null) {
             setImageId(UUID.randomUUID().toString());
         }
