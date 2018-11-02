@@ -139,7 +139,7 @@ public class CommandLineExecutor implements CommandLineRunner {
 
             // TODO for TEST
             // Do process
-            controller.process(aggregationMap);
+            // controller.process(aggregationMap);
 
         } catch (Exception e) {
             e.printStackTrace();
