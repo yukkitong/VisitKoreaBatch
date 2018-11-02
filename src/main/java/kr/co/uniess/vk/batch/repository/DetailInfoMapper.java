@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface DetailInfoMapper {
     int insertList(List<DetailInfoVO> list);
+    int insert(DetailInfoVO item);
     int update(DetailInfoVO item);
     int delete(String cotId);
+    int deleteWithTour(String cotId);
 }

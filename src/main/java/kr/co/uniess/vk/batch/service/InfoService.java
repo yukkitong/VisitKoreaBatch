@@ -53,12 +53,20 @@ public class InfoService {
         return detailInfoMapper.insertList(list);
     }
 
+    public int insertDetailInfo(DetailInfoVO item) {
+        return detailInfoMapper.insert(item);
+    }
+
     public int updateDetailInfo(DetailInfoVO item) {
         return detailInfoMapper.update(item);
     }
 
     public int deleteDetailInfo(String cotId) {
         return detailInfoMapper.delete(cotId);
+    }
+
+    public int deleteDetailInfoWithTour(String cotId) {
+        return detailInfoMapper.deleteWithTour(cotId);
     }
 }
 

@@ -15,26 +15,47 @@
         <foreach item="item" collection="list" separator=",">
             (
             #{item.cotId},
-            #{item.fldgubun},
-            #{item.displaytitle},
-            #{item.contentbody},
-            #{item.serialnum}
+            #{item.fldGubun},
+            #{item.displayTitle},
+            #{item.contentBody},
+            #{item.serialNum}
             )
         </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="detail_info">
+        INSERT INTO DETAIL_INFO
+        (
+            COT_ID,
+            FLD_GUBUN,
+            DISPLAY_TITLE,
+            CONTENT_BODY,
+            SERIAL_NUM
+        ) VALUES (
+            #{cotId},
+            #{fldGubun},
+            #{displayTitle},
+            #{contentBody},
+            #{serialNum}
+        )
     </insert>
 
     <update id="update" parameterType="detail_info">
         UPDATE DETAIL_INFO
         <set>
-            <if test="fldgubun != null">FLD_GUBUN = #{fldgubun},</if>
-            <if test="displaytitle != null">DISPLAY_TITLE = #{displaytitle},</if>
-            <if test="contentbody != null">CONTENT_BODY = #{contentbody},</if>
-            <if test="serialnum != null">SERIAL_NUM = #{serialnum}</if>
+            <if test="fldgubun != null">FLD_GUBUN = #{fldGubun},</if>
+            <if test="displaytitle != null">DISPLAY_TITLE = #{displayTitle},</if>
+            <if test="contentbody != null">CONTENT_BODY = #{contentBody},</if>
+            <if test="serialnum != null">SERIAL_NUM = #{serialNum}</if>
         </set>
         WHERE COT_ID = #{cotId}
     </update>
 
     <delete id="delete" parameterType="string">
         DELETE FROM DETAIL_INFO WHERE COT_ID = #{cotId}
+    </delete>
+
+    <delete id="deleteWithTour" parameterType="string">
+        DELETE FROM DETAIL_INFO WHERE FLD_GUBUN = 5 AND COT_ID = #{cotId}
     </delete>
 </mapper>

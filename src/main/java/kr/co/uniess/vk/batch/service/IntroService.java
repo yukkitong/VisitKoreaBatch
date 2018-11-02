@@ -19,6 +19,7 @@ public class IntroService {
     @Autowired @Lazy
     private FestivalIntroMapper festivalIntroMapper;
 
+    // TODO 여기부터 만들어야함.... VO랑 xml 매퍼 파일 컬럼명 수정
     @Autowired @Lazy
     private CourseIntroMapper courseIntroMapper;
 

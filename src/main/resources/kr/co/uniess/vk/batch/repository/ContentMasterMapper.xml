@@ -11,8 +11,11 @@
     </select>
 
     <insert id="insert" parameterType="content">
-        <selectKey keyProperty="now" resultType="date" order="BEFORE">
-            SELECT NOW() FROM DUAL
+        <selectKey keyProperty="createDate" resultType="date" order="BEFORE">
+            SELECT NOW()
+        </selectKey>
+        <selectKey keyProperty="cotId" resultType="string" order="AFTER">
+            SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
         </selectKey>
         INSERT INTO CONTENT_MASTER (
             COT_ID,
@@ -42,14 +45,17 @@
             #{dept},
             #{deptView},
             #{tel},
-            #{now},
-            #{now}
+            #{createDate},
+            #{createDate}
         )
     </insert>
 
     <update id="update" parameterType="content">
-        <selectKey keyProperty="now" resultType="date" order="BEFORE">
-            SELECT NOW() FROM DUAL
+        <selectKey keyProperty="modifiedDate" resultType="date" order="BEFORE">
+            SELECT NOW()
+        </selectKey>
+        <selectKey keyProperty="cotId" resultType="string" order="AFTER">
+            SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
         </selectKey>
         UPDATE CONTENT_MASTER
         <set>
@@ -64,7 +70,7 @@
             <if test="dept != null">DEPT = #{dept},</if>
             <if test="deptView != null">DEPT_VIEW = #{deptView},</if>
             <if test="tel != null">TEL = #{tel},</if>
-            MODIFIED_DATE = #{now}
+            MODIFIED_DATE = #{modifiedDate}
         </set>
          WHERE CONTENT_ID = #{contentId}
     </update>

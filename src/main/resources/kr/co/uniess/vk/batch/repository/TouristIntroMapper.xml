@@ -21,43 +21,43 @@
             USE_SEASON,
             USE_TIME
         ) VALUES (
-            #{cotid},
-            #{accomcount},
-            #{chkbabycarriage},
-            #{chkcreditcard},
-            #{chkpet},
-            #{expagerange},
-            #{expguide},
+            #{cotId},
+            #{accomCount},
+            #{chkBabyCarriage},
+            #{chkCreditCard},
+            #{chkPet},
+            #{expAgeRange},
+            #{expGuide},
             #{heritage1},
             #{heritage2},
             #{heritage3},
-            #{infocenter},
-            #{opendate},
+            #{infoCenter},
+            #{openDate},
             #{parking},
-            #{restdate},
-            #{useseason},
-            #{usetime}
+            #{restDate},
+            #{useSeason},
+            #{useTime}
         )
     </insert>
 
     <update id="update" parameterType="tourist">
         UPDATE TOURIST_SPOT_INTRO
         <set>
-            <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>
-            <if test="chkbabycarriage != null">CHK_BABY_CARRIAGE = #{chkbabycarriage},</if>
-            <if test="chkcreditcard != null">CHK_CREDITCARD = #{chkcreditcard},</if>
-            <if test="chkpet != null">CHK_PET = #{chkpet},</if>
-            <if test="expagerange != null">EXP_AGE_RANGE = #{expagerange},</if>
-            <if test="expguide != null">EXP_GUIDE = #{expguide},</if>
+            <if test="accomCount != null">ACCOM_COUNT = #{accomCount},</if>
+            <if test="chkBabyCarriage != null">CHK_BABY_CARRIAGE = #{chkBabyCarriage},</if>
+            <if test="chkCreditCard != null">CHK_CREDITCARD = #{chkCreditCard},</if>
+            <if test="chkPet != null">CHK_PET = #{chkPet},</if>
+            <if test="expAgeRange != null">EXP_AGE_RANGE = #{expAgeRange},</if>
+            <if test="expGuide != null">EXP_GUIDE = #{expGuide},</if>
             <if test="heritage1 != null">HERITAGE1 = #{heritage1},</if>
             <if test="heritage2 != null">HERITAGE2 = #{heritage2},</if>
             <if test="heritage3 != null">HERITAGE3 = #{heritage3},</if>
-            <if test="infocenter != null">INFO_CENTER = #{infocenter},</if>
-            <if test="opendate != null">OPEN_DATE = #{opendate},</if>
+            <if test="infoCenter != null">INFO_CENTER = #{infoCenter},</if>
+            <if test="openDate != null">OPEN_DATE = #{openDate},</if>
             <if test="parking != null">PARKING = #{parking},</if>
-            <if test="restdate != null">REST_DATE = #{restdate},</if>
-            <if test="useseason != null">USE_SEASON = #{useseason},</if>
-            <if test="usetime != null">USE_TIME = #{usetime},</if>
+            <if test="restDate != null">REST_DATE = #{restDate},</if>
+            <if test="useSeason != null">USE_SEASON = #{useSeason},</if>
+            <if test="useTime != null">USE_TIME = #{useTime}</if>
         </set>
         WHERE COT_ID = #{cotId}
     </update>

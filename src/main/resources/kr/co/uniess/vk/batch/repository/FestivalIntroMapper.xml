@@ -25,26 +25,26 @@
             SUB_EVENT,
             USE_FEE
         ) VALUES (
-            #{cotid},
+            #{cotId},
             #{scale},
-            #{spendtime},
-            #{agelimit},
-            #{bookingplace},
-            #{discountinfo},
-            #{eventenddate},
-            #{eventhomepage},
-            #{eventplace},
-            #{eventstartdate},
-            #{festivalgrade},
-            #{placeinfo},
-            #{playtime},
+            #{spendTime},
+            #{ageLimit},
+            #{bookingPlace},
+            #{discountInfo},
+            #{eventEndDate},
+            #{eventHomepage},
+            #{eventPlace},
+            #{eventStartDate},
+            #{festivalGrade},
+            #{placeInfo},
+            #{playTime},
             #{program},
             #{sponsor1},
-            #{sponsor1tel},
+            #{sponsor1Tel},
             #{sponsor2},
-            #{sponsor2tel},
-            #{subevent},
-            #{usefee}
+            #{sponsor2Tel},
+            #{subEvent},
+            #{useFee}
         )
     </insert>
 
@@ -52,24 +52,24 @@
         UPDATE FESTIVAL_INTRO
         <set>
             <if test="scale != null">SCALE = #{scale},</if>
-            <if test="spendtime != null">SPEND_TIME = #{spendtime},</if>
-            <if test="agelimit != null">AGE_LIMIT = #{agelimit},</if>
-            <if test="bookingplace != null">BOOKING_PLACE = #{bookingplace},</if>
-            <if test="discountinfo != null">DISCOUNT_INFO = #{discountinfo},</if>
-            <if test="eventenddate != null">EVENT_END_DATE = #{eventenddate},</if>
-            <if test="eventhomepage != null">EVENT_HOMEPAGE = #{eventhomepage},</if>
-            <if test="eventplace != null">EVENT_PLACE = #{eventplace},</if>
-            <if test="eventstartdate != null">EVENT_START_DATE = #{eventstartdate},</if>
-            <if test="festivalgrade != null">FESTIVAL_GRADE = #{festivalgrade},</if>
-            <if test="placeinfo != null">PLACE_INFO = #{placeinfo},</if>
-            <if test="playtime != null">PLAY_TIME = #{playtime},</if>
+            <if test="spendTime != null">SPEND_TIME = #{spendTime},</if>
+            <if test="ageLimit != null">AGE_LIMIT = #{ageLimit},</if>
+            <if test="bookingPlace != null">BOOKING_PLACE = #{bookingPlace},</if>
+            <if test="discountInfo != null">DISCOUNT_INFO = #{discountInfo},</if>
+            <if test="eventEndDate != null">EVENT_END_DATE = #{eventEndDate},</if>
+            <if test="eventHomepage != null">EVENT_HOMEPAGE = #{eventHomepage},</if>
+            <if test="eventPlace != null">EVENT_PLACE = #{eventPlace},</if>
+            <if test="eventStartDate != null">EVENT_START_DATE = #{eventStartDate},</if>
+            <if test="festivalGrade != null">FESTIVAL_GRADE = #{festivalGrade},</if>
+            <if test="placeInfo != null">PLACE_INFO = #{placeInfo},</if>
+            <if test="playTime != null">PLAY_TIME = #{playTime},</if>
             <if test="program != null">PROGRAM = #{program},</if>
             <if test="sponsor1 != null">SPONSOR1 = #{sponsor1},</if>
-            <if test="sponsor1tel != null">SPONSOR1_TEL = #{sponsor1tel},</if>
+            <if test="sponsor1Tel != null">SPONSOR1_TEL = #{sponsor1Tel},</if>
             <if test="sponsor2 != null">SPONSOR2 = #{sponsor2},</if>
-            <if test="sponsor2tel != null">SPONSOR2_TEL = #{sponsor2tel},</if>
-            <if test="subevent != null">SUB_EVENT = #{subevent},</if>
-            <if test="usefee != null">USE_FEE = #{usefee}</if>
+            <if test="sponsor2Tel != null">SPONSOR2_TEL = #{sponsor2Tel},</if>
+            <if test="subEvent != null">SUB_EVENT = #{subEvent},</if>
+            <if test="useFee != null">USE_FEE = #{useFee}</if>
         </set>
         WHERE COT_ID = #{cotId}
     </update>

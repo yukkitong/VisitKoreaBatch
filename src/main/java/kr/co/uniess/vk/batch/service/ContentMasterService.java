@@ -21,6 +21,9 @@ public class ContentMasterService {
     }
 
     public int insert(ContentMasterVO item) {
+        if (item.getCotId() == null) {
+            item.createAndSetCotId();
+        }
         return contentMasterMapper.insert(item);
     }
 
