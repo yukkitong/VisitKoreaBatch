@@ -15,12 +15,12 @@
         ) VALUES
         <foreach item="item" collection="list" separator=",">
             (
-            #{item.cotid},
-            #{item.subcontentid},
-            #{item.subdetailimg},
-            #{item.subdetailoverview},
-            #{item.subname},
-            #{item.subnum}
+                #{item.cotid},
+                #{item.subcontentid},
+                #{item.subdetailimg},
+                #{item.subdetailoverview},
+                #{item.subname},
+                #{item.subnum}
             )
         </foreach>
     </insert>

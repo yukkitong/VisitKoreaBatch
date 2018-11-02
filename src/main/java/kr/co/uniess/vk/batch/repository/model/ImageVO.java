@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @Alias("image")
@@ -14,12 +15,18 @@ public class ImageVO {
     private String url;
 
     // `IMAGE` table 에만 존재 하는 컬럼
-    private String imgId;       // create
+    private String imageId;       // create
     private String cotId;       // reference
     private String imagePath;
     private String imageDescription;
     private String isThubnail;  // not a typo!!
     private String md5;
+
+    public createAndSetImageId() {
+        if (imageId == null) {
+            setImageId(UUID.randomUUID().toString());
+        }
+    }
 
     public static ImageVO valueOf(String cotId, Map<String, Object> map) {
         ImageVO vo = new ImageVO();

@@ -14,11 +14,11 @@
         ) VALUES
         <foreach item="item" collection="list" separator=",">
             (
-            #{item.cotId},
-            #{item.fldGubun},
-            #{item.displayTitle},
-            #{item.contentBody},
-            #{item.serialNum}
+                #{item.cotId},
+                #{item.fldGubun},
+                #{item.displayTitle},
+                #{item.contentBody},
+                #{item.serialNum}
             )
         </foreach>
     </insert>

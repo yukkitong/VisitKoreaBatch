@@ -26,12 +26,12 @@ public class TourApiClient {
     private String path;
 
     /**
-     * 컨텐트 ID 상세 정보 요청시 필요
+     * 컨텐트 ID - 상세 정보 요청시 필요
      */
     private String contentId;
 
     /**
-     * 컨텐트 타입 상세 정보 요청시 필요
+     * 컨텐트 타입 - 상세 정보 요청시 필요
      */
     private int contentTypeId;
 

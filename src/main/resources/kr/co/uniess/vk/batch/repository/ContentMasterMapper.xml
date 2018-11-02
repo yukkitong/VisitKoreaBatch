@@ -14,9 +14,6 @@
         <selectKey keyProperty="createDate" resultType="date" order="BEFORE">
             SELECT NOW()
         </selectKey>
-        <selectKey keyProperty="cotId" resultType="string" order="AFTER">
-            SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
-        </selectKey>
         INSERT INTO CONTENT_MASTER (
             COT_ID,
             CONTENT_ID,
@@ -53,9 +50,6 @@
     <update id="update" parameterType="content">
         <selectKey keyProperty="modifiedDate" resultType="date" order="BEFORE">
             SELECT NOW()
-        </selectKey>
-        <selectKey keyProperty="cotId" resultType="string" order="AFTER">
-            SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
         </selectKey>
         UPDATE CONTENT_MASTER
         <set>

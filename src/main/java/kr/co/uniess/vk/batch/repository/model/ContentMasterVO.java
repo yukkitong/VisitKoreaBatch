@@ -29,15 +29,15 @@ public class ContentMasterVO {
     private String deptView;
     private String tel;
 
-    public static ContentMasterVO valueOf(Map<String, Object> map) {
-        ContentMasterVO vo = new ContentMasterVO();
-        // TODO
-        return vo;
-    }
-
     public void createAndSetCotId() {
         if (cotId == null) {
             setCotId(UUID.randomUUID().toString());
         }
+    }
+
+    public static ContentMasterVO valueOf(Map<String, Object> map) {
+        ContentMasterVO vo = new ContentMasterVO();
+        // TODO
+        return vo;
     }
 }

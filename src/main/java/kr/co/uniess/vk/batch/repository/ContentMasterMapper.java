@@ -3,7 +3,6 @@ package kr.co.uniess.vk.batch.repository;
 import kr.co.uniess.vk.batch.repository.model.ContentMasterVO;
 import org.apache.ibatis.annotations.Mapper;
 
-
 @Mapper
 public interface ContentMasterMapper {
     int getTotalCount();

@@ -28,14 +28,11 @@
                IMAGE_DESCRIPTION,
                IS_THUBNAIL,
                IMAGE_PATH
-        FROM IMAGE
-        WHERE COT_ID = COTID(#{cotId})
+          FROM IMAGE
+         WHERE COT_ID = COTID(#{cotId})
     </select>
 
     <insert id="insert" parameterType="image">
-        <selectKey keyProperty="IMG_ID" resultType="string" order="AFTER">
-            SELECT IMG_ID FROM IMAGE WHERE COT_ID = COTID(#{contentId}) AND URL = #{url}
-        </selectKey>
         INSERT INTO IMAGE (
             IMG_ID,
             COT_ID,
@@ -45,7 +42,7 @@
             IMAGE_PATH
         ) VALUES (
             #{imageId},
-            COTID(#{contentid}),
+            #{cotId},
             #{originimgurl},
             #{imgname},
             #{thumbnail}, -- TODO smallimageurl 를 이용하여 썸네일인지 여부 확인후 `0`또는 `1`값으로 ...

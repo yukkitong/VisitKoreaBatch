@@ -1,6 +1,5 @@
 package kr.co.uniess.vk.batch.service;
 
-
 import kr.co.uniess.vk.batch.repository.ImageMapper;
 import kr.co.uniess.vk.batch.repository.model.ImageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,9 @@ public class ImageService {
     }
 
     public String insert(ImageVO image) {
+        if (image.getImageId() == null) {
+            image.createAndSetImageId();
+        }
         return imageMapper.insert(image);
     }
 
