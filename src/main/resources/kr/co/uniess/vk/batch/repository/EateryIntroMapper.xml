@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.EateryIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO EATERY_INTRO (
+            COT_ID,
+            CHK_CREDITCARD,
+            DISCOUNT_INFO,
+            FIRST_MENU,
+            CONTACT_INFO,
+            KIDS_FACILITY,
+            OPEN_DATE,
+            OPEN_TIME,
+            PACKING,
+            PARKING,
+            RESERVATION,
+            REST_DATE,
+            SCALE,
+            SEAT,
+            SMOKING,
+            TREAT_MENU
+        ) VALUES (
+            #{cotId},
+            #{chkcreditcard},
+            #{discountinfo},
+            #{firstmenu},
+            #{contactinfo},
+            #{kidsfacility},
+            #{opendate},
+            #{opentime},
+            #{packing},
+            #{parking},
+            #{reservation},
+            #{restdate},
+            #{scale},
+            #{seat},
+            #{smoking},
+            #{treatmenu}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE EATERY_INTRO
+        <set>
+            <if test="chkcreditcard =!= null">CHK_CREDITCARD = #{chkcreditcard},</if>
+            <if test="discountinfo =!= null">DISCOUNT_INFO = #{discountinfo},</if>
+            <if test="firstmenu =!= null">FIRST_MENU = #{firstmenu},</if>
+            <if test="contactinfo =!= null">CONTACT_INFO = #{contactinfo},</if>
+            <if test="kidsfacility =!= null">KIDS_FACILITY = #{kidsfacility},</if>
+            <if test="opendate =!= null">OPEN_DATE = #{opendate},</if>
+            <if test="opentime =!= null">OPEN_TIME = #{opentime},</if>
+            <if test="packing =!= null">PACKING = #{packing},</if>
+            <if test="parking =!= null">PARKING = #{parking},</if>
+            <if test="reservation =!= null">RESERVATION = #{reservation},</if>
+            <if test="restdate =!= null">REST_DATE = #{restdate},</if>
+            <if test="scale =!= null">SCALE = #{scale},</if>
+            <if test="seat =!= null">SEAT = #{seat},</if>
+            <if test="smoking =!= null">SMOKING = #{smoking},</if>
+            <if test="treatmenu =!= null">TREAT_MENU = #{treatmenu}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM EATERY_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

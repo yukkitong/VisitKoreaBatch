@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.LeportsIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO LEPORTS_INTRO (
+            COT_ID,
+            ACCOM_COUNT,
+            CHK_BABY_CARRIAGE,
+            CHK_CREDITCARD,
+            CHK_PET,
+            EXP_AGE_RANGE,
+            INFO_CENTER,
+            OPEN_PERIOD,
+            PARKING_FEE,
+            PARKING,
+            RESERVATION,
+            REST_DATE,
+            SCALE,
+            USE_FEE,
+            USE_TIME
+        ) VALUES (
+            #{cotId},
+            #{accomcount},
+            #{chkbabycarriage},
+            #{chkcreditcard},
+            #{chkpet},
+            #{expagerange},
+            #{infocenter},
+            #{openperiod},
+            #{parkingfee},
+            #{parking},
+            #{reservation},
+            #{restdate},
+            #{scale},
+            #{usefee},
+            #{usetime}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE LEPORTS_INTRO
+        <set>
+            <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>
+            <if test="chkbabycarriage != null">CHK_BABY_CARRIAGE = #{chkbabycarriage},</if>
+            <if test="chkcreditcard != null">CHK_CREDITCARD = #{chkcreditcard},</if>
+            <if test="chkpet != null">CHK_PET = #{chkpet},</if>
+            <if test="expagerange != null">EXP_AGE_RANGE = #{expagerange},</if>
+            <if test="infocenter != null">INFO_CENTER = #{infocenter},</if>
+            <if test="openperiod != null">OPEN_PERIOD = #{openperiod},</if>
+            <if test="parkingfee != null">PARKING_FEE = #{parkingfee},</if>
+            <if test="parking != null">PARKING = #{parking},</if>
+            <if test="reservation != null">RESERVATION = #{reservation},</if>
+            <if test="restdate != null">REST_DATE = #{restdate},</if>
+            <if test="scale != null">SCALE = #{scale},</if>
+            <if test="usefee != null">USE_FEE = #{usefee},</if>
+            <if test="usetime != null">USE_TIME = #{usetime}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM LEPORTS_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

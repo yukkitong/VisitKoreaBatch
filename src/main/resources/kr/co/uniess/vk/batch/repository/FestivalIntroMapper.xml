@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.EateryIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO FESTIVAL_INTRO (
+            COT_ID,
+            SCALE,
+            SPEND_TIME,
+            AGE_LIMIT,
+            BOOKING_PLACE,
+            DISCOUNT_INFO,
+            EVENT_END_DATE,
+            EVENT_HOMEPAGE,
+            EVENT_PLACE,
+            EVENT_START_DATE,
+            FESTIVAL_GRADE,
+            PLACE_INFO,
+            PLAY_TIME,
+            PROGRAM,
+            SPONSOR1,
+            SPONSOR1_TEL,
+            SPONSOR2,
+            SPONSOR2_TEL,
+            SUB_EVENT,
+            USE_FEE
+        ) VALUES (
+            #{cotid},
+            #{scale},
+            #{spendtime},
+            #{agelimit},
+            #{bookingplace},
+            #{discountinfo},
+            #{eventenddate},
+            #{eventhomepage},
+            #{eventplace},
+            #{eventstartdate},
+            #{festivalgrade},
+            #{placeinfo},
+            #{playtime},
+            #{program},
+            #{sponsor1},
+            #{sponsor1tel},
+            #{sponsor2},
+            #{sponsor2tel},
+            #{subevent},
+            #{usefee}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE FESTIVAL_INTRO
+        <set>
+            <if test="scale != null">SCALE = #{scale},</if>
+            <if test="spendtime != null">SPEND_TIME = #{spendtime},</if>
+            <if test="agelimit != null">AGE_LIMIT = #{agelimit},</if>
+            <if test="bookingplace != null">BOOKING_PLACE = #{bookingplace},</if>
+            <if test="discountinfo != null">DISCOUNT_INFO = #{discountinfo},</if>
+            <if test="eventenddate != null">EVENT_END_DATE = #{eventenddate},</if>
+            <if test="eventhomepage != null">EVENT_HOMEPAGE = #{eventhomepage},</if>
+            <if test="eventplace != null">EVENT_PLACE = #{eventplace},</if>
+            <if test="eventstartdate != null">EVENT_START_DATE = #{eventstartdate},</if>
+            <if test="festivalgrade != null">FESTIVAL_GRADE = #{festivalgrade},</if>
+            <if test="placeinfo != null">PLACE_INFO = #{placeinfo},</if>
+            <if test="playtime != null">PLAY_TIME = #{playtime},</if>
+            <if test="program != null">PROGRAM = #{program},</if>
+            <if test="sponsor1 != null">SPONSOR1 = #{sponsor1},</if>
+            <if test="sponsor1tel != null">SPONSOR1_TEL = #{sponsor1tel},</if>
+            <if test="sponsor2 != null">SPONSOR2 = #{sponsor2},</if>
+            <if test="sponsor2tel != null">SPONSOR2_TEL = #{sponsor2tel},</if>
+            <if test="subevent != null">SUB_EVENT = #{subevent},</if>
+            <if test="usefee != null">USE_FEE = #{usefee}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM FESTIVAL_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.AccommodationIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO ACCOMMODATION_INTRO (
+            COT_ID,
+            ACCOM_COUNT,
+            BENIKIA,
+            CHECK_IN_TIME,
+            CHECK_OUT_TIME,
+            CHK_COOKING,
+            FOOD_PLACE,
+            GOOD_STAY,
+            HANOK,
+            CONTACT_INFO,
+            PARKING,
+            PICKUP,
+            ROOM_COUNT,
+            RESERVATION,
+            RESERVATION_URL,
+            ROOM_TYPE,
+            SCALE,
+            SUB_FACILITY,
+            BARBECUE,
+            BEAUTY,
+            BICYCLE,
+            COMPFIRE,
+            FITNESS,
+            KARAOKE,
+            PUBLIC_BATH,
+            PUBLIC_PC,
+            SAUNA,
+            SEMINAR,
+            SPORTS
+        ) VALUES (
+            #{cotId},
+            #{accomcount},
+            #{benikia},
+            #{checkintime},
+            #{checkouttime},
+            #{chkcooking},
+            #{foodplace},
+            #{goodstay},
+            #{hanok},
+            #{contactinfo},
+            #{parking},
+            #{pickup},
+            #{roomcount},
+            #{reservation},
+            #{reservationurl},
+            #{roomtype},
+            #{scale},
+            #{subfacility},
+            #{barbecue},
+            #{beauty},
+            #{bicycle},
+            #{compfire},
+            #{fitness},
+            #{karaoke},
+            #{publicbath},
+            #{publicpc},
+            #{sauna},
+            #{seminar},
+            #{sports}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE ACCOMMODATION_INTRO
+        <set>
+            <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>
+            <if test="benikia != null">BENIKIA = #{benikia},</if>
+            <if test="checkintime != null">CHECK_IN_TIME = #{checkintime},</if>
+            <if test="checkouttime != null">CHECK_OUT_TIME = #{checkouttime},</if>
+            <if test="chkcooking != null">CHK_COOKING = #{chkcooking},</if>
+            <if test="foodplace != null">FOOD_PLACE = #{foodplace},</if>
+            <if test="goodstay != null">GOOD_STAY = #{goodstay},</if>
+            <if test="hanok != null">HANOK = #{hanok},</if>
+            <if test="contactinfo != null">CONTACT_INFO = #{contactinfo},</if>
+            <if test="parking != null">PARKING = #{parking},</if>
+            <if test="pickup != null">PICKUP = #{pickup},</if>
+            <if test="roomcount != null">ROOM_COUNT = #{roomcount},</if>
+            <if test="reservation != null">RESERVATION = #{reservation},</if>
+            <if test="reservationurl != null">RESERVATION_URL = #{reservationurl},</if>
+            <if test="roomtype != null">ROOM_TYPE = #{roomtype},</if>
+            <if test="scale != null">SCALE = #{scale},</if>
+            <if test="subfacility != null">SUB_FACILITY = #{subfacility},</if>
+            <if test="barbecue != null">BARBECUE = #{barbecue},</if>
+            <if test="beauty != null">BEAUTY = #{beauty},</if>
+            <if test="bicycle != null">BICYCLE = #{bicycle},</if>
+            <if test="compfire != null">COMPFIRE = #{compfire},</if>
+            <if test="fitness != null">FITNESS = #{fitness},</if>
+            <if test="karaoke != null">KARAOKE = #{karaoke},</if>
+            <if test="publicbath != null">PUBLIC_BATH = #{publicbath},</if>
+            <if test="publicpc != null">PUBLIC_PC = #{publicpc},</if>
+            <if test="sauna != null">SAUNA = #{sauna},</if>
+            <if test="seminar != null">SEMINAR = #{seminar},</if>
+            <if test="sports != null">SPORTS = #{sports}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM ACCOMMODATION_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

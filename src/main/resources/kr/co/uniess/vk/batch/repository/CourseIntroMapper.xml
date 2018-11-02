@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.CourseIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO COURSE_INTRO (
+            COT_ID,
+            DISTANCE,
+            TAKE_TIME,
+            CONTACT_INFO,
+            SCHEDULE,
+            THEME
+        ) VALUES (
+            #{cotId},
+            #{distance},
+            #{taketime},
+            #{contactinfo},
+            #{schedule},
+            #{theme}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE COURSE_INTRO
+        <set>
+            <if test="distance != null">DISTANCE = #{distance}</if>
+            <if test="taketime != null">TAKE_TIME = #{taketime}</if>
+            <if test="contactinfo != null">CONTACT_INFO = #{contactinfo}</if>
+            <if test="schedule != null">SCHEDULE = #{schedule}</if>
+            <if test="theme != null">THEME = #{theme}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM COURSE_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

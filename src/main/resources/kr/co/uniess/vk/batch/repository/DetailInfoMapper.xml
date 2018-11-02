@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- DetailInfo 코스 / 숙박 제외한 나머지 -->
+<mapper namespace="kr.co.uniess.vk.batch.repository.DetailInfoMapper">
+    <insert id="insertList">
+        INSERT INTO DETAIL_INFO
+        (
+            COT_ID,
+            FLD_GUBUN,
+            DISPLAY_TITLE,
+            CONTENT_BODY,
+            SERIAL_NUM
+        ) VALUES
+        <foreach item="item" collection="list" separator=",">
+            (
+            #{item.cotId},
+            #{item.fldgubun},
+            #{item.displaytitle},
+            #{item.contentbody},
+            #{item.serialnum}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE DETAIL_INFO
+        <set>
+            <if test="fldgubun != null">FLD_GUBUN = #{fldgubun},</if>
+            <if test="displaytitle != null">DISPLAY_TITLE = #{displaytitle},</if>
+            <if test="contentbody != null">CONTENT_BODY = #{contentbody},</if>
+            <if test="serialnum != null">SERIAL_NUM = #{serialnum}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM DETAIL_INFO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

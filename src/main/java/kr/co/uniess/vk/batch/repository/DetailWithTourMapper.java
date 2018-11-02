@@ -1,6 +1,6 @@
 package kr.co.uniess.vk.batch.repository;
 
-import kr.co.uniess.vk.batch.model.DetailWithTour;
+import kr.co.uniess.vk.batch.component.model.DetailWithTour;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

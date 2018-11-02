@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    API response keys ...
+-->
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.DatabaseMasterMapper">
+    <select id="findOneByCotId" parameterType="string" resultType="_boolean">
+        SELECT COUNT(*) = 1 FROM DATABASE_MASTER WHERE COT_ID = #{cotId}
+    </select>
+
+    <select id="getOneByCotId" parameterType="string" resultType="hashmap">
+        SELECT * FROM DATABASE_MASTER WHERE COT_ID = #{cotId}
+    </select>
+
+    <select id="findOneByContentId" parameterType="string" resultType="_boolean">
+        SELECT COUNT(*) = 1 FROM DATABASE_MASTER WHERE COT_ID = COTID(#{contentId})
+    </select>
+
+    <select id="getOneByContentId" parameterType="string" resultType="hashmap">
+        SELECT * FROM DATABASE_MASTER WHERE COT_ID = COTID(#{contentId})
+    </select>
+
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO DATABASE_MASTER (
+            COT_ID,
+            HOMEPAGE,
+            OVER_VIEW,
+            FIRST_IMAGE,
+            FIRST_IMAGE2,
+            ZIP_CODE,
+            AREA_CODE,
+            SIGUGUN_CODE,
+            DONG_CODE,
+            CAT1,
+            CAT2,
+            CAT3,
+            ADDR1,
+            ADDR2,
+            MAPX,
+            MAPY,
+            WGSX,
+            WGSY,
+            MLEVEL,
+            BOOK_TOUR,
+            ADMIN_NAME,
+            ADMIN_TEL,
+            ADMIN_FAX,
+            ADMIN_EMAIL,
+            SET_STATUS
+        ) VALUES (
+            #{cotId},
+            #{homepage},
+            #{overview}
+            #{firstimage},
+            #{firstimage2},
+            #{zipcode},
+            #{areacode},
+            #{siguguncode},
+            #{dongcode},
+            #{cat1},
+            #{cat2},
+            #{cat3},
+            #{addr1},
+            #{addr2},
+            #{mapx},
+            #{mapy},
+            #{wgsx},
+            #{wgsy},
+            #{mlevel},
+            #{booktour},
+            #{adminname},
+            #{admintel},
+            #{adminfax},
+            #{adminemail},
+            #{setstatus}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE DATABASE_MASTER SET
+            HOMEPAGE = #{homepage},
+            OVER_VIEW = #{overview}
+            FIRST_IMAGE = #{firstimage},
+            FIRST_IMAGE2 = #{firstimage2},
+            ZIP_CODE = #{zipcode},
+            AREA_CODE = #{areacode},
+            SIGUGUN_CODE = #{siguguncode},
+            DONG_CODE = #{dongcode},
+            CAT1 = #{cat1},
+            CAT2 = #{cat2},
+            CAT3 = #{cat3},
+            ADDR1 = #{addr1},
+            ADDR2 = #{addr2},
+            MAPX = #{mapx},
+            MAPY = #{mapy},
+            WGSX = #{wgsx},
+            WGSY = #{wgsy},
+            MLEVEL = #{mlevel},
+            BOOK_TOUR = #{booktour},
+            ADMIN_NAME = #{adminname},
+            ADMIN_TEL = #{admintel},
+            ADMIN_FAX = #{adminfax},
+            ADMIN_EMAIL = #{adminemail},
+            SET_STATU = #{setstatus}
+        WHERE COT_ID = #{cotId}
+    </update>
+</mapper>

@@ -1,10 +1,9 @@
 package kr.co.uniess.vk.batch.controller;
 
-import kr.co.uniess.vk.batch.model.DetailWithTour;
-import kr.co.uniess.vk.batch.model.Image;
-import kr.co.uniess.vk.batch.model.Master;
+import kr.co.uniess.vk.batch.component.model.DetailWithTour;
+import kr.co.uniess.vk.batch.component.model.Image;
+import kr.co.uniess.vk.batch.component.model.Master;
 import kr.co.uniess.vk.batch.service.*;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@MapperScan(basePackages = "kr.co.uniess.vk.batch.repository")
 public class KTOController {
 
     private final Logger logger = LoggerFactory.getLogger(KTOController.class);
@@ -241,7 +239,7 @@ public class KTOController {
         switch (contentTypeId) {
             case TYPE_COURSE:
                 for (Map<String, Object> item : infoList) {
-                    infoService.updateCourseInfoList(item);
+                    infoService.updateCourseInfo(item);
                 }
                 break;
             case TYPE_ACCOMMODATION:

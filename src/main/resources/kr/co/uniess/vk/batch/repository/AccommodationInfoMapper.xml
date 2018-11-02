@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- AccommodationInfo 숙박 -->
+<mapper namespace="kr.co.uniess.vk.batch.repository.AccommodationInfoMapper">
+    <insert id="insert">
+        INSERT INTO ACCOMMODATION_INFO (
+            COT_ID,
+            ROOM_CODE,
+            ROOM_TITLE,
+            ROOM_SIZE1,
+            ROOM_COUNT,
+            ROOM_BASE_COUNT,
+            ROOM_MAX_COUNT,
+            ROOM_OFF_SEASON_MIN_FEE1,
+            ROOM_OFF_SEASON_MIN_FEE2,
+            ROOM_PEAK_SEASON_MIN_FEE1,
+            ROOM_PEAK_SEASON_MIN_FEE2,
+            ROOM_INTRO,
+            ROOM_BATH_FACILITY,
+            ROOM_BATH,
+            ROOM_HOME_THEATER,
+            ROOM_AIR_CONDITIONER,
+            ROOM_TV,
+            ROOM_PC,
+            ROOM_CABLE,
+            ROOM_INTERNET,
+            ROOM_REFRIGERATOR,
+            ROOM_TOILETRIES,
+            ROOM_SOFA,
+            ROOM_COOK,
+            ROOM_TABLE,
+            ROOM_HAIRDRYER,
+            ROOM_SIZE2,
+            ROOM_IMG1,
+            ROOM_IMG2,
+            ROOM_IMG3,
+            ROOM_IMG4,
+            ROOM_IMG5
+        ) VALUES
+        <foreach item="item" collection="list" separator=",">
+            (
+                #{item.cotId},
+                #{item.roomcode},
+                #{item.roomtitle},
+                #{item.roomsize1},
+                #{item.roomcount},
+                #{item.roombasecount},
+                #{item.roommaxcount},
+                #{item.roomoffseasonminfee1},
+                #{item.roomoffseasonminfee2},
+                #{item.roompeakseasonminfee1},
+                #{item.roompeakseasonminfee2},
+                #{item.roomintro},
+                #{item.roombathfacility},
+                #{item.roombath},
+                #{item.roomhometheater},
+                #{item.roomairconditioner},
+                #{item.roomtv},
+                #{item.roompc},
+                #{item.roomcable},
+                #{item.roominternet},
+                #{item.roomrefrigerator},
+                #{item.roomtoiletries},
+                #{item.roomsofa},
+                #{item.roomcook},
+                #{item.roomtable},
+                #{item.roomhairdryer},
+                #{item.roomsize2},
+                #{item.roomimg1},
+                #{item.roomimg2},
+                #{item.roomimg3},
+                #{item.roomimg4},
+                #{item.roomimg5}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE ACCOMMODATION_INFO
+        <set>
+            <if test="roomcode != null">ROOM_CODE = #{roomcode},</if>
+            <if test="roomtitle != null">ROOM_TITLE = #{roomtitle},</if>
+            <if test="roomsize1 != null">ROOM_SIZE1 = #{roomsize1},</if>
+            <if test="roomcount != null">ROOM_COUNT = #{roomcount},</if>
+            <if test="roombasecount != null">ROOM_BASE_COUNT = #{roombasecount},</if>
+            <if test="roommaxcount != null">ROOM_MAX_COUNT = #{roommaxcount},</if>
+            <if test="roomoffseasonminfee1 != null">ROOM_OFF_SEASON_MIN_FEE1 = #{roomoffseasonminfee1},</if>
+            <if test="roomoffseasonminfee2 != null">ROOM_OFF_SEASON_MIN_FEE2 = #{roomoffseasonminfee2},</if>
+            <if test="roompeakseasonminfee1 != null">ROOM_PEAK_SEASON_MIN_FEE1 = #{roompeakseasonminfee1},</if>
+            <if test="roompeakseasonminfee2 != null">ROOM_PEAK_SEASON_MIN_FEE2 = #{roompeakseasonminfee2},</if>
+            <if test="roomintro != null">ROOM_INTRO = #{roomintro},</if>
+            <if test="roombathfacility != null">ROOM_BATH_FACILITY = #{roombathfacility},</if>
+            <if test="roombath != null">ROOM_BATH = #{roombath},</if>
+            <if test="roomhometheater != null">ROOM_HOME_THEATER = #{roomhometheater},</if>
+            <if test="roomairconditioner != null">ROOM_AIR_CONDITIONER = #{roomairconditioner},</if>
+            <if test="roomtv != null">ROOM_TV = #{roomtv},</if>
+            <if test="roompc != null">ROOM_PC = #{roompc},</if>
+            <if test="roomcable != null">ROOM_CABLE = #{roomcable},</if>
+            <if test="roominternet != null">ROOM_INTERNET = #{roominternet},</if>
+            <if test="roomrefrigerator != null">ROOM_REFRIGERATOR = #{roomrefrigerator},</if>
+            <if test="roomtoiletries != null">ROOM_TOILETRIES = #{roomtoiletries},</if>
+            <if test="roomsofa != null">ROOM_SOFA = #{roomsofa},</if>
+            <if test="roomcook != null">ROOM_COOK = #{roomcook},</if>
+            <if test="roomtable != null">ROOM_TABLE = #{roomtable},</if>
+            <if test="roomhairdryer != null">ROOM_HAIRDRYER = #{roomhairdryer},</if>
+            <if test="roomsize2 != null">ROOM_SIZE2 = #{roomsize2},</if>
+            <if test="roomimg1 != null">ROOM_IMG1 = #{roomimg1},</if>
+            <if test="roomimg2 != null">ROOM_IMG2 = #{roomimg2},</if>
+            <if test="roomimg3 != null">ROOM_IMG3 = #{roomimg3},</if>
+            <if test="roomimg4 != null">ROOM_IMG4 = #{roomimg4},</if>
+            <if test="roomimg5 != null">ROOM_IMG5 = #{roomimg5}</if>
+        </set>
+         WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM ACCOMMODATION_INFO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- CourseInfo 코스 -->
+<mapper namespace="kr.co.uniess.vk.batch.repository.CourseInfoMapper">
+    <insert id="insertList">
+        INSERT INTO COURSE_INFO
+        (
+            COT_ID,
+            SUB_CONTENT_ID,
+            SUB_DETAIL_IMG,
+            SUB_DETAIL_OVERVIEW,
+            SUB_NAME,
+            SUB_NUM
+        ) VALUES
+        <foreach item="item" collection="list" separator=",">
+            (
+            #{item.cotid},
+            #{item.subcontentid},
+            #{item.subdetailimg},
+            #{item.subdetailoverview},
+            #{item.subname},
+            #{item.subnum}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE COURSE_INFO
+        <set>
+            <if test="subcontentid != null">SUB_CONTENT_ID = #{subcontentid},</if>
+            <if test="subdetailimg != null">SUB_DETAIL_IMG = #{subdetailimg},</if>
+            <if test="subdetailoverview != null">SUB_DETAIL_OVERVIEW = #{subdetailoverview},</if>
+            <if test="subname != null">SUB_NAME = #{subname},</if>
+            <if test="subnum != null">SUB_NUM = #{subnum}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM COURSE_INFO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

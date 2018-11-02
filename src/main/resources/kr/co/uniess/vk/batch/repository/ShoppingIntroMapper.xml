@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.ShoppingIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO SHOPPING_INTRO (
+            COT_ID,
+            CHK_BABY_CARRIAGE,
+            CHK_CREDITCARD,
+            CHK_PET,
+            CULTURE_CENTER,
+            FAIR_DAY,
+            CONTACT_INFO,
+            OPEN_DATE,
+            OPEN_TIME,
+            PARKING,
+            REST_DATE,
+            REST_ROOM,
+            SALE_ITEM,
+            SALE_ITEM_COST,
+            SCALE,
+            SHOP_GUIDE
+        ) VALUES (
+            #{cotId},
+            #{chkbabycarriage},
+            #{chkcreditcard},
+            #{chkpet},
+            #{culturecenter},
+            #{fairday},
+            #{contactinfo},
+            #{opendate},
+            #{opentime},
+            #{parking},
+            #{restdate},
+            #{restroom},
+            #{saleitem},
+            #{saleitemcost},
+            #{scale},
+            #{shopguide}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE SHOPPING_INTRO
+        <set>
+            <if test="chkbabycarriage != null">CHK_BABY_CARRIAGE = #{chkbabycarriage},</if>
+            <if test="chkcreditcard != null">CHK_CREDITCARD = #{chkcreditcard},</if>
+            <if test="chkpet != null">CHK_PET = #{chkpet},</if>
+            <if test="culturecenter != null">CULTURE_CENTER = #{culturecenter},</if>
+            <if test="fairday != null">FAIR_DAY = #{fairday},</if>
+            <if test="contactinfo != null">CONTACT_INFO = #{contactinfo},</if>
+            <if test="opendate != null">OPEN_DATE = #{opendate},</if>
+            <if test="opentime != null">OPEN_TIME = #{opentime},</if>
+            <if test="parking != null">PARKING = #{parking},</if>
+            <if test="restdate != null">REST_DATE = #{restdate},</if>
+            <if test="restroom != null">REST_ROOM = #{restroom},</if>
+            <if test="saleitem != null">SALE_ITEM = #{saleitem},</if>
+            <if test="saleitemcost != null">SALE_ITEM_COST = #{saleitemcost},</if>
+            <if test="scale != null">SCALE = #{scale},</if>
+            <if test="shopguide != null">SHOP_GUIDE = #{shopguide}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM SHOPPING_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

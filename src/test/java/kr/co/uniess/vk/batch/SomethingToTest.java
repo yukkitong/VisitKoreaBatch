@@ -1,11 +1,13 @@
 package kr.co.uniess.vk.batch;
 
-import kr.co.uniess.vk.batch.repository.TestMapper;
+import kr.co.uniess.vk.batch.repository.ContentMasterMapper;
+import kr.co.uniess.vk.batch.service.ContentMasterService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
@@ -17,6 +19,7 @@ import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class SomethingToTest {
 
 //    @Test
@@ -57,11 +60,12 @@ public class SomethingToTest {
 //    }
 
     @Autowired
-    TestMapper testMapper;
+    ContentMasterService contentMasterService;
 
     @Test
     public void testTestMapper() {
-        int count = testMapper.countImages();
+        int count = contentMasterService.getTotalCount();
+        System.out.println("Content master total count : " + count);
         Assert.assertNotSame(0, count);
     }
 }

@@ -1,6 +1,6 @@
 package kr.co.uniess.vk.batch.service;
 
-import kr.co.uniess.vk.batch.model.DetailWithTour;
+import kr.co.uniess.vk.batch.component.model.DetailWithTour;
 import kr.co.uniess.vk.batch.repository.DetailWithTourMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    API response keys ...
+-->
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.DepartmentMapper">
+    <select id="findOne" resultType="string">
+    </select>
+
+    <insert id="insert" parameterType="Master">
+    </insert>
+
+    <update id="update" parameterType="Master">
+    </update>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.CulturalIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO CULTURAL_FACILITIES_INTRO (
+            COT_ID,
+            ACCOM_COUNT,
+            SCALE,
+            SPENDTIME,
+            CHK_BABY_CARRIAGE,
+            CHK_CREDITCARD,
+            CHK_PET,
+            DISCOUNT_INFO,
+            INFO_CENTER,
+            PARKING,
+            PARKING_FEE,
+            REST_DATE,
+            USE_FEE,
+            USE_TIME
+        ) VALUES (
+            #{cotId},
+            #{accomcount},
+            #{scale},
+            #{spendtime},
+            #{chkbabycarriage},
+            #{chkcreditcard},
+            #{chkpet},
+            #{discountinfo},
+            #{infocenter},
+            #{parking},
+            #{parkingfee},
+            #{restdate},
+            #{usefee},
+            #{usetime}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE CULTURAL_FACILITIES_INTRO
+        <set>
+            <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>
+            <if test="scale != null">SCALE = #{scale},</if>
+            <if test="spendtime != null">SPENDTIME = #{spendtime},</if>
+            <if test="chkbabycarriage != null">CHK_BABY_CARRIAGE = #{chkbabycarriage},</if>
+            <if test="chkcreditcard != null">CHK_CREDITCARD = #{chkcreditcard},</if>
+            <if test="chkpet != null">CHK_PET = #{chkpet},</if>
+            <if test="discountinfo != null">DISCOUNT_INFO = #{discountinfo},</if>
+            <if test="infocenter != null">INFO_CENTER = #{infocenter},</if>
+            <if test="parking != null">PARKING = #{parking},</if>
+            <if test="parkingfee != null">PARKING_FEE = #{parkingfee},</if>
+            <if test="restdate != null">REST_DATE = #{restdate},</if>
+            <if test="usefee != null">USE_FEE = #{usefee},</if>
+            <if test="usetime != null">USE_TIME = #{usetime}</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM CULTURAL_FACILITIES_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>

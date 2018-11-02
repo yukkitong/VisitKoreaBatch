@@ -5,23 +5,22 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import kr.co.uniess.vk.batch.component.TourApiClient;
-import kr.co.uniess.vk.batch.model.*;
+import kr.co.uniess.vk.batch.component.model.*;
 import kr.co.uniess.vk.batch.controller.CommandArgsParser;
 import kr.co.uniess.vk.batch.controller.KTOController;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
 
 @Component
+@Profile("!test")
 public class CommandLineExecutor implements CommandLineRunner {
 
     private final Logger logger = LoggerFactory.getLogger(CommandLineExecutor.class);
@@ -138,8 +137,9 @@ public class CommandLineExecutor implements CommandLineRunner {
 
             logger.info(writer.writeValueAsString(aggregationMap.values()));
 
+            // TODO for TEST
             // Do process
-            controller.process(aggregationMap);
+            // controller.process(aggregationMap);
 
         } catch (Exception e) {
             e.printStackTrace();

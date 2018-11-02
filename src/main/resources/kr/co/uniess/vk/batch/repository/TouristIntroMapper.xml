@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.TouristIntroMapper">
+    <insert id="insert" parameterType="hashmap">
+        INSERT INTO TOURIST_SPOT_INTRO (
+            COT_ID,
+            ACCOM_COUNT,
+            CHK_BABY_CARRIAGE,
+            CHK_CREDITCARD,
+            CHK_PET,
+            EXP_AGE_RANGE,
+            EXP_GUIDE,
+            HERITAGE1,
+            HERITAGE2,
+            HERITAGE3,
+            INFO_CENTER,
+            OPEN_DATE,
+            PARKING,
+            REST_DATE,
+            USE_SEASON,
+            USE_TIME
+        ) VALUES (
+            #{cotid},
+            #{accomcount},
+            #{chkbabycarriage},
+            #{chkcreditcard},
+            #{chkpet},
+            #{expagerange},
+            #{expguide},
+            #{heritage1},
+            #{heritage2},
+            #{heritage3},
+            #{infocenter},
+            #{opendate},
+            #{parking},
+            #{restdate},
+            #{useseason},
+            #{usetime}
+        )
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE TOURIST_SPOT_INTRO
+        <set>
+            <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>
+            <if test="chkbabycarriage != null">CHK_BABY_CARRIAGE = #{chkbabycarriage},</if>
+            <if test="chkcreditcard != null">CHK_CREDITCARD = #{chkcreditcard},</if>
+            <if test="chkpet != null">CHK_PET = #{chkpet},</if>
+            <if test="expagerange != null">EXP_AGE_RANGE = #{expagerange},</if>
+            <if test="expguide != null">EXP_GUIDE = #{expguide},</if>
+            <if test="heritage1 != null">HERITAGE1 = #{heritage1},</if>
+            <if test="heritage2 != null">HERITAGE2 = #{heritage2},</if>
+            <if test="heritage3 != null">HERITAGE3 = #{heritage3},</if>
+            <if test="infocenter != null">INFO_CENTER = #{infocenter},</if>
+            <if test="opendate != null">OPEN_DATE = #{opendate},</if>
+            <if test="parking != null">PARKING = #{parking},</if>
+            <if test="restdate != null">REST_DATE = #{restdate},</if>
+            <if test="useseason != null">USE_SEASON = #{useseason},</if>
+            <if test="usetime != null">USE_TIME = #{usetime},</if>
+        </set>
+        WHERE COT_ID = #{cotId}
+    </update>
+
+    <delete id="delete" parameterType="string">
+        DELETE FROM TOURIST_SPOT_INTRO WHERE COT_ID = #{cotId}
+    </delete>
+</mapper>
