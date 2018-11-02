@@ -10,7 +10,7 @@
         SELECT COT_ID FROM CONTENT_MASTER WHERE CONTENT_ID = #{contentId}
     </select>
 
-    <insert id="insert" parameterType="hashmap">
+    <insert id="insert" parameterType="content">
         <selectKey keyProperty="now" resultType="date" order="BEFORE">
             SELECT NOW() FROM DUAL
         </selectKey>
@@ -47,7 +47,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="content">
         <selectKey keyProperty="now" resultType="date" order="BEFORE">
             SELECT NOW() FROM DUAL
         </selectKey>

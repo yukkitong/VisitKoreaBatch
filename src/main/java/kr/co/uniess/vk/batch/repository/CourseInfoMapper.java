@@ -1,13 +1,14 @@
 package kr.co.uniess.vk.batch.repository;
 
+import kr.co.uniess.vk.batch.repository.model.CourseInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
+
 
 @Mapper
 public interface CourseInfoMapper {
-    int insertList(List<Map<String, Object>> list);
-    int update(Map<String, Object> item);
+    int insertList(List<CourseInfoVO> list);
+    int update(CourseInfoVO item);
     int delete(String cotId);
 }

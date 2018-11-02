@@ -1,7 +1,8 @@
 package kr.co.uniess.vk.batch.service;
 
-import kr.co.uniess.vk.batch.component.model.Master;
+
 import kr.co.uniess.vk.batch.repository.ContentMasterMapper;
+import kr.co.uniess.vk.batch.repository.model.ContentMasterVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,11 @@ public class ContentMasterService {
         return contentMasterMapper.findOne(contentId);
     }
 
-    public int insert(Master master) {
-        return contentMasterMapper.insert(master);
+    public int insert(ContentMasterVO item) {
+        return contentMasterMapper.insert(item);
     }
 
-    public int update(Master master) {
-        return contentMasterMapper.update(master);
+    public int update(ContentMasterVO item) {
+        return contentMasterMapper.update(item);
     }
 }

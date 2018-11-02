@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.EateryIntroMapper">
-    <insert id="insert" parameterType="hashmap">
+    <insert id="insert" parameterType="eatery">
         INSERT INTO EATERY_INTRO (
             COT_ID,
             CHK_CREDITCARD,
@@ -40,7 +40,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="eatery">
         UPDATE EATERY_INTRO
         <set>
             <if test="chkcreditcard =!= null">CHK_CREDITCARD = #{chkcreditcard},</if>

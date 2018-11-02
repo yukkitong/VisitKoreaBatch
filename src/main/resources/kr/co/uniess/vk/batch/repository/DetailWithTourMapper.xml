@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.DetailWithTourMapper">
-    <insert id="insert">
+    <insert id="insert" parameterType="withtour">
         INSERT INTO DETAIL_INFO (COT_ID, FLD_GUBUN, DISPLAY_TITLE, CONTENT_BODY)
         VALUES
         <foreach item="item" collection="list" separator=",">

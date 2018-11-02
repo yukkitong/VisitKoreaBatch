@@ -3,7 +3,7 @@
 
 <!-- DetailInfo 코스 / 숙박 제외한 나머지 -->
 <mapper namespace="kr.co.uniess.vk.batch.repository.DetailInfoMapper">
-    <insert id="insertList">
+    <insert id="insertList" parameterType="detail_info">
         INSERT INTO DETAIL_INFO
         (
             COT_ID,
@@ -23,7 +23,7 @@
         </foreach>
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="detail_info">
         UPDATE DETAIL_INFO
         <set>
             <if test="fldgubun != null">FLD_GUBUN = #{fldgubun},</if>

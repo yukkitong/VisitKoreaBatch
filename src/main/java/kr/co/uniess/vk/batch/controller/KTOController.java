@@ -110,30 +110,29 @@ public class KTOController {
         Map<String, Object> intro = (Map<String, Object>) data.get("intro");
         switch (contentTypeId) {
             case TYPE_TOURIST:
-                introService.insertTouristIntro(intro);
+//                introService.insertTouristIntro(intro);
                 break;
             case TYPE_CULTURAL:
-                introService.insertCulturalIntro(intro);
+//                introService.insertCulturalIntro(intro);
                 break;
             case TYPE_FESTIVAL:
-                introService.insertFestivalIntro(intro);
+//                introService.insertFestivalIntro(intro);
                 break;
             case TYPE_COURSE:
                 // TODO citytour? cat1 = C02, cat2 = C0201 일때
-                introService.insertCourseIntro(intro);
-
+//                introService.insertCourseIntro(intro);
                 break;
             case TYPE_LEPORTS:
-                introService.insertLeportsIntro(intro);
+//                introService.insertLeportsIntro(intro);
                 break;
             case TYPE_ACCOMMODATION:
-                introService.insertAccommodationIntro(intro);
+//                introService.insertAccommodationIntro(intro);
                 break;
             case TYPE_SHOPPING:
-                introService.insertShoppingIntro(intro);
+//                introService.insertShoppingIntro(intro);
                 break;
             case TYPE_EATERY:
-                introService.insertEateryIntro(intro);
+//                introService.insertEateryIntro(intro);
                 break;
         }
 
@@ -141,13 +140,13 @@ public class KTOController {
         List<Map<String, Object>> infoList = (List<Map<String, Object>>) data.get("info");
         switch (contentTypeId) {
             case TYPE_COURSE:
-                infoService.insertCourseInfoList(infoList);
+//                infoService.insertCourseInfoList(infoList);
                 break;
             case TYPE_ACCOMMODATION:
-                infoService.insertAccommodationInfoList(infoList);
+//                infoService.insertAccommodationInfoList(infoList);
                 break;
             default:
-                infoService.insertDetailInfoList(infoList);
+//                infoService.insertDetailInfoList(infoList);
                 break;
         }
 
@@ -155,17 +154,17 @@ public class KTOController {
         List<Image> images = (List<Image>) data.get("image");
         for (Image image : images) {
             if (imageService.findOneByContentId(contentId, image.getOriginimgurl()) == null) {
-                imageService.insert(image);
+//                imageService.insert(image);
             } else {
-                imageService.update(image);
+//                imageService.update(image);
             }
         }
 
         if (master.isWithTour()) {
             DetailWithTour withTour = (DetailWithTour) data.get("withtour");
-            detailWithTourService.deleteByContentId(contentId);
+//            detailWithTourService.deleteByContentId(contentId);
             // TODO manipulate data weired!!!
-            detailWithTourService.insert(withTour);
+//            detailWithTourService.insert(withTour);
 
             // TODO department
             // departmentService.
@@ -208,29 +207,29 @@ public class KTOController {
         Map<String, Object> intro = (Map<String, Object>) data.get("intro");
         switch (contentTypeId) {
             case TYPE_TOURIST:
-                introService.updateTouristIntro(intro);
+//                introService.updateTouristIntro(intro);
                 break;
             case TYPE_CULTURAL:
-                introService.updateCulturalIntro(intro);
+//                introService.updateCulturalIntro(intro);
                 break;
             case TYPE_FESTIVAL:
-                introService.updateFestivalIntro(intro);
+//                introService.updateFestivalIntro(intro);
                 break;
             case TYPE_COURSE:
                 // TODO citytour? cat1 = C02, cat2 = C0201 일때
-                introService.updateCourseIntro(intro);
+//                introService.updateCourseIntro(intro);
                 break;
             case TYPE_LEPORTS:
-                introService.updateLeportsIntro(intro);
+//                introService.updateLeportsIntro(intro);
                 break;
             case TYPE_ACCOMMODATION:
-                introService.updateAccommodationIntro(intro);
+//                introService.updateAccommodationIntro(intro);
                 break;
             case TYPE_SHOPPING:
-                introService.updateShoppingIntro(intro);
+//                introService.updateShoppingIntro(intro);
                 break;
             case TYPE_EATERY:
-                introService.updateEateryIntro(intro);
+//                introService.updateEateryIntro(intro);
                 break;
         }
 
@@ -239,17 +238,17 @@ public class KTOController {
         switch (contentTypeId) {
             case TYPE_COURSE:
                 for (Map<String, Object> item : infoList) {
-                    infoService.updateCourseInfo(item);
+//                    infoService.updateCourseInfo(item);
                 }
                 break;
             case TYPE_ACCOMMODATION:
                 for (Map<String, Object> item : infoList) {
-                    infoService.updateAccommodationInfo(item);
+//                    infoService.updateAccommodationInfo(item);
                 }
                 break;
             default:
                 for (Map<String, Object> item : infoList) {
-                    infoService.updateDetailInfo(item);
+//                    infoService.updateDetailInfo(item);
                 }
                 break;
         }
@@ -258,9 +257,9 @@ public class KTOController {
         List<Image> images = (List<Image>) data.get("image");
         for (Image image : images) {
             if (imageService.findOneByContentId(contentId, image.getOriginimgurl()) == null) {
-                imageService.insert(image);
+//                imageService.insert(image);
             } else {
-                imageService.update(image);
+//                imageService.update(image);
             }
         }
 

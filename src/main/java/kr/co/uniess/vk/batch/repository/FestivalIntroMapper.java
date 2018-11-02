@@ -1,12 +1,12 @@
 package kr.co.uniess.vk.batch.repository;
 
+import kr.co.uniess.vk.batch.repository.model.FestivalIntroVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Map;
 
 @Mapper
 public interface FestivalIntroMapper {
-    int insert(Map<String, Object> item);
-    int update(Map<String, Object> item);
+    int insert(FestivalIntroVO item);
+    int update(FestivalIntroVO item);
     int delete(String cotId);
 }

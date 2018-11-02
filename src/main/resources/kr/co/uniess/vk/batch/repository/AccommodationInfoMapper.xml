@@ -3,7 +3,7 @@
 
 <!-- AccommodationInfo 숙박 -->
 <mapper namespace="kr.co.uniess.vk.batch.repository.AccommodationInfoMapper">
-    <insert id="insert">
+    <insert id="insert" parameterType="accommodation_info">
         INSERT INTO ACCOMMODATION_INFO (
             COT_ID,
             ROOM_CODE,
@@ -76,7 +76,7 @@
         </foreach>
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="accommodation_info">
         UPDATE ACCOMMODATION_INFO
         <set>
             <if test="roomcode != null">ROOM_CODE = #{roomcode},</if>

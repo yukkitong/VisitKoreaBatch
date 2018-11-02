@@ -9,9 +9,9 @@
     <select id="findOne" resultType="string">
     </select>
 
-    <insert id="insert" parameterType="Master">
+    <insert id="insert" parameterType="department">
     </insert>
 
-    <update id="update" parameterType="Master">
+    <update id="update" parameterType="department">
     </update>
 </mapper>

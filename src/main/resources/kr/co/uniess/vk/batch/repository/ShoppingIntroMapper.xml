@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.ShoppingIntroMapper">
-    <insert id="insert" parameterType="hashmap">
+    <insert id="insert" parameterType="shopping">
         INSERT INTO SHOPPING_INTRO (
             COT_ID,
             CHK_BABY_CARRIAGE,
@@ -40,7 +40,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="shopping">
         UPDATE SHOPPING_INTRO
         <set>
             <if test="chkbabycarriage != null">CHK_BABY_CARRIAGE = #{chkbabycarriage},</if>

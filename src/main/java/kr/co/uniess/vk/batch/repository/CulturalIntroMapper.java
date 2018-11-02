@@ -1,12 +1,12 @@
 package kr.co.uniess.vk.batch.repository;
 
+import kr.co.uniess.vk.batch.repository.model.CulturalIntroVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Map;
 
 @Mapper
 public interface CulturalIntroMapper {
-    int insert(Map<String, Object> item);
-    int update(Map<String, Object> item);
+    int insert(CulturalIntroVO item);
+    int update(CulturalIntroVO item);
     int delete(String cotId);
 }

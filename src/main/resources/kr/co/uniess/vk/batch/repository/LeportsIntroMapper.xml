@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.LeportsIntroMapper">
-    <insert id="insert" parameterType="hashmap">
+    <insert id="insert" parameterType="leports">
         INSERT INTO LEPORTS_INTRO (
             COT_ID,
             ACCOM_COUNT,
@@ -38,7 +38,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="leports">
         UPDATE LEPORTS_INTRO
         <set>
             <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>

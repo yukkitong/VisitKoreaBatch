@@ -1,12 +1,12 @@
 package kr.co.uniess.vk.batch.repository;
 
+import kr.co.uniess.vk.batch.repository.model.AccommodationIntroVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Map;
 
 @Mapper
 public interface AccommodationIntroMapper {
-    int insert(Map<String, Object> item);
-    int update(Map<String, Object> item);
+    int insert(AccommodationIntroVO item);
+    int update(AccommodationIntroVO item);
     int delete(String cotId);
 }

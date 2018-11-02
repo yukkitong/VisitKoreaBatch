@@ -3,7 +3,7 @@
 
 <!-- CourseInfo 코스 -->
 <mapper namespace="kr.co.uniess.vk.batch.repository.CourseInfoMapper">
-    <insert id="insertList">
+    <insert id="insertList" parameterType="course_info">
         INSERT INTO COURSE_INFO
         (
             COT_ID,
@@ -25,7 +25,7 @@
         </foreach>
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="course_info">
         UPDATE COURSE_INFO
         <set>
             <if test="subcontentid != null">SUB_CONTENT_ID = #{subcontentid},</if>

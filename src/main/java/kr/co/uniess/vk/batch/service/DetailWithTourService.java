@@ -1,7 +1,8 @@
 package kr.co.uniess.vk.batch.service;
 
-import kr.co.uniess.vk.batch.component.model.DetailWithTour;
+
 import kr.co.uniess.vk.batch.repository.DetailWithTourMapper;
+import kr.co.uniess.vk.batch.repository.model.DetailWithTourVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ public class DetailWithTourService {
     @Autowired
     private DetailWithTourMapper detailWithTourMapper;
 
-    public int insert(DetailWithTour item) {
+    public int insert(DetailWithTourVO item) {
         return detailWithTourMapper.insert(item);
     }
 

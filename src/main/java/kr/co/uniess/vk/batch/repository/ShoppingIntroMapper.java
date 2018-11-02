@@ -1,12 +1,12 @@
 package kr.co.uniess.vk.batch.repository;
 
+import kr.co.uniess.vk.batch.repository.model.ShoppingIntroVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Map;
 
 @Mapper
 public interface ShoppingIntroMapper {
-    int insert(Map<String, Object> item);
-    int update(Map<String, Object> item);
+    int insert(ShoppingIntroVO item);
+    int update(ShoppingIntroVO item);
     int delete(String cotId);
 }

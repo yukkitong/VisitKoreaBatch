@@ -1,11 +1,11 @@
 package kr.co.uniess.vk.batch.service;
 
 import kr.co.uniess.vk.batch.repository.*;
+import kr.co.uniess.vk.batch.repository.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 
 @Service
 public class IntroService {
@@ -35,11 +35,11 @@ public class IntroService {
     private EateryIntroMapper eateryIntroMapper;
 
 
-    public int insertTouristIntro(Map<String, Object> item) {
+    public int insertTouristIntro(TouristIntroVO item) {
         return touristIntroMapper.insert(item);
     }
 
-    public int updateTouristIntro(Map<String, Object> item) {
+    public int updateTouristIntro(TouristIntroVO item) {
         return touristIntroMapper.update(item);
     }
 
@@ -47,11 +47,11 @@ public class IntroService {
         return touristIntroMapper.delete(cotId);
     }
 
-    public int insertCulturalIntro(Map<String, Object> item) {
+    public int insertCulturalIntro(CulturalIntroVO item) {
         return culturalIntroMapper.insert(item);
     }
 
-    public int updateCulturalIntro(Map<String, Object> item) {
+    public int updateCulturalIntro(CulturalIntroVO item) {
         return culturalIntroMapper.update(item);
     }
 
@@ -59,11 +59,11 @@ public class IntroService {
         return culturalIntroMapper.delete(cotId);
     }
 
-    public int insertFestivalIntro(Map<String, Object> item) {
+    public int insertFestivalIntro(FestivalIntroVO item) {
         return festivalIntroMapper.insert(item);
     }
 
-    public int updateFestivalIntro(Map<String, Object> item) {
+    public int updateFestivalIntro(FestivalIntroVO item) {
         return festivalIntroMapper.update(item);
     }
 
@@ -71,11 +71,11 @@ public class IntroService {
         return festivalIntroMapper.delete(cotId);
     }
 
-    public int insertCourseIntro(Map<String, Object> item) {
+    public int insertCourseIntro(CourseIntroVO item) {
         return courseIntroMapper.insert(item);
     }
 
-    public int updateCourseIntro(Map<String, Object> item) {
+    public int updateCourseIntro(CourseIntroVO item) {
         return courseIntroMapper.update(item);
     }
 
@@ -83,11 +83,11 @@ public class IntroService {
         return courseIntroMapper.delete(cotId);
     }
 
-    public int insertLeportsIntro(Map<String, Object> item) {
+    public int insertLeportsIntro(LeportsIntroVO item) {
         return leportsIntroMapper.insert(item);
     }
 
-    public int updateLeportsIntro(Map<String, Object> item) {
+    public int updateLeportsIntro(LeportsIntroVO item) {
         return leportsIntroMapper.update(item);
     }
 
@@ -95,11 +95,11 @@ public class IntroService {
         return leportsIntroMapper.delete(cotId);
     }
 
-    public int insertAccommodationIntro(Map<String, Object> item) {
+    public int insertAccommodationIntro(AccommodationIntroVO item) {
         return accommodationIntroMapper.insert(item);
     }
 
-    public int updateAccommodationIntro(Map<String, Object> item) {
+    public int updateAccommodationIntro(AccommodationIntroVO item) {
         return accommodationIntroMapper.update(item);
     }
 
@@ -107,11 +107,11 @@ public class IntroService {
         return accommodationIntroMapper.delete(cotId);
     }
 
-    public int insertShoppingIntro(Map<String, Object> item) {
+    public int insertShoppingIntro(ShoppingIntroVO item) {
         return shoppingIntroMapper.insert(item);
     }
 
-    public int updateShoppingIntro(Map<String, Object> item) {
+    public int updateShoppingIntro(ShoppingIntroVO item) {
         return shoppingIntroMapper.update(item);
     }
 
@@ -119,11 +119,11 @@ public class IntroService {
         return shoppingIntroMapper.delete(cotId);
     }
 
-    public int insertEateryIntro(Map<String, Object> item) {
+    public int insertEateryIntro(EateryIntroVO item) {
         return eateryIntroMapper.insert(item);
     }
 
-    public int updateEateryIntro(Map<String, Object> item) {
+    public int updateEateryIntro(EateryIntroVO item) {
         return eateryIntroMapper.update(item);
     }
 

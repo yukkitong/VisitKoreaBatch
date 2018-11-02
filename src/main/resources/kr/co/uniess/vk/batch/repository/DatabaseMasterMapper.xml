@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--
-    API response keys ...
--->
-
 <mapper namespace="kr.co.uniess.vk.batch.repository.DatabaseMasterMapper">
     <select id="findOneByCotId" parameterType="string" resultType="_boolean">
         SELECT COUNT(*) = 1 FROM DATABASE_MASTER WHERE COT_ID = #{cotId}
     </select>
 
-    <select id="getOneByCotId" parameterType="string" resultType="hashmap">
+    <select id="getOneByCotId" parameterType="string" resultType="database">
         SELECT * FROM DATABASE_MASTER WHERE COT_ID = #{cotId}
     </select>
 
@@ -18,11 +14,11 @@
         SELECT COUNT(*) = 1 FROM DATABASE_MASTER WHERE COT_ID = COTID(#{contentId})
     </select>
 
-    <select id="getOneByContentId" parameterType="string" resultType="hashmap">
+    <select id="getOneByContentId" parameterType="string" resultType="database">
         SELECT * FROM DATABASE_MASTER WHERE COT_ID = COTID(#{contentId})
     </select>
 
-    <insert id="insert" parameterType="hashmap">
+    <insert id="insert" parameterType="database">
         INSERT INTO DATABASE_MASTER (
             COT_ID,
             HOMEPAGE,
@@ -78,7 +74,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="database">
         UPDATE DATABASE_MASTER SET
             HOMEPAGE = #{homepage},
             OVER_VIEW = #{overview}

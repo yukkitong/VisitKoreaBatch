@@ -1,7 +1,8 @@
 package kr.co.uniess.vk.batch.service;
 
-import kr.co.uniess.vk.batch.component.model.Image;
+
 import kr.co.uniess.vk.batch.repository.ImageMapper;
+import kr.co.uniess.vk.batch.repository.model.ImageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ public class ImageService {
         return imageMapper.findOneByCotId(cotId, url);
     }
 
-    public List<Image> findAllByCotId(String cotId) {
+    public List<ImageVO> findAllByCotId(String cotId) {
         return imageMapper.findAllByCotId(cotId);
     }
 
@@ -25,15 +26,15 @@ public class ImageService {
         return imageMapper.findOneByContentId(contentId, url);
     }
 
-    public List<Image> findAllByContentId(String contentId) {
+    public List<ImageVO> findAllByContentId(String contentId) {
         return imageMapper.findAllByContentId(contentId);
     }
 
-    public String insert(Image image) {
+    public String insert(ImageVO image) {
         return imageMapper.insert(image);
     }
 
-    public int update(Image image) {
+    public int update(ImageVO image) {
         return imageMapper.update(image);
     }
 }

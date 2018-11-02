@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.CulturalIntroMapper">
-    <insert id="insert" parameterType="hashmap">
+    <insert id="insert" parameterType="cultural">
         INSERT INTO CULTURAL_FACILITIES_INTRO (
             COT_ID,
             ACCOM_COUNT,
@@ -36,7 +36,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="hashmap">
+    <update id="update" parameterType="cultural">
         UPDATE CULTURAL_FACILITIES_INTRO
         <set>
             <if test="accomcount != null">ACCOM_COUNT = #{accomcount},</if>

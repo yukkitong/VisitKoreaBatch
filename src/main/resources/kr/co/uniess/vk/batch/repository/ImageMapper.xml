@@ -32,7 +32,7 @@
         WHERE COT_ID = COTID(#{cotId})
     </select>
 
-    <insert id="insert" parameterType="Image">
+    <insert id="insert" parameterType="image">
         <selectKey keyProperty="IMG_ID" resultType="string" order="AFTER">
             SELECT IMG_ID FROM IMAGE WHERE COT_ID = COTID(#{contentId}) AND URL = #{url}
         </selectKey>
@@ -53,7 +53,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="Image">
+    <update id="update" parameterType="image">
         UPDATE IMAGE
         <set>
             <if test="originimgurl != null">URL = #{originimgurl},</if>
