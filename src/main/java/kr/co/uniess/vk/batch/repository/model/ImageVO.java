@@ -15,7 +15,7 @@ public class ImageVO {
     private String url;
 
     // `IMAGE` table 에만 존재 하는 컬럼
-    private String imageId;       // create
+    private String imageId;     // create
     private String cotId;       // reference
     private String imagePath;
     private String imageDescription;
@@ -39,6 +39,7 @@ public class ImageVO {
         ImageVO vo = new ImageVO();
         vo.cotId = cotId;
         // TODO
+        vo.url = image.getOriginimgurl();
         return vo;
     }
 }

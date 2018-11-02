@@ -68,16 +68,46 @@ public class KTOController {
 
     @SuppressWarnings("unchecked")
     public void insert(Master master, HashMap<String, Object> data) {
-        logger.info("::INSERT:::" + master);
+        logger.info(":::INSERT:::" + master);
 
         ContentMasterVO content = ContentMasterVO.valueOf((Map<String, Object>) data.get("master"));
-        contentMasterService.insert(content);
+        int count = contentMasterService.insert(content);
+        if (count != 1) {
+            // TODO throw an error
+            return;
+        }
 
         final String cotId = content.getCotId();
         final int contentType = content.getContentType();
 
         // database master
-        databaseMasterService.insert(DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master"))); // TODO data
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master")); // TODO data
+
+        // image
+        ImageVO firstImageVo = null, firstImage2Vo = null;
+        List<Image> imageList = (List<Image>) data.get("image");
+        for (Image image : imageList) {
+            ImageVO imageVo = ImageVO.valueOf(cotId, image);
+            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
+                firstImageVo = imageVo;
+            }
+            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
+                firstImage2Vo = imageVo;
+            }
+            imageService.insert(imageVo);
+        }
+
+        if (firstImageVo == null && imageList != null && imageList.size() > 0) {
+            firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
+        }
+
+        if (firstImage2Vo == null && imageList != null && imageList.size() > 0) {
+            firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+        }
+
+        dataBaseMasterVo.setFirstImage(firstImageVo == null ? null : firstImageVo.getImageId());
+        dataBaseMasterVo.setFirstImage2(firstImage2Vo == null ? null : firstImage2Vo.getImageId());
+        databaseMasterService.insert(dataBaseMasterVo);
 
         // intro
         Map<String, Object> introMap = (Map<String, Object>) data.get("intro");
@@ -136,15 +166,6 @@ public class KTOController {
             }
         }
 
-        // image
-        for (Image image : (List<Image>) data.get("image")) {
-            if (imageService.findOneByCotId(cotId, image.getOriginimgurl()) == null) {
-                imageService.insert(ImageVO.valueOf(cotId, image));
-            } else {
-                imageService.update(ImageVO.valueOf(cotId, image));
-            }
-        }
-
         //  department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(cotId);
@@ -187,7 +208,7 @@ public class KTOController {
 
     @SuppressWarnings("unchecked")
     public void update(Master master, HashMap<String, Object> data) {
-        logger.info("::UPDATE:::" + master);
+        logger.info(":::UPDATE:::" + master);
 
         ContentMasterVO content = ContentMasterVO.valueOf((Map<String, Object>) data.get("master"));
         contentMasterService.update(content);
@@ -196,10 +217,42 @@ public class KTOController {
         final int contentType = content.getContentType();
 
         // database master
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master")); // TODO data
+
+        // image
+        ImageVO firstImageVo = null, firstImage2Vo = null;
+        List<Image> imageList = (List<Image>) data.get("image");
+        for (Image image : imageList) {
+            ImageVO imageVo = ImageVO.valueOf(cotId, image);
+            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
+                firstImageVo = imageVo;
+            }
+            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
+                firstImage2Vo = imageVo;
+            }
+            if (imageService.findOneByCotId(cotId, image.getOriginimgurl()) == null) {
+                imageService.insert(imageVo);
+            } else {
+                imageService.update(ImageVO.valueOf(cotId, image));
+            }
+        }
+
+        if (firstImageVo == null && imageList != null && imageList.size() > 0) {
+            firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
+        }
+
+        if (firstImage2Vo == null && imageList != null && imageList.size() > 0) {
+            firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+        }
+
+        dataBaseMasterVo.setFirstImage(firstImageVo == null ? null : firstImageVo.getImageId());
+        dataBaseMasterVo.setFirstImage2(firstImage2Vo == null ? null : firstImage2Vo.getImageId());
+
+        // database master
         if (databaseMasterService.findOne(cotId) == null) {
-            databaseMasterService.insert(DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master"))); // TODO data
+            databaseMasterService.insert(dataBaseMasterVo);
         } else {
-            databaseMasterService.update(DatabaseMasterVO.valueOf((Map<String, Object>) data.get("master"))); // TODO data
+            databaseMasterService.update(dataBaseMasterVo);
         }
 
         // intro
@@ -250,15 +303,6 @@ public class KTOController {
                 }
         }
 
-        // image
-        for (Image image : (List<Image>) data.get("image")) {
-            if (imageService.findOneByCotId(cotId, image.getOriginimgurl()) == null) {
-                imageService.insert(ImageVO.valueOf(cotId, image));
-            } else {
-                imageService.update(ImageVO.valueOf(cotId, image));
-            }
-        }
-
         // department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(cotId);
@@ -276,7 +320,6 @@ public class KTOController {
         // TODO department 한국관광품질인증
 
         // TODO department 산업관광
-
 
         // TODO tag
         if (master.getCat1().equals("A01") || master.getCat1().equals("A02")) {
