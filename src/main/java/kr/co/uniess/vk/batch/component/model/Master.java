@@ -1,60 +1,55 @@
 package kr.co.uniess.vk.batch.component.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Data;
+public class Master extends ApiData {
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+    @Override
+    public Object put(String key, Object value) {
+        String lowercaseKey = key.toLowerCase();
+        if (!lowercaseKey.equals("contentid")
+                && !lowercaseKey.equals("contenttypeid")
+                && !lowercaseKey.equals("createdtime")
+                && !lowercaseKey.equals("modifiedtime")
+                && !lowercaseKey.equals("readcount")
+                && !lowercaseKey.equals("withtour")
+                && !lowercaseKey.equals("greentour")) {
+            return null;
+        }
+        return super.put(key, value);
+    }
 
-@Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Master {
-    @JsonProperty("contentid")
-    private String contentId;
+    public String getContentId() {
+        return get("contentid").toString();
+    }
 
-    @JsonProperty("contenttypeid")
-    private int contentTypeId;
+    public int getContentTypeId() {
+        return Integer.parseInt(get("contenttypeid").toString());
+    }
 
-    @JsonProperty("createdtime")
-    @JsonDeserialize(using = DateDeserialize.class)
-    private long createdDate;
+    public long getModifiedDate() {
+        return Long.parseLong(get("modifiedtime").toString());
+    }
 
-    @JsonProperty("modifiedtime")
-    @JsonDeserialize(using = DateDeserialize.class)
-    private long modifiedDate;
+    public void setWithTour(boolean withTour) {
+        put("withtour", withTour);
+    }
 
-    @JsonIgnore
-    private boolean isWithTour;
+    public boolean isWithTour() {
+        return (boolean) get("withtour");
+    }
 
-    @JsonIgnore
-    private boolean isGreenTour;
+    public void setGreenTour(boolean greenTour) {
+        put("greentour", greenTour);
+    }
+
+    public boolean isGreenTour() {
+        return (boolean) get("greentour");
+    }
 
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         if (!(o instanceof Master)) return false;
         if (this == o) return true;
-        return contentId == ((Master) o).getContentId()
-                && contentTypeId == ((Master) o).getContentTypeId();
-    }
-
-    public static class DateDeserialize extends JsonDeserializer<Long> {
-        private DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        public Long deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                throws IOException, JsonProcessingException {
-            ObjectCodec codec = jsonParser.getCodec();
-            JsonNode node = codec.readTree(jsonParser);
-            return node.asLong();
-        }
+        return getContentId().equals(((Master) o).getContentId());
     }
 }

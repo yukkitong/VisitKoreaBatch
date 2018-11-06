@@ -15,6 +15,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
@@ -35,7 +37,7 @@ public class CommandLineExecutor implements CommandLineRunner {
 
     private static long start() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -5);
+        calendar.add(Calendar.DATE, -6);
         return Long.parseLong(format.format(calendar.getTime()) + "000000");
     }
 
@@ -95,7 +97,7 @@ public class CommandLineExecutor implements CommandLineRunner {
             result.addAll(greenTourList);
 
             // `result` 리스트에는 정해진 기간동안에 추가되거나 업데이트된 모든 마스터 정보가 포함되어있다.
-            Map<Master, ApiData> aggregationMap = new HashMap<>();
+            List<Map<String, Object>> aggregationList = new ArrayList<>();
             for (Master master : result) {
                 final String contentId = master.getContentId();
                 final int contentTypeId = master.getContentTypeId();
@@ -106,11 +108,9 @@ public class CommandLineExecutor implements CommandLineRunner {
                 Future<ApiData> futureWithTour = threadPool.submit(getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
                 Future<List<ApiData>> futureImageList = threadPool.submit(getKorServiceImageCallable(contentId));
 
-                ApiData item = new ApiData();
+                Map<String, Object> item = new HashMap<>();
                 item.put("master", master);
-                if (futureCommon.get() != null) {
-                    item.put("common", futureCommon.get());
-                }
+                item.put("common", futureCommon.get());
                 if (futureIntro.get() != null) {
                     item.put("intro", futureIntro.get());
                 }
@@ -124,18 +124,20 @@ public class CommandLineExecutor implements CommandLineRunner {
                     item.put("image", futureImageList.get());
                 }
 
-                aggregationMap.put(master, item);
+                aggregationList.add(item);
             }
 
             // `aggregationMap` 에는 정해진 기간동안에 추가되거나 업데이트된 모든 정보가 포함되어있다.
 
             // Write json file
-            ObjectWriter writer = new ObjectMapper().writerWithDefaultPrettyPrinter();
-            // FIXME : Exception
-            // File file = new File(getOutputFolderName() + "/tour-api-result.json");
-            // writer.writeValue(file, aggregationMap.values());
+            File folder = new File(getOutputFolderName());
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
 
-            logger.info(writer.writeValueAsString(aggregationMap.values()));
+            File file = new File(folder, "tour-api-result.json");
+            ObjectWriter writer = new ObjectMapper().writer();
+            writer.writeValue(file, aggregationList);
 
             // TODO for TEST
             // Do process

@@ -12,7 +12,7 @@ public class CourseInfoVO {
 
     private String cotId;
 
-    public static CourseInfoVO valueOf(String cotId, ApiData map) {
+    public static CourseInfoVO valueOf(String cotId, Map<String, Object> map) {
         CourseInfoVO vo = new CourseInfoVO();
         vo.cotId = cotId;
         // TODO

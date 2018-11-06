@@ -1,6 +1,7 @@
 package kr.co.uniess.vk.batch.repository.model;
 
 import kr.co.uniess.vk.batch.component.model.ApiData;
+import kr.co.uniess.vk.batch.component.model.Master;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -36,7 +37,7 @@ public class ContentMasterVO {
         }
     }
 
-    public static ContentMasterVO valueOf(ApiData map) {
+    public static ContentMasterVO valueOf(Master master) {
         ContentMasterVO vo = new ContentMasterVO();
         // TODO
         return vo;

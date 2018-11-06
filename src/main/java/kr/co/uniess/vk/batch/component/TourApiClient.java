@@ -81,6 +81,28 @@ public class TourApiClient {
                     "&MobileApp=" + MOBILE_APP +
                     "&contentId=" + contentId +
                     "&contentTypeId=" + contentTypeId +
+                    "&defaultYN=Y" +
+                    "&firstImageYN=Y" +
+                    "&areacodeYN=Y" +
+                    "&catcodeYN=Y" +
+                    "&addrinfoYN=Y" +
+                    "&mapinfoYN=Y" +
+                    "&overviewYN=Y" +
+                    "&_type=json");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public URL getDetailCommonOverviewURL() {
+        try {
+            return new URL(BASE_URL + "/KorService/detailCommon" +
+                    "?ServiceKey=" + SERVICE_KEY +
+                    "&MobileOS=" + MOBILE_OS +
+                    "&MobileApp=" + MOBILE_APP +
+                    "&contentId=" + contentId +
+                    "&contentTypeId=" + contentTypeId +
                     "&overviewYN=Y" +
                     "&_type=json");
         } catch (MalformedURLException e) {

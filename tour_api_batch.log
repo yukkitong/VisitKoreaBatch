@@ -1,0 +1,12 @@
+2018-11-06 17:37:28.080 INFO  1004 --- [ main ] kr.co.uniess.vk.batch.Main - Starting Main v1.0-SNAPSHOT on jason-RC420-RC520-RC720 with PID 15206 (/home/jason/workspace-3/VistitKoreaBatch/target/VistitKoreaBatch-1.0-SNAPSHOT.jar started by jason in /home/jason/workspace-3/VistitKoreaBatch)
+2018-11-06 17:37:28.087 INFO  1011 --- [ main ] kr.co.uniess.vk.batch.Main - No active profile set, falling back to default profiles: default
+2018-11-06 17:37:28.181 INFO  1105 --- [ main ] o.s.c.a.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@2cfb4a64: startup date [Tue Nov 06 17:37:28 KST 2018]; root of context hierarchy
+2018-11-06 17:37:30.924 INFO  3848 --- [ main ] o.s.j.e.a.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2018-11-06 17:37:30.926 INFO  3850 --- [ main ] o.s.j.e.a.AnnotationMBeanExporter - Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-11-06 17:37:30.933 INFO  3857 --- [ main ] o.s.j.e.a.AnnotationMBeanExporter - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-11-06 17:37:30.965 INFO  3889 --- [ main ] kr.co.uniess.vk.batch.Main - Started Main in 3.407 seconds (JVM running for 4.369)
+2018-11-06 17:37:30.969 INFO  3893 --- [ main ] k.c.u.vk.batch.CommandLineExecutor - START 20181031000000
+2018-11-06 17:37:30.969 INFO  3893 --- [ main ] k.c.u.vk.batch.CommandLineExecutor - END   20181106000000
+2018-11-06 17:37:58.909 INFO  31833 --- [ Thread-2 ] o.s.c.a.AnnotationConfigApplicationContext - Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@2cfb4a64: startup date [Tue Nov 06 17:37:28 KST 2018]; root of context hierarchy
+2018-11-06 17:37:58.919 INFO  31843 --- [ Thread-2 ] o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2018-11-06 17:37:58.920 INFO  31844 --- [ Thread-2 ] o.s.j.e.a.AnnotationMBeanExporter - Unregistering JMX-exposed beans

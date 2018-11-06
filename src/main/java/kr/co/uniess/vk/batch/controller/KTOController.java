@@ -52,24 +52,26 @@ public class KTOController {
     private TagsService tagsService;
 
 
-    public void process(Map<Master, ApiData> data) {
-        if (data == null) return;
+    public void process(List<Map<String, Object>> list) {
+        if (list == null || list.size() == 0) return;
         // Update database base on the results
-        for (Master master : data.keySet()) {
-            final String contentId = master.getContentId();
+        for (Map<String, Object> item : list) {
+            final String contentId = ((Master) item.get("master")).getContentId();
             if (contentMasterService.findOne(contentId) == null) {
-                insert(master, data.get(master));
+                insert(item);
             } else {
-                update(master, data.get(master));
+                update(item);
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void insert(Master master, Map<String, Object> data) {
-        logger.info(":::INSERT:::" + master);
+    public void insert(Map<String, Object> item) {
 
-        ContentMasterVO content = ContentMasterVO.valueOf((ApiData) data.get("master"));
+        logger.info(":::INSERT:::");
+
+        Master master = (Master) item.get("master");
+        ContentMasterVO content = ContentMasterVO.valueOf(master);
         int count = contentMasterService.insert(content);
         if (count != 1) {
             // TODO throw an error
@@ -80,28 +82,30 @@ public class KTOController {
         final int contentType = content.getContentType();
 
         // database master
-        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((ApiData) data.get("master")); // TODO data
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((ApiData) item.get("common")); // TODO data
 
         // image
         ImageVO firstImageVo = null, firstImage2Vo = null;
-        List<ApiData> imageList = (List<ApiData>) data.get("image");
-        for (ApiData image : imageList) {
-            ImageVO imageVo = ImageVO.valueOf(cotId, image);
-            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
-                firstImageVo = imageVo;
+        List<ApiData> imageList = (List<ApiData>) item.get("image");
+        if (imageList != null) {
+            for (ApiData image : imageList) {
+                ImageVO imageVo = ImageVO.valueOf(cotId, image);
+                if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
+                    firstImageVo = imageVo;
+                }
+                if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
+                    firstImage2Vo = imageVo;
+                }
+                imageService.insert(imageVo);
             }
-            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
-                firstImage2Vo = imageVo;
+
+            if (firstImageVo == null && imageList != null && imageList.size() > 0) {
+                firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
             }
-            imageService.insert(imageVo);
-        }
 
-        if (firstImageVo == null && imageList != null && imageList.size() > 0) {
-            firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
-        }
-
-        if (firstImage2Vo == null && imageList != null && imageList.size() > 0) {
-            firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+            if (firstImage2Vo == null && imageList != null && imageList.size() > 0) {
+                firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+            }
         }
 
         dataBaseMasterVo.setFirstImage(firstImageVo == null ? null : firstImageVo.getImageId());
@@ -109,7 +113,7 @@ public class KTOController {
         databaseMasterService.insert(dataBaseMasterVo);
 
         // intro
-        ApiData introMap = (ApiData) data.get("intro");
+        ApiData introMap = (ApiData) item.get("intro");
         switch (contentType) {
             case TYPE_TOURIST:
                 introService.insertTouristIntro(TouristIntroVO.valueOf(cotId, introMap));
@@ -138,28 +142,28 @@ public class KTOController {
         }
 
         // info
-        List<ApiData> infoList = (List<ApiData>) data.get("info");
+        List<ApiData> infoList = (List<ApiData>) item.get("info");
         switch (content.getContentType()) {
             case TYPE_COURSE: {
                 List<CourseInfoVO> list = new ArrayList<>(infoList.size());
-                for (ApiData item : infoList) {
-                    list.add(CourseInfoVO.valueOf(cotId, item));
+                for (ApiData i : infoList) {
+                    list.add(CourseInfoVO.valueOf(cotId, i));
                 }
                 infoService.insertCourseInfoList(list);
                 break;
             }
             case TYPE_ACCOMMODATION: {
                 List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
-                for (ApiData item : infoList) {
-                    list.add(AccommodationInfoVO.valueOf(cotId, item));
+                for (ApiData i : infoList) {
+                    list.add(AccommodationInfoVO.valueOf(cotId, i));
                 }
                 infoService.insertAccommodationInfoList(list);
                 break;
             }
             default: {
                 List<DetailInfoVO> list = new ArrayList<>(infoList.size());
-                for (ApiData item : infoList) {
-                    list.add(DetailInfoVO.valueOf(cotId, item));
+                for (ApiData i : infoList) {
+                    list.add(DetailInfoVO.valueOf(cotId, i));
                 }
                 infoService.insertDetailInfoList(list);
             }
@@ -168,7 +172,7 @@ public class KTOController {
         //  department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(cotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (ApiData) data.get("withtour")));
+            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (ApiData) item.get("withtour")));
 
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
             departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
@@ -206,42 +210,45 @@ public class KTOController {
     }
 
     @SuppressWarnings("unchecked")
-    public void update(Master master, ApiData data) {
-        logger.info(":::UPDATE:::" + master);
+    public void update(Map<String, Object> item) {
+        logger.info(":::UPDATE:::");
 
-        ContentMasterVO content = ContentMasterVO.valueOf((ApiData) data.get("master"));
+        Master master = (Master) item.get("master");
+        ContentMasterVO content = ContentMasterVO.valueOf(master);
         contentMasterService.update(content);
 
         final String cotId = content.getCotId();
         final int contentType = content.getContentType();
 
         // database master
-        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((ApiData) data.get("master")); // TODO data
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf((ApiData) item.get("common")); // TODO data
 
         // image
         ImageVO firstImageVo = null, firstImage2Vo = null;
-        List<ApiData> imageList = (List<ApiData>) data.get("image");
-        for (ApiData image : imageList) {
-            ImageVO imageVo = ImageVO.valueOf(cotId, image);
-            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
-                firstImageVo = imageVo;
+        List<ApiData> imageList = (List<ApiData>) item.get("image");
+        if (imageList != null) {
+            for (ApiData image : imageList) {
+                ImageVO imageVo = ImageVO.valueOf(cotId, image);
+                if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage())) {
+                    firstImageVo = imageVo;
+                }
+                if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
+                    firstImage2Vo = imageVo;
+                }
+                if (imageService.findOneByCotId(cotId, imageVo.getUrl()) == null) {
+                    imageService.insert(imageVo);
+                } else {
+                    imageService.update(imageVo);
+                }
             }
-            if (imageVo.getUrl().equals(dataBaseMasterVo.getFirstImage2())) {
-                firstImage2Vo = imageVo;
-            }
-            if (imageService.findOneByCotId(cotId, imageVo.getUrl()) == null) {
-                imageService.insert(imageVo);
-            } else {
-                imageService.update(imageVo);
-            }
-        }
 
-        if (firstImageVo == null && imageList != null && imageList.size() > 0) {
-            firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
-        }
+            if (firstImageVo == null && imageList.size() > 0) {
+                firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
+            }
 
-        if (firstImage2Vo == null && imageList != null && imageList.size() > 0) {
-            firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+            if (firstImage2Vo == null && imageList.size() > 0) {
+                firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+            }
         }
 
         dataBaseMasterVo.setFirstImage(firstImageVo == null ? null : firstImageVo.getImageId());
@@ -255,7 +262,7 @@ public class KTOController {
         }
 
         // intro
-        ApiData introMap = (ApiData) data.get("intro");
+        ApiData introMap = (ApiData) item.get("intro");
         switch (contentType) {
             case TYPE_TOURIST:
                 introService.updateTouristIntro(TouristIntroVO.valueOf(cotId, introMap));
@@ -284,28 +291,28 @@ public class KTOController {
         }
 
         // info
-        List<ApiData> infoList = (List<ApiData>) data.get("info");
+        List<ApiData> infoList = (List<ApiData>) item.get("info");
         switch (contentType) {
             case TYPE_COURSE:
-                for (ApiData item : infoList) {
-                    infoService.updateCourseInfo(CourseInfoVO.valueOf(cotId, item));
+                for (ApiData i : infoList) {
+                    infoService.updateCourseInfo(CourseInfoVO.valueOf(cotId, i));
                 }
                 break;
             case TYPE_ACCOMMODATION:
-                for (ApiData item : infoList) {
-                    infoService.updateAccommodationInfo(AccommodationInfoVO.valueOf(cotId, item));
+                for (ApiData i : infoList) {
+                    infoService.updateAccommodationInfo(AccommodationInfoVO.valueOf(cotId, i));
                 }
                 break;
             default:
-                for (ApiData item : infoList) {
-                    infoService.updateDetailInfo(DetailInfoVO.valueOf(cotId, item));
+                for (ApiData i : infoList) {
+                    infoService.updateDetailInfo(DetailInfoVO.valueOf(cotId, i));
                 }
         }
 
         // department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(cotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (ApiData) data.get("withtour")));
+            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (ApiData) item.get("withtour")));
 
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
             departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
