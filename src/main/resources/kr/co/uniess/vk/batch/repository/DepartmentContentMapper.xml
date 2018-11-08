@@ -7,13 +7,13 @@
           FROM OTHER_DEPARTMENT_SERVICE S
                INNER JOIN OTHER_DEPARTMENT_CONTENT C
                        ON S.OTD_ID = C.OTD_ID
-         WHERE C.COT_ID = #{cotId}
+         WHERE C.COT_ID = #{cotid}
          ORDER BY S.TITLE ASC
     </select>
 
     <insert id="insert" parameterType="department">
         INSERT INTO OTHER_DEPARTMENT_CONTENT (COT_ID, OTD_ID)
-        VALUES (#{cotId}, #{otdId})
+        VALUES (#{cotid}, #{otdid})
     </insert>
 
     <!-- update X 삭제후 추가로 ...  -->
@@ -22,6 +22,6 @@
 
     <!-- TODO 로직 생성하면서 재고해봐야 -->
     <delete id="delete" parameterType="department">
-        DELETE FROM OTHER_DEPARTMENT_CONTENT WHERE COT_ID = #{cotId} AND OTD_ID = #{otdId}
+        DELETE FROM OTHER_DEPARTMENT_CONTENT WHERE COT_ID = #{cotid} AND OTD_ID = #{otdid}
     </delete>
 </mapper>

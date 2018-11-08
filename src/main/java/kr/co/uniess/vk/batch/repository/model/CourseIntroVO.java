@@ -8,11 +8,21 @@ import java.util.Map;
 @Data
 @Alias("course")
 public class CourseIntroVO {
-    private String cotId;
-    public static CourseIntroVO valueOf(String cotId, Map<String, Object> map) {
+    private String cotid;
+    private String distance;
+    private String taketime;
+    private String contactinfo;
+    private String schedule;
+    private String theme;
+
+    public static CourseIntroVO valueOf(String cotId, Map<String, Object> item) {
         CourseIntroVO vo = new CourseIntroVO();
-        vo.cotId = cotId;
-        // TODO
+        vo.cotid = cotId;
+        vo.distance = Utils.valueString(item, "distance");
+        vo.taketime = Utils.valueString(item, "taketime");
+        vo.contactinfo = Utils.valueString(item, "contactinfo");
+        vo.schedule = Utils.valueString(item, "schedule");
+        vo.theme = Utils.valueString(item, "theme");
         return vo;
     }
 }

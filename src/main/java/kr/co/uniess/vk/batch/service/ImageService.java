@@ -13,30 +13,36 @@ public class ImageService {
     @Autowired
     private ImageMapper imageMapper;
 
-    public String findOneByCotId(String cotId, String url) {
-        return imageMapper.findOneByCotId(cotId, url);
+    public String findOneByCotId(String cotid, String url) {
+        return imageMapper.findOneByCotId(cotid, url);
     }
 
-    public List<ImageVO> findAllByCotId(String cotId) {
-        return imageMapper.findAllByCotId(cotId);
+    public List<ImageVO> findAllByCotId(String cotid) {
+        return imageMapper.findAllByCotId(cotid);
     }
 
-    public String findOneByContentId(String contentId, String url) {
-        return imageMapper.findOneByContentId(contentId, url);
+    public String findOneByContentId(String contentid, String url) {
+        return imageMapper.findOneByContentId(contentid, url);
     }
 
-    public List<ImageVO> findAllByContentId(String contentId) {
-        return imageMapper.findAllByContentId(contentId);
+    public List<ImageVO> findAllByContentId(String contentid) {
+        return imageMapper.findAllByContentId(contentid);
     }
 
-    public String insert(ImageVO image) {
-        if (image.getImageId() == null) {
+    public int insert(ImageVO image) {
+        if (image.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
+        if (image.getImageid() == null) {
             image.createAndSetImageId();
         }
         return imageMapper.insert(image);
     }
 
     public int update(ImageVO image) {
+        if (image.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return imageMapper.update(image);
     }
 }

@@ -31,16 +31,72 @@
             ROOM_COOK,
             ROOM_TABLE,
             ROOM_HAIRDRYER,
-            ROOM_SIZE2,
-            ROOM_IMG1,
-            ROOM_IMG2,
-            ROOM_IMG3,
-            ROOM_IMG4,
-            ROOM_IMG5
+            ROOM_SIZE2
+        ) VALUES
+        (
+            #{cotid},
+            #{roomcode},
+            #{roomtitle},
+            #{roomsize1},
+            #{roomcount},
+            #{roombasecount},
+            #{roommaxcount},
+            #{roomoffseasonminfee1},
+            #{roomoffseasonminfee2},
+            #{roompeakseasonminfee1},
+            #{roompeakseasonminfee2},
+            #{roomintro},
+            #{roombathfacility},
+            #{roombath},
+            #{roomhometheater},
+            #{roomairconditioner},
+            #{roomtv},
+            #{roompc},
+            #{roomcable},
+            #{roominternet},
+            #{roomrefrigerator},
+            #{roomtoiletries},
+            #{roomsofa},
+            #{roomcook},
+            #{roomtable},
+            #{roomhairdryer},
+            #{roomsize2}
+        )
+    </insert>
+
+    <insert id="insertList" parameterType="arraylist">
+        INSERT INTO ACCOMMODATION_INFO (
+            COT_ID,
+            ROOM_CODE,
+            ROOM_TITLE,
+            ROOM_SIZE1,
+            ROOM_COUNT,
+            ROOM_BASE_COUNT,
+            ROOM_MAX_COUNT,
+            ROOM_OFF_SEASON_MIN_FEE1,
+            ROOM_OFF_SEASON_MIN_FEE2,
+            ROOM_PEAK_SEASON_MIN_FEE1,
+            ROOM_PEAK_SEASON_MIN_FEE2,
+            ROOM_INTRO,
+            ROOM_BATH_FACILITY,
+            ROOM_BATH,
+            ROOM_HOME_THEATER,
+            ROOM_AIR_CONDITIONER,
+            ROOM_TV,
+            ROOM_PC,
+            ROOM_CABLE,
+            ROOM_INTERNET,
+            ROOM_REFRIGERATOR,
+            ROOM_TOILETRIES,
+            ROOM_SOFA,
+            ROOM_COOK,
+            ROOM_TABLE,
+            ROOM_HAIRDRYER,
+            ROOM_SIZE2
         ) VALUES
         <foreach item="item" collection="list" separator=",">
             (
-                #{item.cotId},
+                #{item.cotid},
                 #{item.roomcode},
                 #{item.roomtitle},
                 #{item.roomsize1},
@@ -66,12 +122,7 @@
                 #{item.roomcook},
                 #{item.roomtable},
                 #{item.roomhairdryer},
-                #{item.roomsize2},
-                #{item.roomimg1},
-                #{item.roomimg2},
-                #{item.roomimg3},
-                #{item.roomimg4},
-                #{item.roomimg5}
+                #{item.roomsize2}
             )
         </foreach>
     </insert>
@@ -111,10 +162,10 @@
             <if test="roomimg4 != null">ROOM_IMG4 = #{roomimg4},</if>
             <if test="roomimg5 != null">ROOM_IMG5 = #{roomimg5}</if>
         </set>
-         WHERE COT_ID = #{cotId}
+         WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM ACCOMMODATION_INFO WHERE COT_ID = #{cotId}
+        DELETE FROM ACCOMMODATION_INFO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

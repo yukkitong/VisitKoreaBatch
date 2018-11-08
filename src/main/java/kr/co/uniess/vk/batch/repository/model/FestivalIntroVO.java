@@ -1,6 +1,5 @@
 package kr.co.uniess.vk.batch.repository.model;
 
-import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -9,31 +8,49 @@ import java.util.Map;
 @Data
 @Alias("festival")
 public class  FestivalIntroVO {
-     private String cotId;
+     private String cotid;
      private String scale;
-     private String spendTime;
-     private String ageLimit;
-     private String bookingPlace;
-     private String discountInfo;
-     private String eventEndDate;
-     private String eventHomepage;
-     private String eventPlace;
-     private String eventStartDate;
-     private String festivalGrade;
-     private String placeInfo;
-     private String playTime;
+     private String spendtime;
+     private String agelimit;
+     private String bookingplace;
+     private String discountinfo;
+     private String eventenddate;
+     private String eventhomepage;
+     private String eventplace;
+     private String eventstartdate;
+     private String festivalgrade;
+     private String placeinfo;
+     private String playtime;
      private String program;
      private String sponsor1;
-     private String sponsor1Tel;
+     private String sponsor1tel;
      private String sponsor2;
-     private String sponsor2Tel;
-     private String subEvent;
-     private String useFee;
+     private String sponsor2tel;
+     private String subevent;
+     private String usefee;
 
-    public static FestivalIntroVO valueOf(String cotId, ApiData map) {
+    public static FestivalIntroVO valueOf(String cotId, Map<String, Object> item) {
         FestivalIntroVO vo = new FestivalIntroVO();
-        vo.cotId = cotId;
-        // TODO
+        vo.cotid = cotId;
+        vo.scale = Utils.valueString(item, "scale");
+        vo.spendtime = Utils.valueString(item, "spendtime");
+        vo.agelimit = Utils.valueString(item, "agelimit");
+        vo.bookingplace = Utils.valueString(item, "bookingplace");
+        vo.discountinfo = Utils.valueString(item, "discountinfo");
+        vo.eventenddate = Utils.valueString(item, "eventenddate");
+        vo.eventhomepage = Utils.valueString(item, "eventhomepage");
+        vo.eventplace = Utils.valueString(item, "eventplace");
+        vo.eventstartdate = Utils.valueString(item, "eventstartdate");
+        vo.festivalgrade = Utils.valueString(item, "festivalgrade");
+        vo.placeinfo = Utils.valueString(item, "placeinfo");
+        vo.playtime = Utils.valueString(item, "playtime");
+        vo.program = Utils.valueString(item, "program");
+        vo.sponsor1 = Utils.valueString(item, "sponsor1");
+        vo.sponsor1tel = Utils.valueString(item, "sponsor1tel");
+        vo.sponsor2 = Utils.valueString(item, "sponsor2");
+        vo.sponsor2tel = Utils.valueString(item, "sponsor2tel");
+        vo.subevent = Utils.valueString(item, "subevent");
+        vo.usefee = Utils.valueString(item, "usefee");
         return vo;
     }
 }

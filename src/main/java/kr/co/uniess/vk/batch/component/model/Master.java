@@ -1,6 +1,17 @@
 package kr.co.uniess.vk.batch.component.model;
 
-public class Master extends ApiData {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Master extends HashMap<String, Object> {
+
+    public static Master wrap(Map<String, Object> map) {
+        Master master = new Master();
+        for (String key : map.keySet()) {
+            master.put(key, map.get(key));
+        }
+        return master;
+    }
 
     @Override
     public Object put(String key, Object value) {
@@ -25,6 +36,10 @@ public class Master extends ApiData {
         return Integer.parseInt(get("contenttypeid").toString());
     }
 
+    public int getReadCount() {
+        return get("readcount") != null ? (int) get("readcount") : 0;
+    }
+
     public long getModifiedDate() {
         return Long.parseLong(get("modifiedtime").toString());
     }
@@ -34,7 +49,7 @@ public class Master extends ApiData {
     }
 
     public boolean isWithTour() {
-        return (boolean) get("withtour");
+        return get("withtour") != null && (boolean) get("withtour");
     }
 
     public void setGreenTour(boolean greenTour) {
@@ -42,7 +57,7 @@ public class Master extends ApiData {
     }
 
     public boolean isGreenTour() {
-        return (boolean) get("greentour");
+        return get("greentour") != null && (boolean) get("greentour");
     }
 
     @Override

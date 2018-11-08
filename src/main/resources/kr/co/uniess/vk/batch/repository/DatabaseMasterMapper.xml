@@ -37,8 +37,6 @@
             COT_ID,
             HOMEPAGE,
             OVER_VIEW,
-            FIRST_IMAGE,
-            FIRST_IMAGE2,
             ZIP_CODE,
             AREA_CODE,
             SIGUGUN_CODE,
@@ -60,11 +58,9 @@
             ADMIN_EMAIL,
             SET_STATUS
         ) VALUES (
-            #{cotId},
+            #{cotid},
             #{homepage},
-            #{overview}
-            #{firstimage},
-            #{firstimage2},
+            #{overview},
             #{zipcode},
             #{areacode},
             #{siguguncode},
@@ -93,29 +89,29 @@
         <set>
             <if test="homepage != null">HOMEPAGE = #{homepage},</if>
             <if test="overview != null">OVER_VIEW = #{overview},</if>
-            <if test="firstImage != null">FIRST_IMAGE = #{firstimage},</if>
-            <if test="firstImage2 != null">FIRST_IMAGE2 = #{firstimage2},</if>
-            <if test="zipCode != null">ZIP_CODE = #{zipcode},</if>
-            <if test="areaCode != null">AREA_CODE = #{areacode},</if>
-            <if test="sigugunCode != null">SIGUGUN_CODE = #{siguguncode},</if>
-            <if test="dongCode != null">DONG_CODE = #{dongcode},</if>
+            <if test="firstimage != null">FIRST_IMAGE = #{firstimage},</if>
+            <if test="firstimage2 != null">FIRST_IMAGE2 = #{firstimage2},</if>
+            <if test="zipcode != null">ZIP_CODE = #{zipcode},</if>
+            <if test="areacode != null">AREA_CODE = #{areacode},</if>
+            <if test="siguguncode != null">SIGUGUN_CODE = #{siguguncode},</if>
+            <if test="dongcode != null">DONG_CODE = #{dongcode},</if>
             <if test="cat1 != null">CAT1 = #{cat1},</if>
             <if test="cat2 != null">CAT2 = #{cat2},</if>
             <if test="cat3 != null">CAT3 = #{cat3},</if>
             <if test="addr1 != null">ADDR1 = #{addr1},</if>
             <if test="addr2 != null">ADDR2 = #{addr2},</if>
-            <if test="mapX != null">MAPX = #{mapx},</if>
-            <if test="mapY != null">MAPY = #{mapy},</if>
-            <if test="wgsX != null">WGSX = #{wgsx},</if>
-            <if test="wgsY != null">WGSY = #{wgsy},</if>
-            <if test="mLevel != null">MLEVEL = #{mlevel},</if>
-            <if test="bookTour != null">BOOK_TOUR = #{booktour},</if>
-            <if test="adminName != null">ADMIN_NAME = #{adminname},</if>
-            <if test="adminTel != null">ADMIN_TEL = #{admintel},</if>
-            <if test="adminFax != null">ADMIN_FAX = #{adminfax},</if>
-            <if test="adminEmail != null">ADMIN_EMAIL = #{adminemail},</if>
-            <if test="setStatus != null">SET_STATU = #{setstatus}</if>
+            <if test="mapx != null">MAPX = #{mapx},</if>
+            <if test="mapy != null">MAPY = #{mapy},</if>
+            <if test="wgsx != null">WGSX = #{wgsx},</if>
+            <if test="wgsy != null">WGSY = #{wgsy},</if>
+            <if test="mlevel != null">MLEVEL = #{mlevel},</if>
+            <if test="booktour != null">BOOK_TOUR = #{booktour},</if>
+            <if test="adminname != null">ADMIN_NAME = #{adminname},</if>
+            <if test="admintel != null">ADMIN_TEL = #{admintel},</if>
+            <if test="adminfax != null">ADMIN_FAX = #{adminfax},</if>
+            <if test="adminemail != null">ADMIN_EMAIL = #{adminemail},</if>
+            <if test="setstatus != null">SET_STATU = #{setstatus}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 </mapper>

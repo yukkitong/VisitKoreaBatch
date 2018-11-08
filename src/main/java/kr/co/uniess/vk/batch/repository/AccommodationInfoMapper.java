@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface AccommodationInfoMapper {
     int insertList(List<AccommodationInfoVO> list);
+    int insert(AccommodationInfoVO item);
     int update(AccommodationInfoVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }

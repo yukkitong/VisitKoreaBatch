@@ -1,6 +1,5 @@
 package kr.co.uniess.vk.batch.repository.model;
 
-import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -48,14 +47,14 @@ public class DetailWithTourVO extends DetailInfoVO {
         MAPPING_TABLE = Collections.unmodifiableMap(map);
     }
 
-    public static DetailWithTourVO valueOf(String cotId, ApiData map) {
+    public static DetailWithTourVO valueOf(String cotId, Map<String, Object> map) {
         DetailWithTourVO vo = new DetailWithTourVO();
-        vo.setCotId(cotId);
-        vo.setFldGubun(25);
+        vo.setCotid(cotId);
+        vo.setFldgubun(25);
         for (String key : map.keySet()) {
             if (map.containsKey(key)) {
-                vo.setDisplayTitle(MAPPING_TABLE.get(key));
-                vo.setContentBody(map.get(key).toString());
+                vo.setDisplaytitle(MAPPING_TABLE.get(key));
+                vo.setContentbody(map.get(key).toString());
             }
         }
         return vo;

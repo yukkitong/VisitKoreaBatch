@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface DatabaseMasterMapper {
-    DatabaseMasterVO findOne(String cotId);
+    DatabaseMasterVO findOne(String cotid);
     int insert(DatabaseMasterVO item);
     int update(DatabaseMasterVO item);
 }

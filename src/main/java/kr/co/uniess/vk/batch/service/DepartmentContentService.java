@@ -14,15 +14,21 @@ public class DepartmentContentService {
     private DepartmentContentMapper departmentContentMapper;
 
 
-    List<DepartmentContentVO> findAllByCotId(String cotId) {
-        return departmentContentMapper.findAllByCotId(cotId);
+    List<DepartmentContentVO> findAllByCotId(String cotid) {
+        return departmentContentMapper.findAllByCotId(cotid);
     }
 
     public int insert(DepartmentContentVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return departmentContentMapper.insert(item);
     }
 
     int update(DepartmentContentVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return departmentContentMapper.update(item);
     }
 }

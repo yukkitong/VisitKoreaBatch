@@ -11,7 +11,7 @@
             SCHEDULE,
             THEME
         ) VALUES (
-            #{cotId},
+            #{cotid},
             #{distance},
             #{taketime},
             #{contactinfo},
@@ -29,10 +29,10 @@
             <if test="schedule != null">SCHEDULE = #{schedule}</if>
             <if test="theme != null">THEME = #{theme}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM COURSE_INTRO WHERE COT_ID = #{cotId}
+        DELETE FROM COURSE_INTRO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

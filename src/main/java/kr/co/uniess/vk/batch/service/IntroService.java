@@ -36,10 +36,12 @@ public class IntroService {
 
 
     public int insertTouristIntro(TouristIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return touristIntroMapper.insert(item);
     }
 
     public int updateTouristIntro(TouristIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return touristIntroMapper.update(item);
     }
 
@@ -48,10 +50,12 @@ public class IntroService {
     }
 
     public int insertCulturalIntro(CulturalIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return culturalIntroMapper.insert(item);
     }
 
     public int updateCulturalIntro(CulturalIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return culturalIntroMapper.update(item);
     }
 
@@ -60,10 +64,12 @@ public class IntroService {
     }
 
     public int insertFestivalIntro(FestivalIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return festivalIntroMapper.insert(item);
     }
 
     public int updateFestivalIntro(FestivalIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return festivalIntroMapper.update(item);
     }
 
@@ -72,10 +78,12 @@ public class IntroService {
     }
 
     public int insertCourseIntro(CourseIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return courseIntroMapper.insert(item);
     }
 
     public int updateCourseIntro(CourseIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return courseIntroMapper.update(item);
     }
 
@@ -84,10 +92,12 @@ public class IntroService {
     }
 
     public int insertLeportsIntro(LeportsIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return leportsIntroMapper.insert(item);
     }
 
     public int updateLeportsIntro(LeportsIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return leportsIntroMapper.update(item);
     }
 
@@ -96,10 +106,12 @@ public class IntroService {
     }
 
     public int insertAccommodationIntro(AccommodationIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return accommodationIntroMapper.insert(item);
     }
 
     public int updateAccommodationIntro(AccommodationIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return accommodationIntroMapper.update(item);
     }
 
@@ -108,10 +120,12 @@ public class IntroService {
     }
 
     public int insertShoppingIntro(ShoppingIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return shoppingIntroMapper.insert(item);
     }
 
     public int updateShoppingIntro(ShoppingIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return shoppingIntroMapper.update(item);
     }
 
@@ -120,10 +134,12 @@ public class IntroService {
     }
 
     public int insertEateryIntro(EateryIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return eateryIntroMapper.insert(item);
     }
 
     public int updateEateryIntro(EateryIntroVO item) {
+        if (item.getCotid() == null) throw new IllegalArgumentException("`COT_ID` must not be null.");
         return eateryIntroMapper.update(item);
     }
 

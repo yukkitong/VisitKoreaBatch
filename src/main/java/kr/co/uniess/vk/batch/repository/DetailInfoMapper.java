@@ -10,6 +10,6 @@ public interface DetailInfoMapper {
     int insertList(List<DetailInfoVO> list);
     int insert(DetailInfoVO item);
     int update(DetailInfoVO item);
-    int delete(String cotId);
-    int deleteWithTour(String cotId);
+    int delete(String cotid);
+    int deleteWithTour(String cotid);
 }

@@ -34,7 +34,7 @@
             SEMINAR,
             SPORTS
         ) VALUES (
-            #{cotId},
+            #{cotid},
             #{accomcount},
             #{benikia},
             #{checkintime},
@@ -98,10 +98,10 @@
             <if test="seminar != null">SEMINAR = #{seminar},</if>
             <if test="sports != null">SPORTS = #{sports}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM ACCOMMODATION_INTRO WHERE COT_ID = #{cotId}
+        DELETE FROM ACCOMMODATION_INTRO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

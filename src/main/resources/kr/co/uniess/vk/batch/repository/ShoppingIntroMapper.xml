@@ -21,7 +21,7 @@
             SCALE,
             SHOP_GUIDE
         ) VALUES (
-            #{cotId},
+            #{cotid},
             #{chkbabycarriage},
             #{chkcreditcard},
             #{chkpet},
@@ -59,10 +59,10 @@
             <if test="scale != null">SCALE = #{scale},</if>
             <if test="shopguide != null">SHOP_GUIDE = #{shopguide}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM SHOPPING_INTRO WHERE COT_ID = #{cotId}
+        DELETE FROM SHOPPING_INTRO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

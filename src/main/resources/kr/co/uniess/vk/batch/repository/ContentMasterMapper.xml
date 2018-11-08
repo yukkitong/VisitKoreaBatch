@@ -11,9 +11,9 @@
     </select>
 
     <insert id="insert" parameterType="content">
-        <selectKey keyProperty="createDate" resultType="date" order="BEFORE">
-            SELECT NOW()
-        </selectKey>
+        <!--<selectKey keyProperty="createdate" resultType="date" order="BEFORE">-->
+            <!--SELECT NOW()-->
+        <!--</selectKey>-->
         INSERT INTO CONTENT_MASTER (
             COT_ID,
             CONTENT_ID,
@@ -30,42 +30,42 @@
             CREATE_DATE,
             MODIFIED_DATE
         ) VALUES (
-            #{cotId},
-            #{contentId},
-            #{contentTypeId},
-            #{contentStatus},
+            #{cotid},
+            #{contentid},
+            #{contenttypeid},
+            #{contentstatus},
             #{title},
-            #{displayTitle},
-            #{readCount},
-            #{showFlag},
-            #{createUsrId},
+            #{displaytitle},
+            #{readcount},
+            #{showflag},
+            #{createusrid},
             #{dept},
-            #{deptView},
+            #{deptview},
             #{tel},
-            #{createDate},
-            #{createDate}
+            NOW(),
+            NOW()
         )
     </insert>
 
     <update id="update" parameterType="content">
-        <selectKey keyProperty="modifiedDate" resultType="date" order="BEFORE">
-            SELECT NOW()
-        </selectKey>
+        <!--<selectKey keyProperty="modifieddate" resultType="date" order="BEFORE">-->
+            <!--SELECT NOW()-->
+        <!--</selectKey>-->
         UPDATE CONTENT_MASTER
         <set>
-            <if test="cotId != null">COT_ID = #{cotId},</if>
-            <if test="contentTypeId != null">CONTENT_TYPE = #{contentTypeId},</if>
-            <if test="contentStatus != null">CONTENT_STATUS = #{contentStatus},</if>
+            <if test="cotid != null">COT_ID = #{cotid},</if>
+            <if test="contenttypeid != null">CONTENT_TYPE = #{contenttypeid},</if>
+            <if test="contentstatus != null">CONTENT_STATUS = #{contentstatus},</if>
             <if test="title != null">TITLE = #{title},</if>
-            <if test="displayTitle != null">DISPLAY_TITLE = #{displayTitle},</if>
-            <if test="readCount != null">READ_COUNT = #{readCount},</if>
-            <if test="showFlag != null">SHOW_FLAG = #{showFlag},</if>
-            <if test="createUsrId != null">CREATE_USR_ID = #{createUsrId},</if>
+            <if test="displaytitle != null">DISPLAY_TITLE = #{displaytitle},</if>
+            <if test="readcount != null">READ_COUNT = #{readcount},</if>
+            <if test="showflag != null">SHOW_FLAG = #{showflag},</if>
+            <if test="createusrid != null">CREATE_USR_ID = #{createusrid},</if>
             <if test="dept != null">DEPT = #{dept},</if>
-            <if test="deptView != null">DEPT_VIEW = #{deptView},</if>
+            <if test="deptview != null">DEPT_VIEW = #{deptview},</if>
             <if test="tel != null">TEL = #{tel},</if>
-            MODIFIED_DATE = #{modifiedDate}
+            MODIFIED_DATE = NOW()
         </set>
-         WHERE CONTENT_ID = #{contentId}
+         WHERE CONTENT_ID = #{contentid}
     </update>
 </mapper>

@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TouristIntroMapper {
     int insert(TouristIntroVO item);
     int update(TouristIntroVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }

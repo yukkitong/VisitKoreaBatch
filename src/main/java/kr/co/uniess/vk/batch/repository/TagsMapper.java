@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TagsMapper {
     int insert(TagsVO item);
     int update(TagsVO item);
-    int delete(String tagId);
+    int delete(String tagid);
 }

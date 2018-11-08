@@ -14,11 +14,11 @@
         ) VALUES
         <foreach item="item" collection="list" separator=",">
             (
-                #{item.cotId},
-                #{item.fldGubun},
-                #{item.displayTitle},
-                #{item.contentBody},
-                #{item.serialNum}
+                #{item.cotid},
+                #{item.fldgubun},
+                #{item.displaytitle},
+                #{item.contentbody},
+                #{item.serialnum}
             )
         </foreach>
     </insert>
@@ -32,30 +32,30 @@
             CONTENT_BODY,
             SERIAL_NUM
         ) VALUES (
-            #{cotId},
-            #{fldGubun},
-            #{displayTitle},
-            #{contentBody},
-            #{serialNum}
+            #{cotid},
+            #{fldgubun},
+            #{displaytitle},
+            #{contentbody},
+            #{serialnum}
         )
     </insert>
 
     <update id="update" parameterType="detail_info">
         UPDATE DETAIL_INFO
         <set>
-            <if test="fldgubun != null">FLD_GUBUN = #{fldGubun},</if>
-            <if test="displaytitle != null">DISPLAY_TITLE = #{displayTitle},</if>
-            <if test="contentbody != null">CONTENT_BODY = #{contentBody},</if>
-            <if test="serialnum != null">SERIAL_NUM = #{serialNum}</if>
+            <if test="fldgubun != null">FLD_GUBUN = #{fldgubun},</if>
+            <if test="displaytitle != null">DISPLAY_TITLE = #{displaytitle},</if>
+            <if test="contentbody != null">CONTENT_BODY = #{contentbody},</if>
+            <if test="serialnum != null">SERIAL_NUM = #{serialnum}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM DETAIL_INFO WHERE COT_ID = #{cotId}
+        DELETE FROM DETAIL_INFO WHERE COT_ID = #{cotid}
     </delete>
 
     <delete id="deleteWithTour" parameterType="string">
-        DELETE FROM DETAIL_INFO WHERE FLD_GUBUN = 5 AND COT_ID = #{cotId}
+        DELETE FROM DETAIL_INFO WHERE FLD_GUBUN = 5 AND COT_ID = #{cotid}
     </delete>
 </mapper>

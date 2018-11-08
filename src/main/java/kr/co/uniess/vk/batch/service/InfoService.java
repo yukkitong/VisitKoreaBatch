@@ -25,47 +25,88 @@ public class InfoService {
     private DetailInfoMapper detailInfoMapper;
 
     public int insertAccommodationInfoList(List<AccommodationInfoVO> list) {
+        for (AccommodationInfoVO item : list) {
+            if (item.getCotid() == null) {
+                throw new IllegalArgumentException("`COT_ID` must not be null.");
+            }
+        }
         return accommodationInfoMapper.insertList(list);
     }
 
+    public int insertAccommodationInfo(AccommodationInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
+        return accommodationInfoMapper.insert(item);
+    }
+
     public int updateAccommodationInfo(AccommodationInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return accommodationInfoMapper.update(item);
     }
 
-    public int deleteAccommodationInfo(String cotId) {
-        return detailInfoMapper.delete(cotId);
+    public int deleteAccommodationInfo(String cotid) {
+        return detailInfoMapper.delete(cotid);
     }
 
     public int insertCourseInfoList(List<CourseInfoVO> list) {
+        for (CourseInfoVO item : list) {
+            if (item.getCotid() == null) {
+                throw new IllegalArgumentException("`COT_ID` must not be null.");
+            }
+        }
         return courseInfoMapper.insertList(list);
     }
 
+    public int insertCourseInfo(CourseInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
+        return courseInfoMapper.insert(item);
+    }
+
     public int updateCourseInfo(CourseInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return courseInfoMapper.update(item);
     }
 
-    public int deleteCourseInfo(String cotId) {
-        return detailInfoMapper.delete(cotId);
+    public int deleteCourseInfo(String cotid) {
+        return detailInfoMapper.delete(cotid);
     }
 
     public int insertDetailInfoList(List<DetailInfoVO> list) {
+        for (DetailInfoVO item : list) {
+            if (item.getCotid() == null) {
+                throw new IllegalArgumentException("`COT_ID` must not be null.");
+            }
+        }
         return detailInfoMapper.insertList(list);
     }
 
     public int insertDetailInfo(DetailInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return detailInfoMapper.insert(item);
     }
 
     public int updateDetailInfo(DetailInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return detailInfoMapper.update(item);
     }
 
-    public int deleteDetailInfo(String cotId) {
-        return detailInfoMapper.delete(cotId);
+    public int deleteDetailInfo(String cotid) {
+        return detailInfoMapper.delete(cotid);
     }
 
-    public int deleteDetailInfoWithTour(String cotId) {
-        return detailInfoMapper.deleteWithTour(cotId);
+    public int deleteDetailInfoWithTour(String cotid) {
+        return detailInfoMapper.deleteWithTour(cotid);
     }
 }
 

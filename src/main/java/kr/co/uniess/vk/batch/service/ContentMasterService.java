@@ -15,18 +15,21 @@ public class ContentMasterService {
         return contentMasterMapper.getTotalCount();
     }
 
-    public String findOne(String contentId) {
-        return contentMasterMapper.findOne(contentId);
+    public String findOne(String contentid) {
+        return contentMasterMapper.findOne(contentid);
     }
 
     public int insert(ContentMasterVO item) {
-        if (item.getCotId() == null) {
-            item.createAndSetCotId();
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
         }
         return contentMasterMapper.insert(item);
     }
 
     public int update(ContentMasterVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
         return contentMasterMapper.update(item);
     }
 }

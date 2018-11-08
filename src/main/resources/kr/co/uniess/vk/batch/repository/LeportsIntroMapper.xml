@@ -20,7 +20,7 @@
             USE_FEE,
             USE_TIME
         ) VALUES (
-            #{cotId},
+            #{cotid},
             #{accomcount},
             #{chkbabycarriage},
             #{chkcreditcard},
@@ -56,10 +56,10 @@
             <if test="usefee != null">USE_FEE = #{usefee},</if>
             <if test="usetime != null">USE_TIME = #{usetime}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM LEPORTS_INTRO WHERE COT_ID = #{cotId}
+        DELETE FROM LEPORTS_INTRO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

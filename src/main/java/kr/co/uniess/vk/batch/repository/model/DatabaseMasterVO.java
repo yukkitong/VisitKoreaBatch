@@ -1,6 +1,5 @@
 package kr.co.uniess.vk.batch.repository.model;
 
-import kr.co.uniess.vk.batch.component.model.ApiData;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -11,37 +10,55 @@ import java.util.Map;
 public class DatabaseMasterVO {
 
     // API 데이터와 일치
-    private Integer bookTour;
+    private Integer booktour;
     private String homepage;
-    private String firstImage;     // reference image Id on `IMAGE` TABLE
-    private String firstImage2;    // reference image Id on `IMAGE` TABLE
+    private String firstimage;     // reference image Id on `IMAGE` TABLE
+    private String firstimage2;    // reference image Id on `IMAGE` TABLE
     private String cat1;
     private String cat2;
     private String cat3;
-    private Integer areaCode;
-    private Integer sigugunCode;
+    private Integer areacode;
+    private Integer siguguncode;
     private String addr1;
     private String addr2;
-    private String zipCode;
-    private String mapX;
-    private String mapY;
-    private String mLevel;
+    private String zipcode;
+    private String mapx;
+    private String mapy;
+    private String mlevel;
     private String overview;
+
+    private String cotid;          // reference
+
 
     // `DATABASE_MASTER` table 에만 존재 하는 컬럼
     // TODO 기존 API Batch에서 확인해야할 사항
-    private String cotId;          // reference
-    private Double wgsX;
-    private Double wgsY;
-    private String adminName;
-    private String adminTel;
-    private String adminFax;
-    private String adminEmail;
-    private String setStatus;
-    private Integer dongCode;
+    private Double wgsx;
+    private Double wgsy;
+    private String adminname;
+    private String admintel;
+    private String adminfax;
+    private String adminemail;
+    private String setstatus;
+    private Integer dongcode;
 
-    public static DatabaseMasterVO valueOf(ApiData map) {
+    public static DatabaseMasterVO valueOf(String cotId, Map<String, Object> item) {
         DatabaseMasterVO vo = new DatabaseMasterVO();
+        vo.cotid = cotId;
+        vo.booktour = Utils.valueInteger(item, "booktour");
+        vo.homepage = Utils.valueString(item, "homepage");
+        vo.cat1 = Utils.valueString(item, "cat1");
+        vo.cat2 = Utils.valueString(item, "cat2");
+        vo.cat3 = Utils.valueString(item, "cat3");
+        vo.areacode = Utils.valueInteger(item, "areacode");
+        vo.siguguncode = Utils.valueInteger(item, "sigungucode");
+        vo.addr1 = Utils.valueString(item, "addr1");
+        vo.addr2 = Utils.valueString(item, "addr2");
+        vo.zipcode = Utils.valueString(item, "zipcode");
+        vo.mapx = Utils.valueString(item, "mapx");
+        vo.mapy = Utils.valueString(item, "mapy");
+        vo.mlevel = Utils.valueString(item, "mlevel");
+        vo.overview = Utils.valueString(item, "overview");
+
         // TODO
         return vo;
     }

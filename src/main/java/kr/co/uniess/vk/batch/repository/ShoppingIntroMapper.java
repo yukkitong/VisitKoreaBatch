@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ShoppingIntroMapper {
     int insert(ShoppingIntroVO item);
     int update(ShoppingIntroVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }

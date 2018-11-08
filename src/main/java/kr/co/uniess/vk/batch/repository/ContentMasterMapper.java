@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ContentMasterMapper {
     int getTotalCount();
-    String findOne(String contentId);
+    String findOne(String contentid);
     int insert(ContentMasterVO item);
     int update(ContentMasterVO item);
 }

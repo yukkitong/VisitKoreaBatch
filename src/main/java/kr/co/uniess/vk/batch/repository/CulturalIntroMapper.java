@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface CulturalIntroMapper {
     int insert(CulturalIntroVO item);
     int update(CulturalIntroVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }

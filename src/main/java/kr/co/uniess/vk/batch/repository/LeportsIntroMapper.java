@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface LeportsIntroMapper {
     int insert(LeportsIntroVO item);
     int update(LeportsIntroVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }

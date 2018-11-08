@@ -3,8 +3,6 @@ package kr.co.uniess.vk.batch.repository.model;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
-import java.util.Map;
-
 @Data
 @Alias("department")
 public class DepartmentContentVO {
@@ -32,16 +30,16 @@ public class DepartmentContentVO {
     // TODO more ids
 
     // reference ID on CONTENT_MASTER
-    private String cotId;
+    private String cotid;
 
     // reference ID on OTHER_DEPARTMENT_SERVICE
-    private String otdId;
+    private String otdid;
 
     public static DepartmentContentVO valueOf(String otdId, String cotId) {
         ensureOtdId(otdId);
         DepartmentContentVO vo = new DepartmentContentVO();
-        vo.otdId = otdId;
-        vo.cotId = cotId;
+        vo.otdid = otdId;
+        vo.cotid = cotId;
         return vo;
     }
 

@@ -34,10 +34,10 @@
             <if test="subname != null">SUB_NAME = #{subname},</if>
             <if test="subnum != null">SUB_NUM = #{subnum}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM COURSE_INFO WHERE COT_ID = #{cotId}
+        DELETE FROM COURSE_INFO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

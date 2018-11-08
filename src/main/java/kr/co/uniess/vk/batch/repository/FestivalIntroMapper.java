@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface FestivalIntroMapper {
     int insert(FestivalIntroVO item);
     int update(FestivalIntroVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }

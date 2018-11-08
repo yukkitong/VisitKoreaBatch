@@ -21,7 +21,7 @@
             SMOKING,
             TREAT_MENU
         ) VALUES (
-            #{cotId},
+            #{cotid},
             #{chkcreditcard},
             #{discountinfo},
             #{firstmenu},
@@ -43,26 +43,26 @@
     <update id="update" parameterType="eatery">
         UPDATE EATERY_INTRO
         <set>
-            <if test="chkcreditcard =!= null">CHK_CREDITCARD = #{chkcreditcard},</if>
-            <if test="discountinfo =!= null">DISCOUNT_INFO = #{discountinfo},</if>
-            <if test="firstmenu =!= null">FIRST_MENU = #{firstmenu},</if>
-            <if test="contactinfo =!= null">CONTACT_INFO = #{contactinfo},</if>
-            <if test="kidsfacility =!= null">KIDS_FACILITY = #{kidsfacility},</if>
-            <if test="opendate =!= null">OPEN_DATE = #{opendate},</if>
-            <if test="opentime =!= null">OPEN_TIME = #{opentime},</if>
-            <if test="packing =!= null">PACKING = #{packing},</if>
-            <if test="parking =!= null">PARKING = #{parking},</if>
-            <if test="reservation =!= null">RESERVATION = #{reservation},</if>
-            <if test="restdate =!= null">REST_DATE = #{restdate},</if>
-            <if test="scale =!= null">SCALE = #{scale},</if>
-            <if test="seat =!= null">SEAT = #{seat},</if>
-            <if test="smoking =!= null">SMOKING = #{smoking},</if>
-            <if test="treatmenu =!= null">TREAT_MENU = #{treatmenu}</if>
+            <if test="chkcreditcard != null">CHK_CREDITCARD = #{chkcreditcard},</if>
+            <if test="discountinfo != null">DISCOUNT_INFO = #{discountinfo},</if>
+            <if test="firstmenu != null">FIRST_MENU = #{firstmenu},</if>
+            <if test="contactinfo != null">CONTACT_INFO = #{contactinfo},</if>
+            <if test="kidsfacility != null">KIDS_FACILITY = #{kidsfacility},</if>
+            <if test="opendate != null">OPEN_DATE = #{opendate},</if>
+            <if test="opentime != null">OPEN_TIME = #{opentime},</if>
+            <if test="packing != null">PACKING = #{packing},</if>
+            <if test="parking != null">PARKING = #{parking},</if>
+            <if test="reservation != null">RESERVATION = #{reservation},</if>
+            <if test="restdate != null">REST_DATE = #{restdate},</if>
+            <if test="scale != null">SCALE = #{scale},</if>
+            <if test="seat != null">SEAT = #{seat},</if>
+            <if test="smoking != null">SMOKING = #{smoking},</if>
+            <if test="treatmenu != null">TREAT_MENU = #{treatmenu}</if>
         </set>
-        WHERE COT_ID = #{cotId}
+        WHERE COT_ID = #{cotid}
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM EATERY_INTRO WHERE COT_ID = #{cotId}
+        DELETE FROM EATERY_INTRO WHERE COT_ID = #{cotid}
     </delete>
 </mapper>

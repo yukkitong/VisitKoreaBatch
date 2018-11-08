@@ -3,7 +3,7 @@
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.ImageMapper">
     <select id="findOneByCotId" parameterType="string" resultType="string">
-        SELECT IMG_ID FROM IMAGE WHERE COT_ID = #{cotId} AND URL = #{url}
+        SELECT IMG_ID FROM IMAGE WHERE COT_ID = #{cotid} AND URL = #{url} LIMIT 1 -- FIXME: LIMIT 1: TOO MANY RESULT EXCEPTION
     </select>
 
     <select id="findAllByCotId" parameterType="string" resultType="arraylist">
@@ -14,11 +14,11 @@
                IS_THUBNAIL,
                IMAGE_PATH
           FROM IMAGE
-         WHERE COT_ID = #{cotId}
+         WHERE COT_ID = #{cotid}
     </select>
 
     <select id="findOneByContentId" parameterType="string" resultType="string">
-        SELECT IMG_ID FROM IMAGE WHERE COT_ID = COTID(#{contentId}) AND URL = #{url}
+        SELECT IMG_ID FROM IMAGE WHERE COT_ID = COTID(#{contentid}) AND URL = #{url}
     </select>
 
     <select id="findAllByContentId" parameterType="string" resultType="arraylist">
@@ -29,7 +29,7 @@
                IS_THUBNAIL,
                IMAGE_PATH
           FROM IMAGE
-         WHERE COT_ID = COTID(#{cotId})
+         WHERE COT_ID = COTID(#{cotid})
     </select>
 
     <insert id="insert" parameterType="image">
@@ -38,26 +38,24 @@
             COT_ID,
             URL,
             IMAGE_DESCRIPTION,
-            IS_THUBNAIL,
-            IMAGE_PATH
+            IS_THUBNAIL
         ) VALUES (
-            #{imageId},
-            #{cotId},
-            #{originimgurl},
-            #{imgname},
-            #{thumbnail}, -- TODO smallimageurl 를 이용하여 썸네일인지 여부 확인후 `0`또는 `1`값으로 ...
-            null
+            #{imageid},
+            #{cotid},
+            #{url},
+            #{imagedescription},
+            #{isthubnail}
         )
     </insert>
 
     <update id="update" parameterType="image">
         UPDATE IMAGE
         <set>
-            <if test="originimgurl != null">URL = #{originimgurl},</if>
-            <if test="imgname != null">IMAGE_DESCRIPTION = #{imgname},</if>
-            <if test="thumbnail != null">IS_THUBNAIL = #{thumbnail} -- TODO smallimageurl</if>
+            <if test="url != null">URL = #{url},</if>
+            <if test="imagedescription != null">IMAGE_DESCRIPTION = #{imagedescription},</if>
+            <if test="isthubnail != null">IS_THUBNAIL = #{isthubnail}</if>
         </set>
-         WHERE COT_ID = #{cotId}
-           AND URL = #{originimgurl}
+         WHERE COT_ID = #{cotid}
+           AND URL = #{url}
     </update>
 </mapper>

@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EateryIntroMapper {
     int insert(EateryIntroVO item);
     int update(EateryIntroVO item);
-    int delete(String cotId);
+    int delete(String cotid);
 }
