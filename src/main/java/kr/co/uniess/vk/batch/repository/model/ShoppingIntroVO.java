@@ -28,20 +28,20 @@ public class ShoppingIntroVO {
     public static ShoppingIntroVO valueOf(String cotId, Map<String, Object> item) {
         ShoppingIntroVO vo = new ShoppingIntroVO();
         vo.cotid = cotId;
-        vo.chkbabycarriage = Utils.valueString(item, "chkbabycarriage");
-        vo.chkcreditcard = Utils.valueString(item, "chkcreditcard");
-        vo.chkpet = Utils.valueString(item, "chkpet");
+        vo.chkbabycarriage = Utils.valueString(item, "chkbabycarriageshopping");
+        vo.chkcreditcard = Utils.valueString(item, "chkcreditcardshopping");
+        vo.chkpet = Utils.valueString(item, "chkpetshopping");
         vo.culturecenter = Utils.valueString(item, "culturecenter");
         vo.fairday = Utils.valueString(item, "fairday");
-        vo.contactinfo = Utils.valueString(item, "contactinfo");
-        vo.opendate = Utils.valueString(item, "opendate");
-        vo.opentime = Utils.valueString(item, "opentime");
-        vo.parking = Utils.valueString(item, "parking");
-        vo.restdate = Utils.valueString(item, "restdate");
+        vo.contactinfo = Utils.valueString(item, "infocentershopping");
+        vo.opendate = Utils.valueString(item, "opendateshopping");
+        vo.opentime = Utils.valueString(item, "opentime"); // API 에서 `opentimeshopping` 이지 아닐까? 확인 필요 - 확인 결과 `opentime`이 맞음.
+        vo.parking = Utils.valueString(item, "parkingshopping");
+        vo.restdate = Utils.valueString(item, "restdateshopping");
         vo.restroom = Utils.valueString(item, "restroom");
         vo.saleitem = Utils.valueString(item, "saleitem");
         vo.saleitemcost = Utils.valueString(item, "saleitemcost");
-        vo.scale = Utils.valueString(item, "scale");
+        vo.scale = Utils.valueString(item, "scaleshopping");
         vo.shopguide = Utils.valueString(item, "shopguide");
         return vo;
     }

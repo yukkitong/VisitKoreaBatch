@@ -27,20 +27,20 @@ public class LeportsIntroVO {
     public static LeportsIntroVO valueOf(String cotId, Map<String, Object> item) {
         LeportsIntroVO vo = new LeportsIntroVO();
         vo.cotid = cotId;
-        vo.accomcount = Utils.valueString(item, "accomcount");
-        vo.chkbabycarriage = Utils.valueString(item, "chkbabycarriage");
-        vo.chkcreditcard = Utils.valueString(item, "chkcreditcard");
-        vo.chkpet = Utils.valueString(item, "chkpet");
-        vo.expagerange = Utils.valueString(item, "expagerange");
-        vo.infocenter = Utils.valueString(item, "infocenter");
+        vo.accomcount = Utils.valueString(item, "accomcountleports");
+        vo.chkbabycarriage = Utils.valueString(item, "chkbabycarriageleports");
+        vo.chkcreditcard = Utils.valueString(item, "chkcreditcardleports");
+        vo.chkpet = Utils.valueString(item, "chkpetleports");
+        vo.expagerange = Utils.valueString(item, "expagerangeleports");
+        vo.infocenter = Utils.valueString(item, "infocenterleports");
         vo.openperiod = Utils.valueString(item, "openperiod");
-        vo.parkingfee = Utils.valueString(item, "parkingfee");
-        vo.parking = Utils.valueString(item, "parking");
+        vo.parkingfee = Utils.valueString(item, "parkingfeeleports");
+        vo.parking = Utils.valueString(item, "parkingleports");
         vo.reservation = Utils.valueString(item, "reservation");
-        vo.restdate = Utils.valueString(item, "restdate");
-        vo.scale = Utils.valueString(item, "scale");
-        vo.usefee = Utils.valueString(item, "usefee");
-        vo.usetime = Utils.valueString(item, "usetime");
+        vo.restdate = Utils.valueString(item, "restdateleports");
+        vo.scale = Utils.valueString(item, "scaleleports");
+        vo.usefee = Utils.valueString(item, "usefeeleports");
+        vo.usetime = Utils.valueString(item, "usetimeleports");
         return vo;
     }
 }

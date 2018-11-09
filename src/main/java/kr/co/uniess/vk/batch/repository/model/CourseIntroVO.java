@@ -20,7 +20,7 @@ public class CourseIntroVO {
         vo.cotid = cotId;
         vo.distance = Utils.valueString(item, "distance");
         vo.taketime = Utils.valueString(item, "taketime");
-        vo.contactinfo = Utils.valueString(item, "contactinfo");
+        vo.contactinfo = Utils.valueString(item, "infocentertourcourse");
         vo.schedule = Utils.valueString(item, "schedule");
         vo.theme = Utils.valueString(item, "theme");
         return vo;

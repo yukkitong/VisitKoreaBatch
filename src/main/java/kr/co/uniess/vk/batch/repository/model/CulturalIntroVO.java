@@ -26,19 +26,19 @@ public class CulturalIntroVO {
     public static CulturalIntroVO valueOf(String cotId, Map<String, Object> item) {
         CulturalIntroVO vo = new CulturalIntroVO();
         vo.cotid = cotId;
-        vo.accomcount = Utils.valueString(item, "accomcount");
+        vo.accomcount = Utils.valueString(item, "accomcountculture");
         vo.scale = Utils.valueString(item, "scale");
         vo.spendtime = Utils.valueString(item, "spendtime");
-        vo.chkbabycarriage = Utils.valueString(item, "chkbabycarriage");
-        vo.chkcreditcard = Utils.valueString(item, "chkcreditcard");
-        vo.chkpet = Utils.valueString(item, "chkpet");
+        vo.chkbabycarriage = Utils.valueString(item, "chkbabycarriageculture");
+        vo.chkcreditcard = Utils.valueString(item, "chkcreditcardculture");
+        vo.chkpet = Utils.valueString(item, "chkpetculture");
         vo.discountinfo = Utils.valueString(item, "discountinfo");
-        vo.infocenter = Utils.valueString(item, "infocenter");
-        vo.parking = Utils.valueString(item, "parking");
+        vo.infocenter = Utils.valueString(item, "infocenterculture");
+        vo.parking = Utils.valueString(item, "parkingculture");
         vo.parkingfee = Utils.valueString(item, "parkingfee");
-        vo.restdate = Utils.valueString(item, "restdate");
+        vo.restdate = Utils.valueString(item, "restdateculture");
         vo.usefee = Utils.valueString(item, "usefee");
-        vo.usetime = Utils.valueString(item, "usetime");
+        vo.usetime = Utils.valueString(item, "usetimeculture");
         return vo;
     }
 }

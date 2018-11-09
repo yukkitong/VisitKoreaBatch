@@ -41,7 +41,7 @@ public class AccommodationIntroVO {
     public static AccommodationIntroVO valueOf(String cotId, Map<String, Object> item) {
         AccommodationIntroVO vo = new AccommodationIntroVO();
         vo.cotid = cotId;
-        vo.accomcount = Utils.valueString(item, "accomcount");
+        vo.accomcount = Utils.valueString(item, "accomcountlodging");
         vo.benikia = Utils.valueString(item, "benikia");
         vo.checkintime = Utils.valueString(item, "checkintime");
         vo.checkouttime = Utils.valueString(item, "checkouttime");
@@ -49,26 +49,26 @@ public class AccommodationIntroVO {
         vo.foodplace = Utils.valueString(item, "foodplace");
         vo.goodstay = Utils.valueString(item, "goodstay");
         vo.hanok = Utils.valueString(item, "hanok");
-        vo.contactinfo = Utils.valueString(item, "contactinfo");
-        vo.parking = Utils.valueString(item, "parking");
+        vo.contactinfo = Utils.valueString(item, "infocenterlodging");
+        vo.parking = Utils.valueString(item, "parkinglodging");
         vo.pickup = Utils.valueString(item, "pickup");
         vo.roomcount = Utils.valueString(item, "roomcount");
-        vo.reservation = Utils.valueString(item, "reservation");
+        vo.reservation = Utils.valueString(item, "reservationlodging");
         vo.reservationurl = Utils.valueString(item, "reservationurl");
         vo.roomtype = Utils.valueString(item, "roomtype");
-        vo.scale = Utils.valueString(item, "scale");
+        vo.scale = Utils.valueString(item, "scalelodging");
         vo.subfacility = Utils.valueString(item, "subfacility");
         vo.barbecue = Utils.valueString(item, "barbecue");
         vo.beauty = Utils.valueString(item, "beauty");
         vo.bicycle = Utils.valueString(item, "bicycle");
-        vo.compfire = Utils.valueInteger(item, "compfire");
+        vo.compfire = Utils.valueInteger(item, "campfire");
         vo.fitness = Utils.valueString(item, "fitness");
         vo.karaoke = Utils.valueString(item, "karaoke");
         vo.publicbath = Utils.valueString(item, "publicbath");
         vo.publicpc = Utils.valueString(item, "publicpc");
         vo.sauna = Utils.valueString(item, "sauna");
         vo.seminar = Utils.valueString(item, "seminar");
-        vo.sports = Utils.valueInteger(item, "sport");
+        vo.sports = Utils.valueInteger(item, "sports");
         return vo;
     }
 }

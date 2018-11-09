@@ -28,18 +28,18 @@ public class EateryIntroVO {
     public static EateryIntroVO valueOf(String cotId, Map<String, Object> item) {
         EateryIntroVO vo = new EateryIntroVO();
         vo.cotid = cotId;
-        vo.chkcreditcard = Utils.valueString(item, "chkcreditcard");
-        vo.discountinfo = Utils.valueString(item, "discountinfo");
+        vo.chkcreditcard = Utils.valueString(item, "chkcreditcardfood");
+        vo.discountinfo = Utils.valueString(item, "discountinfofood");
         vo.firstmenu = Utils.valueString(item, "firstmenu");
-        vo.contactinfo = Utils.valueString(item, "contactinfo");
+        vo.contactinfo = Utils.valueString(item, "infocenterfood");
         vo.kidsfacility = Utils.valueString(item, "kidsfacility");
-        vo.opendate = Utils.valueString(item, "opendate");
-        vo.opentime = Utils.valueString(item, "opentime");
+        vo.opendate = Utils.valueString(item, "opendatefood");
+        vo.opentime = Utils.valueString(item, "opentimefood");
         vo.packing = Utils.valueString(item, "packing");
-        vo.parking = Utils.valueString(item, "parking");
-        vo.reservation = Utils.valueString(item, "reservation");
-        vo.restdate = Utils.valueString(item, "restdate");
-        vo.scale = Utils.valueString(item, "scale");
+        vo.parking = Utils.valueString(item, "parkingfood");
+        vo.reservation = Utils.valueString(item, "reservationfood");
+        vo.restdate = Utils.valueString(item, "restdatefood");
+        vo.scale = Utils.valueString(item, "scalefood");
         vo.seat = Utils.valueString(item, "seat");
         vo.smoking = Utils.valueString(item, "smoking");
         vo.treatmenu = Utils.valueString(item, "treatmenu");

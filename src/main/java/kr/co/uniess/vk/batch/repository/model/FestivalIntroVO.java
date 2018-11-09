@@ -33,10 +33,10 @@ public class  FestivalIntroVO {
         FestivalIntroVO vo = new FestivalIntroVO();
         vo.cotid = cotId;
         vo.scale = Utils.valueString(item, "scale");
-        vo.spendtime = Utils.valueString(item, "spendtime");
+        vo.spendtime = Utils.valueString(item, "spendtimefestival");
         vo.agelimit = Utils.valueString(item, "agelimit");
         vo.bookingplace = Utils.valueString(item, "bookingplace");
-        vo.discountinfo = Utils.valueString(item, "discountinfo");
+        vo.discountinfo = Utils.valueString(item, "discountinfofestival");
         vo.eventenddate = Utils.valueString(item, "eventenddate");
         vo.eventhomepage = Utils.valueString(item, "eventhomepage");
         vo.eventplace = Utils.valueString(item, "eventplace");
@@ -50,7 +50,7 @@ public class  FestivalIntroVO {
         vo.sponsor2 = Utils.valueString(item, "sponsor2");
         vo.sponsor2tel = Utils.valueString(item, "sponsor2tel");
         vo.subevent = Utils.valueString(item, "subevent");
-        vo.usefee = Utils.valueString(item, "usefee");
+        vo.usefee = Utils.valueString(item, "usetimefestival");
         return vo;
     }
 }
