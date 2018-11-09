@@ -2,13 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.uniess.vk.batch.repository.DepartmentContentMapper">
-    <select id="findAllByCotId" resultType="string">
+    <select id="findAllByCotId" resultType="department" parameterType="string">
         SELECT C.COT_ID, C.OTD_ID, S.TITLE
           FROM OTHER_DEPARTMENT_SERVICE S
                INNER JOIN OTHER_DEPARTMENT_CONTENT C
                        ON S.OTD_ID = C.OTD_ID
          WHERE C.COT_ID = #{cotid}
          ORDER BY S.TITLE ASC
+    </select>
+
+    <select id="findOne" resultType="string" parameterType="string">
+        SELECT COT_ID
+          FROM OTHER_DEPARTMENT_CONTENT
+         WHERE COT_ID = #{cotid} AND OTD_ID = #{otdid}
     </select>
 
     <insert id="insert" parameterType="department">

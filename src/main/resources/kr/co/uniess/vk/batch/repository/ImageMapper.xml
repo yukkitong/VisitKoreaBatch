@@ -6,7 +6,7 @@
         SELECT IMG_ID FROM IMAGE WHERE COT_ID = #{cotid} AND URL = #{url} LIMIT 1 -- FIXME: LIMIT 1: TOO MANY RESULT EXCEPTION
     </select>
 
-    <select id="findAllByCotId" parameterType="string" resultType="arraylist">
+    <select id="findAllByCotId" parameterType="string" resultType="image">
         SELECT IMG_ID,
                COT_ID,
                URL,
@@ -40,7 +40,7 @@
             IMAGE_DESCRIPTION,
             IS_THUBNAIL
         ) VALUES (
-            #{imageid},
+            #{imgid},
             #{cotid},
             #{url},
             #{imagedescription},
@@ -55,7 +55,6 @@
             <if test="imagedescription != null">IMAGE_DESCRIPTION = #{imagedescription},</if>
             <if test="isthubnail != null">IS_THUBNAIL = #{isthubnail}</if>
         </set>
-         WHERE COT_ID = #{cotid}
-           AND URL = #{url}
+         WHERE IMG_ID = #{imgid}
     </update>
 </mapper>

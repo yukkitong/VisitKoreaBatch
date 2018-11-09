@@ -38,7 +38,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public TagsService tagsService() {
-        return new TagsService();
+    public ContentTagsService tagsService() {
+        return new ContentTagsService();
     }
 }

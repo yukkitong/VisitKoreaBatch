@@ -27,11 +27,12 @@ public class DatabaseMasterVO {
     private String mlevel;
     private String overview;
 
-    private String cotid;          // reference
+    private String cotid;
 
 
     // `DATABASE_MASTER` table 에만 존재 하는 컬럼
-    // TODO 기존 API Batch에서 확인해야할 사항
+    // 기존 API Batch에서 확인해야할 사항
+    // - 확인결과 설정하지 않고 디폴트 값으로 대체한다.
     private Double wgsx;
     private Double wgsy;
     private String adminname;
@@ -57,9 +58,14 @@ public class DatabaseMasterVO {
         vo.mapx = Utils.valueString(item, "mapx");
         vo.mapy = Utils.valueString(item, "mapy");
         vo.mlevel = Utils.valueString(item, "mlevel");
-        vo.overview = Utils.valueString(item, "overview");
+        vo.overview = Utils.valueString(item, "overview").replaceAll("'", "''");
 
-        // TODO
+        // NOTE. 이미지는 `IMAGE`에 등록후 해당 ID를 등록하여야 한다.
+        //       따라서 외부에서 이미지 등록후 ID를 설정해야만 정상적용 된다.
+        // vo.firstimage = Utils.valueString(item, "firstimage");
+        // vo.firstimage2 = Utils.valueString(item, "firstimage2");
+
+        // NOTE. 나머지 미등록 컬럼에 대해서는 디폴트 값으로 대체되므로 여기서 따로 설정하지 않는다. (종전 로직과 동일)
         return vo;
     }
 }

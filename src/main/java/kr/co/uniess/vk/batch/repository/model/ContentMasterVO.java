@@ -12,18 +12,21 @@ import java.util.Map;
 public class ContentMasterVO {
 
     // API 데이터와 일치
-    private String contentid;      // reference
+    private String contentid;
     private Integer contenttypeid;
     private String title;
-//    private Date createdate;
-//    private Date modifieddate;
 
-    private String cotid;          // create
+    // 아래 날짜 정보는 등록, 수정시 NOW() 함수 이용하도록 한다.
+    // private Date createdate;
+    // private Date modifieddate;
+
+    private String cotid;
     private String displaytitle;
     private Integer readcount;
 
     // `CONTENT_MASTER` table 에만 존재 하는 컬럼
-    // TODO 기존 API Batch에서 확인해야할 사항
+    // 기존 API Batch에서 확인해야할 사항
+    // - 확인결과 하드코딩된 상수값으로 되어있어 동일한 방법으로 처리한다.
     private String showflag;
     private String contentstatus;
     private String createusrid;
@@ -41,7 +44,17 @@ public class ContentMasterVO {
         vo.title = common.get("title").toString();
         vo.displaytitle = common.get("title").toString();
 
-        // TODO
+        setDefaultValue(vo);
         return vo;
+    }
+
+    // 종전의 로직과 동일: 하드코딩된 상수값으로 되어있어 동일한 방법으로 처리한다.
+    private static void setDefaultValue(ContentMasterVO vo) {
+        vo.showflag = "1";
+        vo.contentstatus = "2";
+        vo.createusrid = "4e512b8a-60ad-11e8-8cca-00232456a22f"; // who?
+        vo.dept = "국내 온라인 홍보팀";
+        vo.deptview = "국내 온라인 홍보팀";
+        vo.tel = "033-738-3588";
     }
 }

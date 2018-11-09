@@ -30,11 +30,11 @@ public class ImageService {
     }
 
     public int insert(ImageVO image) {
+        if (image.getImgid() == null) {
+            throw new IllegalArgumentException("`IMG_ID` must not be null.");
+        }
         if (image.getCotid() == null) {
             throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
-        if (image.getImageid() == null) {
-            image.createAndSetImageId();
         }
         return imageMapper.insert(image);
     }

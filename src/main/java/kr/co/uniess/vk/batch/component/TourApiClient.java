@@ -80,7 +80,7 @@ public class TourApiClient {
                     "&MobileOS=" + MOBILE_OS +
                     "&MobileApp=" + MOBILE_APP +
                     "&contentId=" + contentId +
-                    "&contentTypeId=" + contentTypeId +
+                    ((contentTypeId != 0) ? ("&contentTypeId=" + contentTypeId) : "") +
                     "&defaultYN=Y" +
                     "&firstImageYN=Y" +
                     "&areacodeYN=Y" +

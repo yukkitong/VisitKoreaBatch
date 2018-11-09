@@ -24,6 +24,10 @@ public class TourApiClientCallableFactory {
         return createTourAPIMasterCallable(TourApiClient.builder().path("GreenTourService/areaBasedList"), start, end);
     }
 
+    public static Callable<Map<String, Object>> getKorServiceCommonCallable(String contentId) {
+        return createTourAPICommonCallable(TourApiClient.builder().contentId(contentId));
+    }
+
     public static Callable<Map<String, Object>> getKorServiceCommonCallable(String contentId, int contentTypeId) {
         return createTourAPICommonCallable(TourApiClient.builder().contentId(contentId).contentTypeId(contentTypeId));
     }

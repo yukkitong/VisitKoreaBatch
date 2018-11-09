@@ -71,12 +71,12 @@ public class AccommodationInfoVO {
         vo.roomhairdryer = Utils.valueString(item, "roomhairdryer");
         vo.roomsize2 = Utils.valueString(item, "roomsize2");
 
-        // TODO IMAGE는 URL이 아닌 IMG_ID 값이 들어가야 한다.
-//        vo.roomimg1 = Utils.valueString(item, "roomimg1");
-//        vo.roomimg2 = Utils.valueString(item, "roomimg2");
-//        vo.roomimg3 = Utils.valueString(item, "roomimg3");
-//        vo.roomimg4 = Utils.valueString(item, "roomimg4");
-//        vo.roomimg5 = Utils.valueString(item, "roomimg5");
+        // NOTE. IMAGE는 URL이 아닌 IMG_ID 값이 들어가야 한다.
+        // vo.roomimg1 = Utils.valueString(item, "roomimg1");
+        // vo.roomimg2 = Utils.valueString(item, "roomimg2");
+        // vo.roomimg3 = Utils.valueString(item, "roomimg3");
+        // vo.roomimg4 = Utils.valueString(item, "roomimg4");
+        // vo.roomimg5 = Utils.valueString(item, "roomimg5");
         return vo;
     }
 }

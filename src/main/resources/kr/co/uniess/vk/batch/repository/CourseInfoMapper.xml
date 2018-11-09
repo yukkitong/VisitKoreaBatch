@@ -3,7 +3,7 @@
 
 <!-- CourseInfo 코스 -->
 <mapper namespace="kr.co.uniess.vk.batch.repository.CourseInfoMapper">
-    <insert id="insertList" parameterType="course_info">
+    <insert id="insertList" parameterType="arraylist">
         INSERT INTO COURSE_INFO
         (
             COT_ID,

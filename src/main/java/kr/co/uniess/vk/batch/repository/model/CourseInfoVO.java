@@ -20,10 +20,12 @@ public class CourseInfoVO {
         CourseInfoVO vo = new CourseInfoVO();
         vo.cotid = cotId;
         vo.subcontentid = Utils.valueString(item, "subcontentid");
-        vo.subdetailimg = Utils.valueString(item, "subdetailimg");
         vo.subdetailoverview = Utils.valueString(item, "subdetailoverview");
         vo.subname = Utils.valueString(item, "subname");
         vo.subnum = Utils.valueString(item, "subnum");
+
+        // NOTE. IMAGE는 URL이 아닌 IMG_ID 값이 들어가야 한다.
+        // vo.subdetailimg = Utils.valueString(item, "subdetailimg");
         return vo;
     }
 }

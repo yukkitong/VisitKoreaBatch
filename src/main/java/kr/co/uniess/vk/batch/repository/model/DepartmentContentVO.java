@@ -27,7 +27,10 @@ public class DepartmentContentVO {
      */
     public static final String OTD_ID_WITHTOUR = "b55ffe10-84c3-11e8-8165-020027310001";
 
-    // TODO more ids
+    /**
+     * 한국관광품질인증 ID
+     */
+    public static final String OTD_ID_KOREA_QUALITY = "456a84d1-84c4-11e8-8165-020027310001";
 
     // reference ID on CONTENT_MASTER
     private String cotid;
@@ -49,6 +52,7 @@ public class DepartmentContentVO {
             case OTD_ID_GREENTOUR:
             case OTD_ID_INDUSTRYTOUR:
             case OTD_ID_WITHTOUR:
+            case OTD_ID_KOREA_QUALITY:
                 break;
             default:
                 throw new IllegalArgumentException("You have a wrong OTD_ID. [" + otdId + " ]");

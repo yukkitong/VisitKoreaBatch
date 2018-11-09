@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.uniess.vk.batch.repository.ContentTagsMapper">
+    <select id="findOne" resultType="string">
+        SELECT TAG_ID FROM CONTENT_TAGS WHERE COT_ID = #{cotid} AND TAG_ID = #{tagid}
+    </select>
+
+    <insert id="insert" parameterType="tags">
+        INSERT INTO CONTENT_TAGS (
+            TAG_ID,
+            COT_ID,
+            MASTER_TAG
+        ) VALUES (
+            #{tagid},
+            #{cotid},
+            NULL
+        )
+    </insert>
+</mapper>

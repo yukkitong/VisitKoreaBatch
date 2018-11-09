@@ -3,7 +3,7 @@
 
 <!-- DetailInfo 코스 / 숙박 제외한 나머지 -->
 <mapper namespace="kr.co.uniess.vk.batch.repository.DetailInfoMapper">
-    <insert id="insertList" parameterType="detail_info">
+    <insert id="insertList" parameterType="arraylist">
         INSERT INTO DETAIL_INFO
         (
             COT_ID,

@@ -31,7 +31,12 @@
             ROOM_COOK,
             ROOM_TABLE,
             ROOM_HAIRDRYER,
-            ROOM_SIZE2
+            ROOM_SIZE2,
+            ROOM_IMG1,
+            ROOM_IMG2,
+            ROOM_IMG3,
+            ROOM_IMG4,
+            ROOM_IMG5
         ) VALUES
         (
             #{cotid},
@@ -60,7 +65,12 @@
             #{roomcook},
             #{roomtable},
             #{roomhairdryer},
-            #{roomsize2}
+            #{roomsize2},
+            #{roomimg1},
+            #{roomimg2},
+            #{roomimg3},
+            #{roomimg4},
+            #{roomimg5}
         )
     </insert>
 
@@ -92,7 +102,12 @@
             ROOM_COOK,
             ROOM_TABLE,
             ROOM_HAIRDRYER,
-            ROOM_SIZE2
+            ROOM_SIZE2,
+            ROOM_IMG1,
+            ROOM_IMG2,
+            ROOM_IMG3,
+            ROOM_IMG4,
+            ROOM_IMG5
         ) VALUES
         <foreach item="item" collection="list" separator=",">
             (
@@ -122,7 +137,12 @@
                 #{item.roomcook},
                 #{item.roomtable},
                 #{item.roomhairdryer},
-                #{item.roomsize2}
+                #{item.roomsize2},
+                #{item.roomimg1},
+                #{item.roomimg2},
+                #{item.roomimg3},
+                #{item.roomimg4},
+                #{item.roomimg5}
             )
         </foreach>
     </insert>

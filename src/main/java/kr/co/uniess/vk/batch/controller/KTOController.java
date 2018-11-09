@@ -13,6 +13,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * NOTE. 이미지 처리에 대한 전체 적인 정리 및 생각
+ * - 이미지는 API, 액셀파일 모두 2가지의 방법으로 전달받는다.
+ * - 이미지는 API를 통해 100% 전달되지 않는다.
+ * - 그렇다면 100%는 어디를 통해 전달되는가? 바로 액셀파일이다.
+ * - API를 통해 전달되는 이미지의 종류는 메인 이미지 (마스터정보 `first_image`)와 상세 이미지가 있다.
+ * - 액셀파일을 통해 전달되는 이미지는 `MAINIMGCHK` 컬럼에 별도 표시 `O`로 메인 이미지와 상세를 구분한다.
+ *
+ * => 어떤 이유(저작권 문제 등)로 이미지의 100%를 API를 통해 전달하지 못하는 문제가 발생하고 있다.
+ *    그렇기 때문에 API를 통해 전달받은 이미지를 등록 또는 수정 처리할 경우에는 `임시조치`로 판단하고 처리해야 한다.
+ *    액셀파일로 전달된 이미지를 처리할때 비로소 이미지 `보정작업`과 함께 전체적인 이미지가 바로 잡혀가게 된다.
+ *
+ *    `임시조치` : 메인 이미지 선정 방식 즉, 메인 이미지가 특정되지 않은 경우 상세 이미지 중에서 메인 이미지를 선정할 수 있다.
+ *    `보정작업` : 임시조치의 결과를 수정하여 액셀에 명시된 메인이미지로 변경 처리함과 동시에 `싱크작업`을 한다.
+ *    `싱크작업` : 데이터베이스에 등록된 이미지와 액셀의 내용을 일치시키는 작업을 말한다.
+ */
+
 @Controller
 public class KTOController {
 
@@ -29,6 +46,7 @@ public class KTOController {
     private static final int TYPE_ACCOMMODATION = 32;
     private static final int TYPE_SHOPPING = 38;
     private static final int TYPE_EATERY = 39;
+    private static final int TYPE_GREEN_TOUR = 2000;
 
     @Autowired
     private ContentMasterService contentMasterService;
@@ -49,10 +67,13 @@ public class KTOController {
     private DepartmentContentService departmentContentService;
 
     @Autowired
-    private TagsService tagsService;
+    private ContentTagsService contentTagsService;
 
 
     private String createCotId() {
+        return UUID.randomUUID().toString();
+    }
+    private String createImgId() {
         return UUID.randomUUID().toString();
     }
 
@@ -71,48 +92,80 @@ public class KTOController {
     }
 
     @SuppressWarnings("unchecked")
-    private void insert(String cotId, Map<String, Object> item) {
+    private void insert(String newCotId, Map<String, Object> item) {
         Master master = Master.wrap((Map<String, Object>) item.get("master"));
         Map<String, Object> common = (Map<String, Object>) item.get("common");
 
+        // NOTE. `detailCommon`  API를 통해 유입된 정보의 경우 `withtour` 필드를 `master`에서 확인할 수 없다.
+        //       이런 경우에는 아래 판단으로 처리하도록 한다.
+        if (master.get("withtour") == null) {
+            // 이 경우에는 무장애로 간주한다.
+            if (item.get("withtour") != null) {
+                master.setWithTour(true);
+            }
+        }
+
         logger.info(":::INSERT:::{}", master);
 
-        ContentMasterVO content = ContentMasterVO.valueOf(cotId, master, common);
-        int count = contentMasterService.insert(content);
-        if (count != 1) {
-            // TODO throw an error
-            return;
+        ContentMasterVO content = ContentMasterVO.valueOf(newCotId, master, common);
+
+        // NOTE. `그린투어`일 경우 Content Type ID는 `2000`이다.
+        if (master.isGreenTour()) {
+            content.setContenttypeid(TYPE_GREEN_TOUR);
+        }
+
+        contentMasterService.insert(content);
+
+        // image
+        List<Map<String, Object>> imageList = (List<Map<String, Object>>) item.get("image");
+        if (imageList != null) {
+            int index = 1;
+            for (Map<String, Object> image : imageList) {
+                // NOTE. 썸네일 이미지를 포함하고 있지만, 일단 썸네일은 무시하자!
+                //       여기서는 실제 이미지만 취하고(썸네일 제외) 데이터베이스에 등록한다.
+                ImageVO imageVo = ImageVO.valueOf(newCotId, image);
+                imageVo.setImgid(createImgId()); // Image Id 생성
+                imageVo.setImagedescription(content.getTitle() + " " + index ++);
+                imageService.insert(imageVo);
+            }
+        }
+
+        ImageVO firstImageVo = null, firstImage2Vo = null;
+        if (common.get("firstimage") != null) {
+            firstImageVo = new ImageVO();
+            firstImageVo.setCotid(newCotId);
+            firstImageVo.setImgid(createImgId());
+            firstImageVo.setUrl(common.get("firstimage").toString());
+            firstImageVo.setImagedescription(content.getTitle());
+            firstImageVo.setIsthubnail(0);
+            imageService.insert(firstImageVo);
+        }
+
+        // NOTE. 마스터를 통해 유입된 이미지에도 썸네일이 포함되어 있는데,
+        //       이때에는 썸네일을 등록 처리하도록 하자!! (호환성 문제로)
+        //       아무튼 이미지 처리는 아직 많은 이슈를 가지고 있다.
+        if (common.get("firstimage2") != null) {
+            firstImage2Vo = new ImageVO();
+            firstImage2Vo.setCotid(newCotId);
+            firstImage2Vo.setImgid(createImgId());
+            firstImage2Vo.setUrl(common.get("firstimage2").toString());
+            firstImage2Vo.setImagedescription(content.getTitle());
+            firstImage2Vo.setIsthubnail(1);
+            imageService.insert(firstImage2Vo);
+        }
+
+        // NOTE. API를 통해 마스터로 유입된 이미지가 없다면, 상세 이미지중 첫번째를 메인 이미지로 취한다.
+        if (firstImageVo == null || firstImage2Vo == null) {
+            List<ImageVO> list = imageService.findAllByCotId(newCotId);
+            if (list != null && !list.isEmpty()) {
+                firstImageVo = firstImage2Vo = list.get(0);
+            }
         }
 
         // database master
-        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(cotId, common); // TODO data
-
-        // image
-        ImageVO firstImageVo = null, firstImage2Vo = null;
-        List<Map<String, Object>> imageList = (List<Map<String, Object>>) item.get("image");
-        if (imageList != null) {
-            for (Map<String, Object> image : imageList) {
-                ImageVO imageVo = ImageVO.valueOf(cotId, image);
-                if (common.get("firstimage") != null && common.get("firstimage").toString().equals(imageVo.getUrl())) {
-                    firstImageVo = imageVo;
-                }
-                if (common.get("firstimage2") != null && common.get("firstimage2").toString().equals(imageVo.getUrl())) {
-                    firstImage2Vo = imageVo;
-                }
-                imageService.insert(imageVo);
-            }
-
-            if (firstImageVo == null && imageList.size() > 0) {
-                firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
-            }
-
-            if (firstImage2Vo == null && imageList.size() > 0) {
-                firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
-            }
-        }
-
-        dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImageid());
-        dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImageid());
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(newCotId, common);
+        dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
+        dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
         databaseMasterService.insert(dataBaseMasterVo);
 
         final int contentTypeId = master.getContentTypeId();
@@ -120,47 +173,107 @@ public class KTOController {
         Map<String, Object> introMap = (Map<String, Object>) item.get("intro");
         switch (contentTypeId) {
             case TYPE_TOURIST:
-                introService.insertTouristIntro(TouristIntroVO.valueOf(cotId, introMap));
+                introService.insertTouristIntro(TouristIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_CULTURAL:
-                introService.insertCulturalIntro(CulturalIntroVO.valueOf(cotId, introMap));
+                introService.insertCulturalIntro(CulturalIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_FESTIVAL:
-                introService.insertFestivalIntro(FestivalIntroVO.valueOf(cotId, introMap));
+                introService.insertFestivalIntro(FestivalIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_COURSE:
-                introService.insertCourseIntro(CourseIntroVO.valueOf(cotId, introMap));
+                introService.insertCourseIntro(CourseIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_LEPORTS:
-                introService.insertLeportsIntro(LeportsIntroVO.valueOf(cotId, introMap));
+                introService.insertLeportsIntro(LeportsIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_ACCOMMODATION:
-                introService.insertAccommodationIntro(AccommodationIntroVO.valueOf(cotId, introMap));
+                introService.insertAccommodationIntro(AccommodationIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_SHOPPING:
-                introService.insertShoppingIntro(ShoppingIntroVO.valueOf(cotId, introMap));
+                introService.insertShoppingIntro(ShoppingIntroVO.valueOf(newCotId, introMap));
                 break;
             case TYPE_EATERY:
-                introService.insertEateryIntro(EateryIntroVO.valueOf(cotId, introMap));
+                introService.insertEateryIntro(EateryIntroVO.valueOf(newCotId, introMap));
                 break;
         }
 
-        // info TODO: -> update에도 아래 코드 이용
+        // info
         List<Map<String, Object>> infoList = (List<Map<String, Object>>) item.get("info");
         if (infoList != null) {
             switch (contentTypeId) {
                 case TYPE_COURSE: {
                     List<CourseInfoVO> list = new ArrayList<>(infoList.size());
                     for (Map<String, Object> i : infoList) {
-                        list.add(CourseInfoVO.valueOf(cotId, i));
+                        String imgId = null, subDetailImgUrl = Utils.valueString(i, "subdetailimg");
+                        if (!subDetailImgUrl.isEmpty()) {
+                            ImageVO imageVo = new ImageVO();
+                            imageVo.setImgid(createImgId());
+                            imageVo.setCotid(newCotId);
+                            imageVo.setUrl(subDetailImgUrl);
+                            imageVo.setImagedescription(content.getTitle());
+                            imageService.insert(imageVo);
+
+                            imgId = imageVo.getImgid();
+                        }
+
+                        CourseInfoVO infoVO = CourseInfoVO.valueOf(newCotId, i);
+                        infoVO.setSubdetailimg(imgId);
+
+                        list.add(infoVO);
                     }
                     infoService.insertCourseInfoList(list);
                     break;
                 }
                 case TYPE_ACCOMMODATION: {
                     List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
+                    String[] roomImgKeys = new String[] { "roomimg1", "roomimg2", "roomimg3", "roomimg4", "roomimg5" };
+                    ArrayList<String> imageIdList = new ArrayList<>();
                     for (Map<String, Object> i : infoList) {
-                        list.add(AccommodationInfoVO.valueOf(cotId, i));
+
+                        imageIdList.clear();
+
+                        // room images
+                        int index = 1;
+                        for (String key : roomImgKeys) {
+                            String roomImgUrl = Utils.valueString(i, key);
+                            if (!roomImgUrl.isEmpty()) {
+                                ImageVO imageVo = new ImageVO();
+                                imageVo.setImgid(createImgId());
+                                imageVo.setCotid(newCotId);
+                                imageVo.setUrl(roomImgUrl);
+                                imageVo.setImagedescription(content.getTitle() + " " + index ++);
+                                imageService.insert(imageVo);
+
+                                // cache image id
+                                imageIdList.add(imageVo.getImgid());
+                            }
+                        }
+
+                        // set image id
+                        AccommodationInfoVO infoVO = AccommodationInfoVO.valueOf(newCotId, i);
+                        for (int t = 0; t < imageIdList.size(); t ++) {
+                            switch (t) {
+                                case 0:
+                                    infoVO.setRoomimg1(imageIdList.get(0));
+                                    break;
+                                case 1:
+                                    infoVO.setRoomimg2(imageIdList.get(1));
+                                    break;
+                                case 2:
+                                    infoVO.setRoomimg3(imageIdList.get(2));
+                                    break;
+                                case 3:
+                                    infoVO.setRoomimg4(imageIdList.get(3));
+                                    break;
+                                case 4:
+                                    infoVO.setRoomimg5(imageIdList.get(4));
+                                    break;
+                            }
+                        }
+
+                        // info list
+                        list.add(infoVO);
                     }
                     infoService.insertAccommodationInfoList(list);
                     break;
@@ -168,136 +281,196 @@ public class KTOController {
                 default: {
                     List<DetailInfoVO> list = new ArrayList<>(infoList.size());
                     for (Map<String, Object> i : infoList) {
-                        list.add(DetailInfoVO.valueOf(cotId, i));
+                        list.add(DetailInfoVO.valueOf(newCotId, i));
                     }
                     infoService.insertDetailInfoList(list);
                 }
             }
         }
 
-        //  department 무장애관광
+        // 부서 처리
+        // department 무장애관광
         if (master.isWithTour()) {
-            infoService.deleteDetailInfoWithTour(cotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (Map<String, Object>) item.get("withtour")));
+            infoService.deleteDetailInfoWithTour(newCotId);
+            infoService.insertDetailInfo(DetailWithTourVO.valueOf(newCotId, (Map<String, Object>) item.get("withtour")));
 
-            // TODO 없으면 INSERT
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
-            departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
+            if (departmentContentService.findOne(newCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
+            }
         }
 
         // department 생태관광
         if (master.isGreenTour()) {
-            // TODO 없으면 INSERT
             String otdId = DepartmentContentVO.OTD_ID_GREENTOUR;
-            departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
+            if (departmentContentService.findOne(newCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
+            }
         }
 
         // department 한국관광품질인증
-        if (content.getTitle().contains("한국관광품질인증")) {
-            // TODO 없으면 INSERT
-            String otdId = DepartmentContentVO.OTD_ID_INDUSTRYTOUR;
-            departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
+        if (content.getTitle().matches("(?:.*한국관광\\s*품질인증.*)|(?:.*Korea Quality.*)")) {
+            String otdId = DepartmentContentVO.OTD_ID_KOREA_QUALITY;
+            if (departmentContentService.findOne(newCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
+            }
         }
 
-        // TODO department 산업관광
+        // department 산업관광
+        if (dataBaseMasterVo.getCat2().equals("A0204")) {
+            String otdId = DepartmentContentVO.OTD_ID_INDUSTRYTOUR;
+            if (departmentContentService.findOne(newCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
+            }
+        }
 
+        // 태그 처리
+        // tag
+        String tagId = null;
+        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) { // 관광지
+            tagId = ContentTagsVO.TAG_ID_TOURIST;
+        } else if (dataBaseMasterVo.getCat1().equals("A03")) { // 레포츠
+            tagId = ContentTagsVO.TAG_ID_LEPORTS;
+        } else if (dataBaseMasterVo.getCat1().equals("A04")) { // 쇼핑
+            tagId = ContentTagsVO.TAG_ID_SHOPPING;
+        } else if (dataBaseMasterVo.getCat1().equals("A05")) { // 음식
+            tagId = ContentTagsVO.TAG_ID_EATERY;
+        } else if (dataBaseMasterVo.getCat1().equals("B02")) { // 숙박
+            tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
+        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 여행코스
+            tagId = ContentTagsVO.TAG_ID_COURSE;
+        }
 
-        // TODO tag
-        // TODO 없으면 INSERT
-        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("A03")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("A04")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("A05")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("B02")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("C01")) {
-
+        if (tagId != null && contentTagsService.findOne(newCotId, tagId) == null) {
+            contentTagsService.insert(ContentTagsVO.valueOf(newCotId, tagId));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private void update(String cotId, Map<String, Object> item) {
+    private void update(String oldCotId, Map<String, Object> item) {
         Master master = Master.wrap((Map<String, Object>) item.get("master"));
         Map<String, Object> common = (Map<String, Object>) item.get("common");
 
-        logger.info(":::UPDATE:::{}", master);
-
-        ContentMasterVO content = ContentMasterVO.valueOf(cotId, master, common);
-        contentMasterService.update(content);
-
-        // database master
-        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(cotId, common);
-
-        // image
-        ImageVO firstImageVo = null, firstImage2Vo = null;
-        List<Map<String, Object>> imageList = (List<Map<String, Object>>) item.get("image");
-        if (imageList != null) {
-            for (Map<String, Object> image : imageList) {
-                ImageVO imageVo = ImageVO.valueOf(cotId, image);
-                if (common.get("firstimage") != null && common.get("firstimage").toString().equals(imageVo.getUrl())) {
-                    firstImageVo = imageVo;
-                }
-                if (common.get("firstimage2") != null && common.get("firstimage2").toString().equals(imageVo.getUrl())) {
-                    firstImage2Vo = imageVo;
-                }
-                if (imageService.findOneByCotId(cotId, imageVo.getUrl()) == null) {
-                    imageService.insert(imageVo);
-                } else {
-                    imageService.update(imageVo);
-                }
-            }
-
-            if (firstImageVo == null && imageList.size() > 0) {
-                firstImageVo = ImageVO.valueOf(cotId, imageList.get(0));
-            }
-
-            if (firstImage2Vo == null && imageList.size() > 0) {
-                firstImage2Vo = ImageVO.valueOf(cotId, imageList.get(0));
+        // NOTE. `detailCommon`  API를 통해 유입된 정보의 경우 `withtour` 필드를 `master`에서 확인할 수 없다.
+        //       이런 경우에는 아래 판단으로 처리하도록 한다.
+        if (master.get("withtour") == null) {
+            // 이 경우에는 무장애로 간주한다.
+            if (item.get("withtour") != null) {
+                master.setWithTour(true);
             }
         }
 
-        dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImageid());
-        dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImageid());
+        logger.info(":::UPDATE:::{}", master);
+
+        ContentMasterVO content = ContentMasterVO.valueOf(oldCotId, master, common);
+
+        // NOTE. `그린투어(생태관광)`일 경우 Content Type ID는 `2000`이다.
+        //       하지만, 업데이트 시에는 `그린투어` 인지 여부를 확인할 수 없다.
+        //       아래는 무조건 `false`로 처리되어 무시됨에 유의하라.
+        if (master.isGreenTour()) {
+            content.setContenttypeid(TYPE_GREEN_TOUR);
+        }
+
+        contentMasterService.update(content);
+
+        // image
+        List<Map<String, Object>> imageList = (List<Map<String, Object>>) item.get("image");
+        if (imageList != null) {
+            int index = 1;
+            for (Map<String, Object> image : imageList) {
+                // NOTE. 썸네일 이미지를 포함하고 있지만, 일단 썸네일은 무시하자!
+                //       여기서는 실제 이미지만 취하고(썸네일 제외) 데이터베이스에 등록한다.
+                ImageVO imageVo = ImageVO.valueOf(oldCotId, image);
+                if (imageService.findOneByCotId(oldCotId, imageVo.getUrl()) == null) {
+                    imageVo.setImgid(createImgId()); // Image Id 생성
+                    imageVo.setImagedescription(content.getTitle() + " " + index ++);
+                    imageService.insert(imageVo);
+                } else {
+                    // NOTE. 이미지가 이미 존재하는 경우에는 `SKIP` 한다.
+                }
+
+            }
+        }
+
+        ImageVO firstImageVo = null, firstImage2Vo = null;
+        if (common.get("firstimage") != null) {
+            String url = common.get("firstimage").toString();
+            if (imageService.findOneByCotId(oldCotId, url) == null) {
+                firstImageVo = new ImageVO();
+                firstImageVo.setCotid(oldCotId);
+                firstImageVo.setImgid(createImgId());
+                firstImageVo.setUrl(url);
+                firstImageVo.setImagedescription(content.getTitle());
+                firstImageVo.setIsthubnail(0);
+                imageService.insert(firstImageVo);
+            }
+        }
+
+        // NOTE. 마스터를 통해 유입된 이미지에도 썸네일이 포함되어 있는데,
+        //       이때에는 썸네일을 등록 처리하도록 하자!! (호환성 문제로)
+        //       아무튼 이미지 처리는 아직 많은 이슈를 가지고 있다.
+        if (common.get("firstimage2") != null) {
+            String url = common.get("firstimage2").toString();
+            if (imageService.findOneByCotId(oldCotId, url) == null) {
+                firstImage2Vo = new ImageVO();
+                firstImage2Vo.setCotid(oldCotId);
+                firstImage2Vo.setImgid(createImgId());
+                firstImage2Vo.setUrl(url);
+                firstImage2Vo.setImagedescription(content.getTitle());
+                firstImage2Vo.setIsthubnail(1);
+                imageService.insert(firstImage2Vo);
+            }
+        }
+
+        // NOTE. API를 통해 마스터로 유입된 이미지가 없다면, 상세 이미지중 첫번째를 메인 이미지로 취한다.
+        if (firstImageVo == null || firstImage2Vo == null) {
+            List<ImageVO> list = imageService.findAllByCotId(oldCotId);
+            if (list != null && !list.isEmpty()) {
+                firstImageVo = firstImage2Vo = list.get(0);
+            }
+        }
 
         // database master
-        if (databaseMasterService.findOne(cotId) == null) {
+        DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(oldCotId, common);
+        dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
+        dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
+
+        // database master
+        // NOTE. 업데이트의 경우이지만 아래처럼 등록 메소드가 관련된 이유는 데이터의 무결성이 깨어진 상태에서
+        //       불일치가 발생하고 있기 때문에 보정차원에서 추가하게 되었다.
+        if (databaseMasterService.findOne(oldCotId) == null) {
             databaseMasterService.insert(dataBaseMasterVo);
         } else {
             databaseMasterService.update(dataBaseMasterVo);
         }
-
 
         final int contentTypeId = master.getContentTypeId();
         // intro
         Map<String, Object> introMap = (Map<String, Object>) item.get("intro");
         switch (contentTypeId) {
             case TYPE_TOURIST:
-                introService.updateTouristIntro(TouristIntroVO.valueOf(cotId, introMap));
+                introService.updateTouristIntro(TouristIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_CULTURAL:
-                introService.updateCulturalIntro(CulturalIntroVO.valueOf(cotId, introMap));
+                introService.updateCulturalIntro(CulturalIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_FESTIVAL:
-                introService.updateFestivalIntro(FestivalIntroVO.valueOf(cotId, introMap));
+                introService.updateFestivalIntro(FestivalIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_COURSE:
-                introService.updateCourseIntro(CourseIntroVO.valueOf(cotId, introMap));
+                introService.updateCourseIntro(CourseIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_LEPORTS:
-                introService.updateLeportsIntro(LeportsIntroVO.valueOf(cotId, introMap));
+                introService.updateLeportsIntro(LeportsIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_ACCOMMODATION:
-                introService.updateAccommodationIntro(AccommodationIntroVO.valueOf(cotId, introMap));
+                introService.updateAccommodationIntro(AccommodationIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_SHOPPING:
-                introService.updateShoppingIntro(ShoppingIntroVO.valueOf(cotId, introMap));
+                introService.updateShoppingIntro(ShoppingIntroVO.valueOf(oldCotId, introMap));
                 break;
             case TYPE_EATERY:
-                introService.updateEateryIntro(EateryIntroVO.valueOf(cotId, introMap));
+                introService.updateEateryIntro(EateryIntroVO.valueOf(oldCotId, introMap));
                 break;
         }
 
@@ -306,73 +479,26 @@ public class KTOController {
         if (infoList != null) {
             switch (contentTypeId) {
                 case TYPE_COURSE:
-                    infoService.deleteCourseInfo(cotId);
+                    infoService.deleteCourseInfo(oldCotId);
                     for (Map<String, Object> i : infoList) {
-                        infoService.insertCourseInfo(CourseInfoVO.valueOf(cotId, i));
+                        infoService.insertCourseInfo(CourseInfoVO.valueOf(oldCotId, i));
                     }
                     break;
                 case TYPE_ACCOMMODATION:
-                    infoService.deleteCourseInfo(cotId);
+                    infoService.deleteAccommodationInfo(oldCotId);
                     for (Map<String, Object> i : infoList) {
-                        infoService.insertAccommodationInfo(AccommodationInfoVO.valueOf(cotId, i));
+                        infoService.insertAccommodationInfo(AccommodationInfoVO.valueOf(oldCotId, i));
                     }
                     break;
                 default:
-                    infoService.deleteDetailInfo(cotId);
+                    infoService.deleteDetailInfo(oldCotId);
                     for (Map<String, Object> i : infoList) {
-                        infoService.insertDetailInfo(DetailInfoVO.valueOf(cotId, i));
+                        infoService.insertDetailInfo(DetailInfoVO.valueOf(oldCotId, i));
                     }
             }
         }
 
-        // department 무장애관광
-        if (master.isWithTour()) {
-            infoService.deleteDetailInfoWithTour(cotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(cotId, (Map<String, Object>) item.get("withtour")));
-
-            // TODO 없으면 INSERT
-            String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
-            departmentContentService.insert(DepartmentContentVO.valueOf(otdId, cotId));
-        }
-
-        // TODO department 생태관광
-        if (master.isGreenTour()) {
-            // TODO 없으면 INSERT
-        }
-
-        // TODO department 한국관광품질인증
-
-        // TODO department 산업관광
-
-        // TODO tag
-        // TODO 없으면 INSERT
-        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("A03")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("A04")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("A05")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("B02")) {
-
-        } else if (dataBaseMasterVo.getCat1().equals("C01")) {
-
-        }
-    }
-
-    private static int getIntValue(Map<String, Object> map, String name) {
-        String string = map.get(name).toString();
-        return Integer.parseInt(string);
-    }
-
-    private static long getLongValue(Map<String, Object> map, String name) {
-        String string = map.get(name).toString();
-        return Long.parseLong(string);
-    }
-
-    private static float getFloatValue(Map<String, Object> map, String name) {
-        String string = map.get(name).toString();
-        return Float.parseFloat(string);
+        // NOTE. Department 부서 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
+        // NOTE. TAG 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
     }
 }

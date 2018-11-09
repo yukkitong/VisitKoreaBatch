@@ -55,12 +55,16 @@ public class Main {
     public ApplicationRunner applicationRunner(ApplicationContext context) {
         return (ApplicationArguments args) -> {
 
-            if (args.containsOption(VERSION)) {
+            if (args.getSourceArgs().length == 0) {
                 printVersion();
-                System.exit(0);
+                printHelp();
+                return;
+            } else if (args.containsOption(VERSION)) {
+                printVersion();
+                return;
             } else if (args.containsOption(HELP)) {
                 printHelp();
-                System.exit(0);
+                return;
             }
 
             if (args.getSourceArgs()[0].equals("fetch")) {                       // fetch only
@@ -78,11 +82,10 @@ public class Main {
                     filteredFetchRunner.execute(loadContentIdArray(cidFileName));
                     writeToFile(filteredFetchRunner.getResultList(), args);
                 } else if (args.containsOption("cid")) {
-                    filteredFetchRunner.execute(args.getOptionValues("cid").toArray(new String[0]));
+                    filteredFetchRunner.execute(args.getOptionValues("cid").get(0).split(","));
                     writeToFile(filteredFetchRunner.getResultList(), args);
                 } else {
                     printHelp();
-                    System.exit(-1);
                 }
             } else if (args.getSourceArgs()[0].equals("update")) {
                 if (args.containsOption("dates")) {                        // fetch and update
@@ -95,7 +98,6 @@ public class Main {
                         fetchRunner.execute(dates, dates);
                     }
                     writeToFile(fetchRunner.getResultList(), args);
-
                     dataManipulateRunner.execute(fetchRunner.getResultList());
                 } else if (args.containsOption("file")) {                  // update only with a file
                     List<Map<String, Object>> resultList = null;
@@ -111,12 +113,21 @@ public class Main {
                         logger.error(e.getMessage(), e);
                         System.exit(-1);
                     }
-
                     dataManipulateRunner.execute(resultList);
+                } else if (args.containsOption("cid-file")) {
+                    String cidFileName = args.getOptionValues("cid-file").get(0);
+                    filteredFetchRunner.execute(loadContentIdArray(cidFileName));
+                    writeToFile(filteredFetchRunner.getResultList(), args);
+                    dataManipulateRunner.execute(filteredFetchRunner.getResultList());
+                } else if (args.containsOption("cid")) {
+                    filteredFetchRunner.execute(args.getOptionValues("cid").get(0).split(","));
+                    writeToFile(filteredFetchRunner.getResultList(), args);
+                    dataManipulateRunner.execute(filteredFetchRunner.getResultList());
+                } else {
+                    printHelp();
                 }
             } else {
                 printHelp();
-                System.exit(-1);
             }
         };
     }

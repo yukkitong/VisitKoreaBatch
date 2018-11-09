@@ -14,8 +14,12 @@ public class DepartmentContentService {
     private DepartmentContentMapper departmentContentMapper;
 
 
-    List<DepartmentContentVO> findAllByCotId(String cotid) {
+    public List<DepartmentContentVO> findAllByCotId(String cotid) {
         return departmentContentMapper.findAllByCotId(cotid);
+    }
+
+    public String findOne(String cotid, String otdid) {
+        return departmentContentMapper.findOne(cotid, otdid);
     }
 
     public int insert(DepartmentContentVO item) {
