@@ -135,6 +135,8 @@ public class TourApiClient {
                     "&MobileApp=" + MOBILE_APP +
                     "&contentId=" + contentId +
                     "&contentTypeId=" + contentTypeId +
+                    "&pageNo=" + pageNo +
+                    "&numOfRows=" + rowsPerPage +
                     "&_type=json");
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -149,6 +151,8 @@ public class TourApiClient {
                     "&MobileOS=" + MOBILE_OS +
                     "&MobileApp=" + MOBILE_APP +
                     "&contentId=" + contentId +
+                    "&pageNo=" + pageNo +
+                    "&numOfRows=" + rowsPerPage +
                     "&imageYN=Y" +
                     "&subImageYN=Y" +
                     "&_type=json");
