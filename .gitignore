@@ -116,3 +116,6 @@ buildNumber.properties
 !.vscode/extensions.json
 
 # End of https://www.gitignore.io/api/linux,maven,intellij,visualstudiocode
+
+*.json
+*.log

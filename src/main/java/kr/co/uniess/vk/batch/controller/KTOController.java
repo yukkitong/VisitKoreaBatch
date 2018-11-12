@@ -353,7 +353,7 @@ public class KTOController {
             tagId = ContentTagsVO.TAG_ID_EATERY;
         } else if (dataBaseMasterVo.getCat1().equals("B02")) { // 숙박
             tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
-        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 여행코스
+        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 추천코스
             tagId = ContentTagsVO.TAG_ID_COURSE;
         }
 
@@ -511,6 +511,8 @@ public class KTOController {
                     }
                     break;
                 case TYPE_ACCOMMODATION:
+                    // NOTE. 숙박 수정 경우 `룸이미지`에 대한 처리를 제외하였다.
+                    //       따라서 이미지의 변화가 없다면 이부분을 염두해 두어야 한다.
                     infoService.deleteAccommodationInfo(oldCotId);
                     for (Map<String, Object> i : infoList) {
                         infoService.insertAccommodationInfo(AccommodationInfoVO.valueOf(oldCotId, i));
@@ -579,7 +581,7 @@ public class KTOController {
             tagId = ContentTagsVO.TAG_ID_EATERY;
         } else if (dataBaseMasterVo.getCat1().equals("B02")) { // 숙박
             tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
-        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 여행코스
+        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 추천코스
             tagId = ContentTagsVO.TAG_ID_COURSE;
         }
 
