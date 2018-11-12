@@ -22,7 +22,7 @@ public class ContentTagsVO {
     /**
      * 쇼핑 TAG_ID ( CAT1 = A04 )
      */
-    public final static String TAG_ID_SHOPPING = "0f29b431-75ac-4ab4-a892-b247d516b31";
+    public final static String TAG_ID_SHOPPING = "0f29b431-75ac-4ab4-a892-b247d516b31d"; // TODO `DOC` 수정 TAG_ID TYPO
 
     /**
      * 음식 TAG_ID ( CAT1 = A05 )
@@ -35,9 +35,9 @@ public class ContentTagsVO {
     public final static String TAG_ID_ACCOMMODATION = "b7023aff-8138-4a00-ae7f-e4fe7b13a61b";
 
     /**
-     * 코스 TAG_ID ( CAT1 = C01 )
+     * 추천코스 TAG_ID ( CAT1 = C01 )
      */
-    public final static String TAG_ID_COURSE = "8ddf2f14-a1c7-11e8-8165-020027310001";
+    public final static String TAG_ID_COURSE = "25e9e811-96e1-11e8-8165-020027310001";
 
     private String tagid;
     private String cotid;

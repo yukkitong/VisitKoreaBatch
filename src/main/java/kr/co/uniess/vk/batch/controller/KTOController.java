@@ -19,7 +19,7 @@ import java.util.UUID;
  * - 이미지는 API를 통해 100% 전달되지 않는다.
  * - 그렇다면 100%는 어디를 통해 전달되는가? 바로 액셀파일이다.
  * - API를 통해 전달되는 이미지의 종류는 메인 이미지 (마스터정보 `first_image`)와 상세 이미지가 있다.
- * - 액셀파일을 통해 전달되는 이미지는 `MAINIMGCHK` 컬럼에 별도 표시 `O`로 메인 이미지와 상세를 구분한다.
+ * - 액셀파일을 통해 전달되는 이미지는 `MAINIMGCHK` 컬럼에 별도 표시 `O`(메인)로 메인 이미지와 상세를 구분한다.
  *
  * => 어떤 이유(저작권 문제 등)로 이미지의 100%를 API를 통해 전달하지 못하는 문제가 발생하고 있다.
  *    그렇기 때문에 API를 통해 전달받은 이미지를 등록 또는 수정 처리할 경우에는 `임시조치`로 판단하고 처리해야 한다.
@@ -132,26 +132,42 @@ public class KTOController {
 
         ImageVO firstImageVo = null, firstImage2Vo = null;
         if (common.get("firstimage") != null) {
+            String url = common.get("firstimage").toString();
+
             firstImageVo = new ImageVO();
             firstImageVo.setCotid(newCotId);
-            firstImageVo.setImgid(createImgId());
-            firstImageVo.setUrl(common.get("firstimage").toString());
+            firstImageVo.setUrl(url);
             firstImageVo.setImagedescription(content.getTitle());
-            firstImageVo.setIsthubnail(0);
-            imageService.insert(firstImageVo);
+            firstImageVo.setIsthubnail(1);
+
+            String imageId = imageService.findOneByCotId(newCotId, url);
+            if (imageId == null) {
+                firstImageVo.setImgid(createImgId());
+                imageService.insert(firstImageVo);
+            } else {
+                firstImageVo.setImgid(imageId);
+            }
         }
 
         // NOTE. 마스터를 통해 유입된 이미지에도 썸네일이 포함되어 있는데,
         //       이때에는 썸네일을 등록 처리하도록 하자!! (호환성 문제로)
         //       아무튼 이미지 처리는 아직 많은 이슈를 가지고 있다.
         if (common.get("firstimage2") != null) {
+            String url = common.get("firstimage2").toString();
+
             firstImage2Vo = new ImageVO();
             firstImage2Vo.setCotid(newCotId);
-            firstImage2Vo.setImgid(createImgId());
-            firstImage2Vo.setUrl(common.get("firstimage2").toString());
+            firstImage2Vo.setUrl(url);
             firstImage2Vo.setImagedescription(content.getTitle());
             firstImage2Vo.setIsthubnail(1);
-            imageService.insert(firstImage2Vo);
+
+            String imageId = imageService.findOneByCotId(newCotId, url);
+            if (imageId == null) {
+                firstImage2Vo.setImgid(createImgId());
+                imageService.insert(firstImage2Vo);
+            } else {
+                firstImage2Vo.setImgid(imageId);
+            }
         }
 
         // NOTE. API를 통해 마스터로 유입된 이미지가 없다면, 상세 이미지중 첫번째를 메인 이미지로 취한다.
@@ -395,14 +411,19 @@ public class KTOController {
         ImageVO firstImageVo = null, firstImage2Vo = null;
         if (common.get("firstimage") != null) {
             String url = common.get("firstimage").toString();
-            if (imageService.findOneByCotId(oldCotId, url) == null) {
-                firstImageVo = new ImageVO();
-                firstImageVo.setCotid(oldCotId);
+
+            firstImageVo = new ImageVO();
+            firstImageVo.setCotid(oldCotId);
+            firstImageVo.setUrl(url);
+            firstImageVo.setImagedescription(content.getTitle());
+            firstImageVo.setIsthubnail(1);
+
+            String imageId = imageService.findOneByCotId(oldCotId, url);
+            if (imageId == null) {
                 firstImageVo.setImgid(createImgId());
-                firstImageVo.setUrl(url);
-                firstImageVo.setImagedescription(content.getTitle());
-                firstImageVo.setIsthubnail(0);
                 imageService.insert(firstImageVo);
+            } else {
+                firstImageVo.setImgid(imageId);
             }
         }
 
@@ -411,14 +432,19 @@ public class KTOController {
         //       아무튼 이미지 처리는 아직 많은 이슈를 가지고 있다.
         if (common.get("firstimage2") != null) {
             String url = common.get("firstimage2").toString();
-            if (imageService.findOneByCotId(oldCotId, url) == null) {
-                firstImage2Vo = new ImageVO();
-                firstImage2Vo.setCotid(oldCotId);
+
+            firstImage2Vo = new ImageVO();
+            firstImage2Vo.setCotid(oldCotId);
+            firstImage2Vo.setUrl(url);
+            firstImage2Vo.setImagedescription(content.getTitle());
+            firstImage2Vo.setIsthubnail(1);
+
+            String imageId = imageService.findOneByCotId(oldCotId, url);
+            if (imageId == null) {
                 firstImage2Vo.setImgid(createImgId());
-                firstImage2Vo.setUrl(url);
-                firstImage2Vo.setImagedescription(content.getTitle());
-                firstImage2Vo.setIsthubnail(1);
                 imageService.insert(firstImage2Vo);
+            } else {
+                firstImage2Vo.setImgid(imageId);
             }
         }
 
@@ -500,6 +526,7 @@ public class KTOController {
 
         // NOTE. Department 부서 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
         //       예외적으로 `무장애관광`에 대한 처리는 하여야 한다.
+        // NOTE. 하지만, UPDATE 시에도 아래 로직 적용하기로 함. (2018.11.12)
 
         // department 무장애관광
         if (master.isWithTour()) {
@@ -513,5 +540,51 @@ public class KTOController {
         }
 
         // NOTE. TAG 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
+        // NOTE. 하지만, UPDATE 시에도 아래 로직 적용하기로 함. (2018.11.12)
+
+        // department 생태관광
+        if (master.isGreenTour()) {
+            String otdId = DepartmentContentVO.OTD_ID_GREENTOUR;
+            if (departmentContentService.findOne(oldCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
+            }
+        }
+
+        // department 한국관광품질인증
+        if (content.getTitle().matches("(?:.*한국관광\\s*품질인증.*)|(?:.*Korea Quality.*)")) {
+            String otdId = DepartmentContentVO.OTD_ID_KOREA_QUALITY;
+            if (departmentContentService.findOne(oldCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
+            }
+        }
+
+        // department 산업관광
+        if (dataBaseMasterVo.getCat2().equals("A0204")) {
+            String otdId = DepartmentContentVO.OTD_ID_INDUSTRYTOUR;
+            if (departmentContentService.findOne(oldCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
+            }
+        }
+
+        // 태그 처리
+        // tag
+        String tagId = null;
+        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) { // 관광지
+            tagId = ContentTagsVO.TAG_ID_TOURIST;
+        } else if (dataBaseMasterVo.getCat1().equals("A03")) { // 레포츠
+            tagId = ContentTagsVO.TAG_ID_LEPORTS;
+        } else if (dataBaseMasterVo.getCat1().equals("A04")) { // 쇼핑
+            tagId = ContentTagsVO.TAG_ID_SHOPPING;
+        } else if (dataBaseMasterVo.getCat1().equals("A05")) { // 음식
+            tagId = ContentTagsVO.TAG_ID_EATERY;
+        } else if (dataBaseMasterVo.getCat1().equals("B02")) { // 숙박
+            tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
+        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 여행코스
+            tagId = ContentTagsVO.TAG_ID_COURSE;
+        }
+
+        if (tagId != null && contentTagsService.findOne(oldCotId, tagId) == null) {
+            contentTagsService.insert(ContentTagsVO.valueOf(oldCotId, tagId));
+        }
     }
 }

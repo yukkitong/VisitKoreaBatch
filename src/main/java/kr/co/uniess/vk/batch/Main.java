@@ -34,7 +34,7 @@ public class Main {
     private static final String VERSION = "version";
     private static final String HELP = "help";
 
-    private static final String VERSION_CODE = "1.0.0";
+    private static final String VERSION_CODE = "1.0-SNAPSHOT";
 
     private static final String DEFAULT_OUTPUT_JSON_FILENAME = "tour-api-result.json";
 
@@ -185,6 +185,22 @@ public class Main {
     }
 
     private void printHelp() {
-        System.out.println("Help");
+        System.out.println("VisitKoreaBatch " + VERSION_CODE);
+        System.out.println("Usage:");
+        System.out.println("      java -jar VisitKoreaBatch-[Version Name].jar [command] --[option]=[value] ...");
+        System.out.println("      command:");
+        System.out.println("          - fetch: Tour API 요청하여 데이터를 수집 저장합니다.");
+        System.out.println("          - update: Tour API를 통해 수집 및 수집된 데이터를 기반으로 DB와 동기화 작업을 수행합니다.");
+        System.out.println("      fetch option:");
+        System.out.println("                - dates=[start-date],[end-date]: 지정한 기간동안의 변경 정보를 수집합니다.");
+        System.out.println("                - dates=[date]: 특정날짜(하루) 동안의 변경 정보를 수집합니다.");
+        System.out.println("                - cid-file=[file-name]: cid 목록파일을 제공하여 지정된 cid에 대한 정보만 선택적으로 수집합니다.");
+        System.out.println("                - cid=[cid1],[cid2],..,[cidn]: cid 텍스트 목록을 제공하여 지정된 cid에 대한 정보만 선택적으로 수집합니다.");
+        System.out.println("                - output=[json file name]: Tour API를 통해 수집한 정보를 JSON 파일로 저장할 파일명을 지정합니다.");
+        System.out.println("      update option:");
+        System.out.println("                - file=[json file path]: 이미 수집된 파일(JSON)을 기반으로 DB 동기화 작업을 수행합니다.");
+        System.out.println("                - cid-file=[file-name]: cid 목록파일을 제공하여 지정된 cid에 대한 정보만 선택적으로 수집합니다.");
+        System.out.println("                - cid=[cid1],[cid2],..,[cidn]: cid 텍스트 목록을 제공하여 지정된 cid에 대한 정보만 선택적으로 수집합니다.");
+        System.out.println("                - output=[json file name]: Tour API를 통해 수집한 정보를 JSON 파일로 저장할 파일명을 지정합니다.");
     }
 }
