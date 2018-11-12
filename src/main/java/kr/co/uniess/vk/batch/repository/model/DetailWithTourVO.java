@@ -3,9 +3,7 @@ package kr.co.uniess.vk.batch.repository.model;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Alias("withtour")
@@ -47,16 +45,18 @@ public class DetailWithTourVO extends DetailInfoVO {
         MAPPING_TABLE = Collections.unmodifiableMap(map);
     }
 
-    public static DetailWithTourVO valueOf(String cotId, Map<String, Object> map) {
-        DetailWithTourVO vo = new DetailWithTourVO();
-        vo.setCotid(cotId);
-        vo.setFldgubun(5);  // 무장애 구분값 `5`
+    public static List<DetailWithTourVO> valueListOf(String cotId, Map<String, Object> map) {
+        ArrayList<DetailWithTourVO> list = new ArrayList<>();
         for (String key : map.keySet()) {
-            if (map.containsKey(key)) {
+            if (MAPPING_TABLE.containsKey(key)) {
+                DetailWithTourVO vo = new DetailWithTourVO();
+                vo.setCotid(cotId);
+                vo.setFldgubun(5);  // 무장애 구분값 `5`
                 vo.setDisplaytitle(MAPPING_TABLE.get(key));
                 vo.setContentbody(map.get(key).toString());
+                list.add(vo);
             }
         }
-        return vo;
+        return list.size() > 0 ? list : null;
     }
 }

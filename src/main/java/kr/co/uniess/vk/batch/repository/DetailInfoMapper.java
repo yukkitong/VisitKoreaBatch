@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface DetailInfoMapper {
-    int insertList(List<DetailInfoVO> list);
+    int insertList(List<? extends DetailInfoVO> list);
     int insert(DetailInfoVO item);
     int update(DetailInfoVO item);
     int delete(String cotid);

@@ -6,6 +6,7 @@ import kr.co.uniess.vk.batch.repository.DetailInfoMapper;
 import kr.co.uniess.vk.batch.repository.model.AccommodationInfoVO;
 import kr.co.uniess.vk.batch.repository.model.CourseInfoVO;
 import kr.co.uniess.vk.batch.repository.model.DetailInfoVO;
+import kr.co.uniess.vk.batch.repository.model.DetailWithTourVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,8 @@ public class InfoService {
         return detailInfoMapper.delete(cotid);
     }
 
-    public int insertDetailInfoList(List<DetailInfoVO> list) {
+    public int insertDetailInfoList(List<? extends DetailInfoVO> list) {
+        if (list == null) return 0;
         for (DetailInfoVO item : list) {
             if (item.getCotid() == null) {
                 throw new IllegalArgumentException("`COT_ID` must not be null.");

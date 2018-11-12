@@ -77,6 +77,7 @@ public class KTOController {
         return UUID.randomUUID().toString();
     }
 
+    @SuppressWarnings("unchecked")
     public void process(List<Map<String, Object>> list) {
         if (list == null || list.size() == 0) return;
         // Update database base on the results
@@ -308,7 +309,7 @@ public class KTOController {
         // department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(newCotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(newCotId, (Map<String, Object>) item.get("withtour")));
+            infoService.insertDetailInfoList(DetailWithTourVO.valueListOf(newCotId, (Map<String, Object>) item.get("withtour")));
 
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
             if (departmentContentService.findOne(newCotId, otdId) == null) {
@@ -343,18 +344,26 @@ public class KTOController {
         // 태그 처리
         // tag
         String tagId = null;
-        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) { // 관광지
-            tagId = ContentTagsVO.TAG_ID_TOURIST;
-        } else if (dataBaseMasterVo.getCat1().equals("A03")) { // 레포츠
-            tagId = ContentTagsVO.TAG_ID_LEPORTS;
-        } else if (dataBaseMasterVo.getCat1().equals("A04")) { // 쇼핑
-            tagId = ContentTagsVO.TAG_ID_SHOPPING;
-        } else if (dataBaseMasterVo.getCat1().equals("A05")) { // 음식
-            tagId = ContentTagsVO.TAG_ID_EATERY;
-        } else if (dataBaseMasterVo.getCat1().equals("B02")) { // 숙박
-            tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
-        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 추천코스
-            tagId = ContentTagsVO.TAG_ID_COURSE;
+        switch (dataBaseMasterVo.getCat1()) {
+            case "A01":
+            case "A02":  // 관광지
+                tagId = ContentTagsVO.TAG_ID_TOURIST;
+                break;
+            case "A03":  // 레포츠
+                tagId = ContentTagsVO.TAG_ID_LEPORTS;
+                break;
+            case "A04":  // 쇼핑
+                tagId = ContentTagsVO.TAG_ID_SHOPPING;
+                break;
+            case "A05":  // 음식
+                tagId = ContentTagsVO.TAG_ID_EATERY;
+                break;
+            case "B02":  // 숙박
+                tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
+                break;
+            case "C01":  // 추천코스
+                tagId = ContentTagsVO.TAG_ID_COURSE;
+                break;
         }
 
         if (tagId != null && contentTagsService.findOne(newCotId, tagId) == null) {
@@ -401,10 +410,9 @@ public class KTOController {
                     imageVo.setImgid(createImgId()); // Image Id 생성
                     imageVo.setImagedescription(content.getTitle() + " " + index ++);
                     imageService.insert(imageVo);
-                } else {
-                    // NOTE. 이미지가 이미 존재하는 경우에는 `SKIP` 한다.
                 }
 
+                // NOTE. 이미지가 이미 존재하는 경우에는 `SKIP` 한다.
             }
         }
 
@@ -533,7 +541,7 @@ public class KTOController {
         // department 무장애관광
         if (master.isWithTour()) {
             infoService.deleteDetailInfoWithTour(oldCotId);
-            infoService.insertDetailInfo(DetailWithTourVO.valueOf(oldCotId, (Map<String, Object>) item.get("withtour")));
+            infoService.insertDetailInfoList(DetailWithTourVO.valueListOf(oldCotId, (Map<String, Object>) item.get("withtour")));
 
             String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
             if (departmentContentService.findOne(oldCotId, otdId) == null) {
@@ -571,18 +579,26 @@ public class KTOController {
         // 태그 처리
         // tag
         String tagId = null;
-        if (dataBaseMasterVo.getCat1().equals("A01") || dataBaseMasterVo.getCat1().equals("A02")) { // 관광지
-            tagId = ContentTagsVO.TAG_ID_TOURIST;
-        } else if (dataBaseMasterVo.getCat1().equals("A03")) { // 레포츠
-            tagId = ContentTagsVO.TAG_ID_LEPORTS;
-        } else if (dataBaseMasterVo.getCat1().equals("A04")) { // 쇼핑
-            tagId = ContentTagsVO.TAG_ID_SHOPPING;
-        } else if (dataBaseMasterVo.getCat1().equals("A05")) { // 음식
-            tagId = ContentTagsVO.TAG_ID_EATERY;
-        } else if (dataBaseMasterVo.getCat1().equals("B02")) { // 숙박
-            tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
-        } else if (dataBaseMasterVo.getCat1().equals("C01")) { // 추천코스
-            tagId = ContentTagsVO.TAG_ID_COURSE;
+        switch (dataBaseMasterVo.getCat1()) {
+            case "A01":
+            case "A02":  // 관광지
+                tagId = ContentTagsVO.TAG_ID_TOURIST;
+                break;
+            case "A03":  // 레포츠
+                tagId = ContentTagsVO.TAG_ID_LEPORTS;
+                break;
+            case "A04":  // 쇼핑
+                tagId = ContentTagsVO.TAG_ID_SHOPPING;
+                break;
+            case "A05":  // 음식
+                tagId = ContentTagsVO.TAG_ID_EATERY;
+                break;
+            case "B02":  // 숙박
+                tagId = ContentTagsVO.TAG_ID_ACCOMMODATION;
+                break;
+            case "C01":  // 추천코스
+                tagId = ContentTagsVO.TAG_ID_COURSE;
+                break;
         }
 
         if (tagId != null && contentTagsService.findOne(oldCotId, tagId) == null) {
