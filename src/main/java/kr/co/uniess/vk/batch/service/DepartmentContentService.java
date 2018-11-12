@@ -23,16 +23,18 @@ public class DepartmentContentService {
     }
 
     public int insert(DepartmentContentVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return departmentContentMapper.insert(item);
     }
 
-    int update(DepartmentContentVO item) {
+    public int update(DepartmentContentVO item) {
+        ensureCotId(item);
+        return departmentContentMapper.update(item);
+    }
+
+    private void ensureCotId(DepartmentContentVO item) {
         if (item.getCotid() == null) {
             throw new IllegalArgumentException("`COT_ID` must not be null.");
         }
-        return departmentContentMapper.update(item);
     }
 }

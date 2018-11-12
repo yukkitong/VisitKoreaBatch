@@ -16,16 +16,18 @@ public class DatabaseMasterService {
     }
 
     public int insert(DatabaseMasterVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return databaseMasterMapper.insert(item);
     }
 
     public int update(DatabaseMasterVO item) {
+        ensureCotId(item);
+        return databaseMasterMapper.update(item);
+    }
+
+    private void ensureCotId(DatabaseMasterVO item) {
         if (item.getCotid() == null) {
             throw new IllegalArgumentException("`COT_ID` must not be null.");
         }
-        return databaseMasterMapper.update(item);
     }
 }

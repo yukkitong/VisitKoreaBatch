@@ -33,16 +33,18 @@ public class ImageService {
         if (image.getImgid() == null) {
             throw new IllegalArgumentException("`IMG_ID` must not be null.");
         }
-        if (image.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(image);
         return imageMapper.insert(image);
     }
 
     public int update(ImageVO image) {
-        if (image.getCotid() == null) {
+        ensureCotId(image);
+        return imageMapper.update(image);
+    }
+
+    private void ensureCotId(ImageVO item) {
+        if (item.getCotid() == null) {
             throw new IllegalArgumentException("`COT_ID` must not be null.");
         }
-        return imageMapper.update(image);
     }
 }

@@ -20,16 +20,18 @@ public class ContentMasterService {
     }
 
     public int insert(ContentMasterVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return contentMasterMapper.insert(item);
     }
 
     public int update(ContentMasterVO item) {
+        ensureCotId(item);
+        return contentMasterMapper.update(item);
+    }
+
+    private void ensureCotId(ContentMasterVO item) {
         if (item.getCotid() == null) {
             throw new IllegalArgumentException("`COT_ID` must not be null.");
         }
-        return contentMasterMapper.update(item);
     }
 }

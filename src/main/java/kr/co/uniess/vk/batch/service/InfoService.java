@@ -6,7 +6,6 @@ import kr.co.uniess.vk.batch.repository.DetailInfoMapper;
 import kr.co.uniess.vk.batch.repository.model.AccommodationInfoVO;
 import kr.co.uniess.vk.batch.repository.model.CourseInfoVO;
 import kr.co.uniess.vk.batch.repository.model.DetailInfoVO;
-import kr.co.uniess.vk.batch.repository.model.DetailWithTourVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -27,24 +26,18 @@ public class InfoService {
 
     public int insertAccommodationInfoList(List<AccommodationInfoVO> list) {
         for (AccommodationInfoVO item : list) {
-            if (item.getCotid() == null) {
-                throw new IllegalArgumentException("`COT_ID` must not be null.");
-            }
+            ensureCotId(item);
         }
         return accommodationInfoMapper.insertList(list);
     }
 
     public int insertAccommodationInfo(AccommodationInfoVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return accommodationInfoMapper.insert(item);
     }
 
     public int updateAccommodationInfo(AccommodationInfoVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return accommodationInfoMapper.update(item);
     }
 
@@ -54,24 +47,18 @@ public class InfoService {
 
     public int insertCourseInfoList(List<CourseInfoVO> list) {
         for (CourseInfoVO item : list) {
-            if (item.getCotid() == null) {
-                throw new IllegalArgumentException("`COT_ID` must not be null.");
-            }
+            ensureCotId(item);
         }
         return courseInfoMapper.insertList(list);
     }
 
     public int insertCourseInfo(CourseInfoVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return courseInfoMapper.insert(item);
     }
 
     public int updateCourseInfo(CourseInfoVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return courseInfoMapper.update(item);
     }
 
@@ -82,24 +69,18 @@ public class InfoService {
     public int insertDetailInfoList(List<? extends DetailInfoVO> list) {
         if (list == null) return 0;
         for (DetailInfoVO item : list) {
-            if (item.getCotid() == null) {
-                throw new IllegalArgumentException("`COT_ID` must not be null.");
-            }
+            ensureCotId(item);
         }
         return detailInfoMapper.insertList(list);
     }
 
     public int insertDetailInfo(DetailInfoVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return detailInfoMapper.insert(item);
     }
 
     public int updateDetailInfo(DetailInfoVO item) {
-        if (item.getCotid() == null) {
-            throw new IllegalArgumentException("`COT_ID` must not be null.");
-        }
+        ensureCotId(item);
         return detailInfoMapper.update(item);
     }
 
@@ -109,6 +90,24 @@ public class InfoService {
 
     public int deleteDetailInfoWithTour(String cotid) {
         return detailInfoMapper.deleteWithTour(cotid);
+    }
+
+    private void ensureCotId(DetailInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
+    }
+
+    private void ensureCotId(CourseInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
+    }
+
+    private void ensureCotId(AccommodationInfoVO item) {
+        if (item.getCotid() == null) {
+            throw new IllegalArgumentException("`COT_ID` must not be null.");
+        }
     }
 }
 
