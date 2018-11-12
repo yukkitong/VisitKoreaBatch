@@ -52,7 +52,7 @@
     </update>
 
     <delete id="delete" parameterType="string">
-        DELETE FROM DETAIL_INFO WHERE COT_ID = #{cotid}
+        DELETE FROM DETAIL_INFO WHERE FLD_GUBUN != 5 AND COT_ID = #{cotid}
     </delete>
 
     <delete id="deleteWithTour" parameterType="string">

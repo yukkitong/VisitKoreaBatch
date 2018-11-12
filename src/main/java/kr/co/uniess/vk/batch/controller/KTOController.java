@@ -499,6 +499,19 @@ public class KTOController {
         }
 
         // NOTE. Department 부서 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
+        //       예외적으로 `무장애관광`에 대한 처리는 하여야 한다.
+
+        // department 무장애관광
+        if (master.isWithTour()) {
+            infoService.deleteDetailInfoWithTour(oldCotId);
+            infoService.insertDetailInfo(DetailWithTourVO.valueOf(oldCotId, (Map<String, Object>) item.get("withtour")));
+
+            String otdId = DepartmentContentVO.OTD_ID_WITHTOUR;
+            if (departmentContentService.findOne(oldCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
+            }
+        }
+
         // NOTE. TAG 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
     }
 }

@@ -50,7 +50,7 @@ public class DetailWithTourVO extends DetailInfoVO {
     public static DetailWithTourVO valueOf(String cotId, Map<String, Object> map) {
         DetailWithTourVO vo = new DetailWithTourVO();
         vo.setCotid(cotId);
-        vo.setFldgubun(25);
+        vo.setFldgubun(5);  // 무장애 구분값 `5`
         for (String key : map.keySet()) {
             if (map.containsKey(key)) {
                 vo.setDisplaytitle(MAPPING_TABLE.get(key));
