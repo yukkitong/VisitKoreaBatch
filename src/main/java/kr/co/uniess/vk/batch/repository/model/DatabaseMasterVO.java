@@ -60,6 +60,13 @@ public class DatabaseMasterVO {
         vo.mlevel = Utils.valueString(item, "mlevel");
         vo.overview = Utils.valueString(item, "overview").replaceAll("'", "''");
 
+        if (vo.mapx.trim().equals("") || vo.mapx.trim().equals("null")) {
+            vo.mapx = null;
+        }
+        if (vo.mapy.trim().equals("") || vo.mapy.trim().equals("null")) {
+            vo.mapy = null;
+        }
+
         // NOTE. 이미지는 `IMAGE`에 등록후 해당 ID를 등록하여야 한다.
         //       따라서 외부에서 이미지 등록후 ID를 설정해야만 정상적용 된다.
         // vo.firstimage = Utils.valueString(item, "firstimage");
