@@ -25,6 +25,25 @@
         </foreach>
     </insert>
 
+    <insert id="insert" parameterType="course_info">
+        INSERT INTO COURSE_INFO
+        (
+            COT_ID,
+            SUB_CONTENT_ID,
+            SUB_DETAIL_IMG,
+            SUB_DETAIL_OVERVIEW,
+            SUB_NAME,
+            SUB_NUM
+        ) VALUES (
+            #{cotid},
+            #{subcontentid},
+            #{subdetailimg},
+            #{subdetailoverview},
+            #{subname},
+            #{subnum}
+        )
+    </insert>
+
     <update id="update" parameterType="course_info">
         UPDATE COURSE_INFO
         <set>
