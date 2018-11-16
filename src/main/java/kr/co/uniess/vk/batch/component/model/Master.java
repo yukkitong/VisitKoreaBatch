@@ -34,6 +34,8 @@ public class Master extends HashMap<String, Object> {
 
     public int getContentTypeId() {
         // FIXME: 간혹 "contenttypeid" 값이 없는 경우가 있어 이에 대한 대비가 필요하다.
+        // NOTE. "contenttypeid" 값이 없는 경우는 `생태관광`일 경우에 그러하다.
+        //
         return Integer.parseInt(get("contenttypeid").toString());
     }
 

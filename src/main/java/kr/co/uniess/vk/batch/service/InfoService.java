@@ -42,7 +42,7 @@ public class InfoService {
     }
 
     public int deleteAccommodationInfo(String cotid) {
-        return detailInfoMapper.delete(cotid);
+        return accommodationInfoMapper.delete(cotid);
     }
 
     public int insertCourseInfoList(List<CourseInfoVO> list) {
@@ -63,7 +63,7 @@ public class InfoService {
     }
 
     public int deleteCourseInfo(String cotid) {
-        return detailInfoMapper.delete(cotid);
+        return courseInfoMapper.delete(cotid);
     }
 
     public int insertDetailInfoList(List<? extends DetailInfoVO> list) {

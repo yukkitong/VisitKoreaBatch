@@ -15,9 +15,9 @@ public class TouristIntroVO {
     private String chkpet;
     private String expagerange;
     private String expguide;
-    private String heritage1;
-    private String heritage2;
-    private String heritage3;
+    private Integer heritage1;
+    private Integer heritage2;
+    private Integer heritage3;
     private String infocenter;
     private String opendate;
     private String parking;
@@ -34,9 +34,9 @@ public class TouristIntroVO {
         vo.chkpet = Utils.valueString(item, "chkpet");
         vo.expagerange = Utils.valueString(item, "expagerange");
         vo.expguide = Utils.valueString(item, "expguide");
-        vo.heritage1 = Utils.valueString(item, "heritage1");
-        vo.heritage2 = Utils.valueString(item, "heritage2");
-        vo.heritage3 = Utils.valueString(item, "heritage3");
+        vo.heritage1 = Utils.valueInteger(item, "heritage1");
+        vo.heritage2 = Utils.valueInteger(item, "heritage2");
+        vo.heritage3 = Utils.valueInteger(item, "heritage3");
         vo.infocenter = Utils.valueString(item, "infocenter");
         vo.opendate = Utils.valueString(item, "opendate");
         vo.parking = Utils.valueString(item, "parking");

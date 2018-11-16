@@ -88,6 +88,7 @@ public class FetchRunner implements Command<String> {
 
             // 생태관광 정보의 경우 태깅 처리하여
             // 이후 DB 업데이트 처리할때 부서 처리를 할수 있도록 한다.
+            // 생태관광의 경우 Tour API로 부터 내려오는 데이터 포맷이 다르다.
             for (Master item : greenTourList) {
                 item.setGreenTour(true);
             }
