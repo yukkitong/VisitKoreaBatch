@@ -23,10 +23,10 @@
     <update id="update" parameterType="course">
         UPDATE COURSE_INTRO
         <set>
-            <if test="distance != null">DISTANCE = #{distance}</if>
-            <if test="taketime != null">TAKE_TIME = #{taketime}</if>
-            <if test="contactinfo != null">CONTACT_INFO = #{contactinfo}</if>
-            <if test="schedule != null">SCHEDULE = #{schedule}</if>
+            <if test="distance != null">DISTANCE = #{distance},</if>
+            <if test="taketime != null">TAKE_TIME = #{taketime},</if>
+            <if test="contactinfo != null">CONTACT_INFO = #{contactinfo},</if>
+            <if test="schedule != null">SCHEDULE = #{schedule},</if>
             <if test="theme != null">THEME = #{theme}</if>
         </set>
         WHERE COT_ID = #{cotid}

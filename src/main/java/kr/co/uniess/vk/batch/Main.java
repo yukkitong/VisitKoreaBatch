@@ -89,7 +89,6 @@ public class Main {
                 }
             } else if (args.getSourceArgs()[0].equals("update")) {
                 if (args.containsOption("dates")) {                        // fetch and update
-                    FetchRunner fetchRunner = new FetchRunner();
                     String dates = args.getOptionValues("dates").get(0);
                     if (dates.contains(",")) {
                         String[] startEnd = dates.split(",");

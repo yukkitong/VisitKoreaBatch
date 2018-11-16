@@ -98,32 +98,37 @@ public class FetchRunner implements Command<String> {
             result.addAll(greenTourList);
 
             for (Master master : result) {
-                final String contentId = master.getContentId();
-                final int contentTypeId = master.getContentTypeId();
+                try {
+                    final String contentId = master.getContentId();
+                    final int contentTypeId = master.getContentTypeId();
 
-                Future<Map<String, Object>> futureCommon = threadPool.submit(TourApiClientCallableFactory.getKorServiceCommonCallable(contentId, contentTypeId));
-                Future<Map<String, Object>> futureIntro = threadPool.submit(TourApiClientCallableFactory.getKorServiceIntroCallable(contentId, contentTypeId));
-                Future<List<Map<String, Object>>> futureInfoList = threadPool.submit(TourApiClientCallableFactory.getKorServiceInfoCallable(contentId, contentTypeId));
-                Future<Map<String, Object>> futureWithTour = threadPool.submit(TourApiClientCallableFactory.getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
-                Future<List<Map<String, Object>>> futureImageList = threadPool.submit(TourApiClientCallableFactory.getKorServiceImageCallable(contentId));
+                    Future<Map<String, Object>> futureCommon = threadPool.submit(TourApiClientCallableFactory.getKorServiceCommonCallable(contentId, contentTypeId));
+                    Future<Map<String, Object>> futureIntro = threadPool.submit(TourApiClientCallableFactory.getKorServiceIntroCallable(contentId, contentTypeId));
+                    Future<List<Map<String, Object>>> futureInfoList = threadPool.submit(TourApiClientCallableFactory.getKorServiceInfoCallable(contentId, contentTypeId));
+                    Future<Map<String, Object>> futureWithTour = threadPool.submit(TourApiClientCallableFactory.getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
+                    Future<List<Map<String, Object>>> futureImageList = threadPool.submit(TourApiClientCallableFactory.getKorServiceImageCallable(contentId));
 
-                Map<String, Object> item = new HashMap<>();
-                item.put("master", master);
-                item.put("common", futureCommon.get());
-                if (futureIntro.get() != null) {
-                    item.put("intro", futureIntro.get());
-                }
-                if (futureInfoList.get() != null && !futureInfoList.get().isEmpty()) {
-                    item.put("info", futureInfoList.get());
-                }
-                if (futureWithTour.get() != null) {
-                    item.put("withtour", futureWithTour.get());
-                }
-                if (futureImageList.get() != null && !futureImageList.get().isEmpty()) {
-                    item.put("image", futureImageList.get());
-                }
+                    Map<String, Object> item = new HashMap<>();
+                    item.put("master", master);
+                    item.put("common", futureCommon.get());
+                    if (futureIntro.get() != null) {
+                        item.put("intro", futureIntro.get());
+                    }
+                    if (futureInfoList.get() != null && !futureInfoList.get().isEmpty()) {
+                        item.put("info", futureInfoList.get());
+                    }
+                    if (futureWithTour.get() != null) {
+                        item.put("withtour", futureWithTour.get());
+                    }
+                    if (futureImageList.get() != null && !futureImageList.get().isEmpty()) {
+                        item.put("image", futureImageList.get());
+                    }
 
-                aggregationList.add(item);
+                    aggregationList.add(item);
+                } catch(Exception e) {
+                    // ignore and skip..
+                    logger.error("SKIPPED CID: " + master.getContentId(), e);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
