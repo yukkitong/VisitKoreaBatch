@@ -245,13 +245,14 @@ public class KTOController {
                 case TYPE_ACCOMMODATION: {
                     List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
                     String[] roomImgKeys = new String[] { "roomimg1", "roomimg2", "roomimg3", "roomimg4", "roomimg5" };
+                    String[] roomImgAlts = new String[] { "roomimg1alt", "roomimg2alt", "roomimg3alt", "roomimg4alt", "roomimg5alt" };
                     ArrayList<String> imageIdList = new ArrayList<>();
                     for (Map<String, Object> i : infoList) {
 
                         imageIdList.clear();
 
                         // room images
-                        int index = 1;
+                        int index = 0;
                         for (String key : roomImgKeys) {
                             String roomImgUrl = Utils.valueString(i, key);
                             if (!roomImgUrl.isEmpty()) {
@@ -259,7 +260,7 @@ public class KTOController {
                                 imageVo.setImgid(createImgId());
                                 imageVo.setCotid(newCotId);
                                 imageVo.setUrl(roomImgUrl);
-                                imageVo.setImagedescription(content.getTitle() + " " + index ++);
+                                imageVo.setImagedescription(Utils.valueString(i, roomImgAlts[index ++]));
                                 imageService.insert(imageVo);
 
                                 // cache image id
@@ -519,12 +520,74 @@ public class KTOController {
                     }
                     break;
                 case TYPE_ACCOMMODATION:
-                    // NOTE. 숙박 수정 경우 `룸이미지`에 대한 처리를 제외하였다.
-                    //       따라서 이미지의 변화가 없다면 이부분을 염두해 두어야 한다.
                     infoService.deleteAccommodationInfo(oldCotId);
+
+                    List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
+                    String[] roomImgKeys = new String[] { "roomimg1", "roomimg2", "roomimg3", "roomimg4", "roomimg5" };
+                    String[] roomImgAlts = new String[] { "roomimg1alt", "roomimg2alt", "roomimg3alt", "roomimg4alt", "roomimg5alt" };
+                    ArrayList<String> imageIdList = new ArrayList<>();
                     for (Map<String, Object> i : infoList) {
-                        infoService.insertAccommodationInfo(AccommodationInfoVO.valueOf(oldCotId, i));
+
+                        imageIdList.clear();
+
+                        // room images
+                        int index = 0;
+                        for (String key : roomImgKeys) {
+                            String roomImgUrl = Utils.valueString(i, key);
+                            String imgId = imageService.findOneByCotId(oldCotId, roomImgUrl);
+                            if (imgId == null) {
+                                if (!roomImgUrl.isEmpty()) {
+                                    ImageVO imageVo = new ImageVO();
+                                    imageVo.setImgid(createImgId());
+                                    imageVo.setCotid(oldCotId);
+                                    imageVo.setUrl(roomImgUrl);
+                                    imageVo.setImagedescription(Utils.valueString(i, roomImgAlts[index ++]));
+                                    imageService.insert(imageVo);
+
+                                    // cache image id
+                                    imageIdList.add(imageVo.getImgid());
+                                }
+                            } else {
+                                if (!roomImgUrl.isEmpty()) {
+                                    ImageVO imageVo = new ImageVO();
+                                    imageVo.setImgid(imgId);
+                                    imageVo.setCotid(oldCotId);
+                                    imageVo.setUrl(roomImgUrl);
+                                    imageVo.setImagedescription(Utils.valueString(i, roomImgAlts[index++]));
+                                    imageService.update(imageVo);
+
+                                    // cache image id
+                                    imageIdList.add(imageVo.getImgid());
+                                }
+                            }
+                        }
+
+                        // set image id
+                        AccommodationInfoVO infoVO = AccommodationInfoVO.valueOf(oldCotId, i);
+                        for (int t = 0; t < imageIdList.size(); t ++) {
+                            switch (t) {
+                                case 0:
+                                    infoVO.setRoomimg1(imageIdList.get(0));
+                                    break;
+                                case 1:
+                                    infoVO.setRoomimg2(imageIdList.get(1));
+                                    break;
+                                case 2:
+                                    infoVO.setRoomimg3(imageIdList.get(2));
+                                    break;
+                                case 3:
+                                    infoVO.setRoomimg4(imageIdList.get(3));
+                                    break;
+                                case 4:
+                                    infoVO.setRoomimg5(imageIdList.get(4));
+                                    break;
+                            }
+                        }
+
+                        // info list
+                        list.add(infoVO);
                     }
+                    infoService.insertAccommodationInfoList(list);
                     break;
                 default:
                     infoService.deleteDetailInfo(oldCotId);
