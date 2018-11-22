@@ -26,7 +26,7 @@
     <update id="update" parameterType="department">
     </update>
 
-    <!-- TODO 로직 생성하면서 재고해봐야 -->
+    <!-- unused -->
     <delete id="delete" parameterType="department">
         DELETE FROM OTHER_DEPARTMENT_CONTENT WHERE COT_ID = #{cotid} AND OTD_ID = #{otdid}
     </delete>

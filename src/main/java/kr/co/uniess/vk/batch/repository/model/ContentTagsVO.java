@@ -22,7 +22,7 @@ public class ContentTagsVO {
     /**
      * 쇼핑 TAG_ID ( CAT1 = A04 )
      */
-    public final static String TAG_ID_SHOPPING = "0f29b431-75ac-4ab4-a892-b247d516b31d"; // TODO `DOC` 수정 TAG_ID TYPO
+    public final static String TAG_ID_SHOPPING = "0f29b431-75ac-4ab4-a892-b247d516b31d";
 
     /**
      * 음식 TAG_ID ( CAT1 = A05 )

@@ -6,9 +6,6 @@ import lombok.Getter;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
-// TODO Refactor to Abstract Factory Pattern, because there are various APIs.
-
 @Builder
 public class TourApiClient {
 
