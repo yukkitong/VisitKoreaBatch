@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.GreenMaster;
 import kr.co.uniess.vk.batch.component.model.Master;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
@@ -48,6 +49,20 @@ public class ContentMasterVO {
         return vo;
     }
 
+    public static ContentMasterVO valueOf(String cotId, GreenMaster master) {
+        ContentMasterVO vo = new ContentMasterVO();
+        vo.cotid = cotId;
+        vo.contentid = master.getContentId();
+        vo.contenttypeid = master.getContentTypeId();
+        vo.readcount = master.getReadCount();
+
+        vo.title = master.getTitle();
+        vo.displaytitle = master.getTitle();
+
+        setDefaultValue(vo);
+        return vo;
+    }
+
     // 종전의 로직과 동일: 하드코딩된 상수값으로 되어있어 동일한 방법으로 처리한다.
     private static void setDefaultValue(ContentMasterVO vo) {
         vo.showflag = "1";
@@ -55,6 +70,7 @@ public class ContentMasterVO {
         vo.createusrid = "4e512b8a-60ad-11e8-8cca-00232456a22f"; // who?
         vo.dept = "국내 온라인 홍보팀";
         vo.deptview = "국내 온라인 홍보팀";
+        // NOTE. `CONTENT_MASTER` 테이블에는 원주 전화번호
         vo.tel = "033-738-3588";
     }
 }

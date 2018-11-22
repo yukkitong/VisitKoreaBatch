@@ -3,6 +3,7 @@ package kr.co.uniess.vk.batch.component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.uniess.vk.batch.component.model.GreenMaster;
 import kr.co.uniess.vk.batch.component.model.Master;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class TourApiClientCallableFactory {
     }
 
     public static Callable<List<Master>> getGreenTourServiceMasterCallable(long start, long end) {
-        return createTourAPIMasterCallable(TourApiClient.builder().path("GreenTourService/areaBasedList"), start, end);
+        return createTourAPIGreenMasterCallable(TourApiClient.builder().path("GreenTourService/areaBasedList"), start, end);
     }
 
     public static Callable<Map<String, Object>> getKorServiceCommonCallable(String contentId) {
@@ -61,6 +62,7 @@ public class TourApiClientCallableFactory {
         return () -> {
             List<Master> resultList = new ArrayList<>();
 
+            boolean tracking = false;
             boolean needToFetchMore = true;
             while (needToFetchMore) {
                 TourApiClient client = builder.build();
@@ -70,10 +72,62 @@ public class TourApiClientCallableFactory {
                     String itemString = item.toString();
                     List<Master> items = mapper.readValue(itemString, typeReference);
                     for (Master i : items) {
-                        if (i.getModifiedDate() >= start && i.getModifiedDate() <= end) {
-                            resultList.add(i);
-                        } else {
-                            needToFetchMore = false;
+                        if (i.getModifiedDate() <= end) {
+                            tracking = true;
+                        }
+
+                        if (tracking) {
+                            if (i.getModifiedDate() >= start) {
+                                needToFetchMore = false;
+                            }
+                        }
+                    }
+                }
+
+                final int totalCount = root.findPath("totalCount").asInt();
+                if ((int) Math.ceil((double) totalCount / client.getRowsPerPage()) < client.getPageNo()) {
+                    break;
+                }
+
+                if (needToFetchMore) {
+                    builder.pageNo(client.getPageNo() + 1); // increase page!!
+                }
+            }
+            return resultList;
+        };
+    }
+
+    /**
+     * 각각의 Tour API 요청 Callable 생성 Factory Method - 생태관광 전용
+     * @param builder URL Builder
+     * @param start   start date
+     * @param end     end date
+     * @return List
+     */
+    private static Callable<List<Master>> createTourAPIGreenMasterCallable(TourApiClient.TourApiClientBuilder builder, long start, long end) {
+        ObjectMapper mapper = new ObjectMapper();
+        TypeReference<List<GreenMaster>> typeReference = new TypeReference<List<GreenMaster>>() {};
+        return () -> {
+            List<Master> resultList = new ArrayList<>();
+
+            boolean tracking = false;
+            boolean needToFetchMore = true;
+            while (needToFetchMore) {
+                TourApiClient client = builder.build();
+                JsonNode root = mapper.readTree(client.getMasterURL());
+                JsonNode item = root.findPath("item");
+                if (item.isArray()) {
+                    String itemString = item.toString();
+                    List<Master> items = mapper.readValue(itemString, typeReference);
+                    for (Master i : items) {
+                        if (i.getModifiedDate() <= end) {
+                            tracking = true;
+                        }
+
+                        if (tracking) {
+                            if (i.getModifiedDate() >= start) {
+                                needToFetchMore = false;
+                            }
                         }
                     }
                 }

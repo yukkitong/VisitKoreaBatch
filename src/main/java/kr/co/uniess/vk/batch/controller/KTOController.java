@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.controller;
 
+import kr.co.uniess.vk.batch.component.model.GreenMaster;
 import kr.co.uniess.vk.batch.component.model.Master;
 import kr.co.uniess.vk.batch.repository.model.*;
 import kr.co.uniess.vk.batch.service.*;
@@ -35,18 +36,6 @@ public class KTOController {
 
     private final Logger logger = LoggerFactory.getLogger(KTOController.class);
 
-    /**
-     * CONTENT TYPE ID
-     */
-    private static final int TYPE_TOURIST = 12;
-    private static final int TYPE_CULTURAL = 14;
-    private static final int TYPE_FESTIVAL = 15;
-    private static final int TYPE_COURSE = 25;
-    private static final int TYPE_LEPORTS = 28;
-    private static final int TYPE_ACCOMMODATION = 32;
-    private static final int TYPE_SHOPPING = 38;
-    private static final int TYPE_EATERY = 39;
-    private static final int TYPE_GREEN_TOUR = 2000;
 
     @Autowired
     private ContentMasterService contentMasterService;
@@ -95,6 +84,51 @@ public class KTOController {
     @SuppressWarnings("unchecked")
     private void insert(String newCotId, Map<String, Object> item) {
         Master master = Master.wrap((Map<String, Object>) item.get("master"));
+        logger.info(":::INSERT:::{}", master);
+        if (master.isGreenTour()) {
+            GreenMaster greenMaster = (GreenMaster) master;
+
+            // green tour - image
+            ImageVO firstImageVo = null;
+            if (greenMaster.get("firstimage") != null) {
+                String url = greenMaster.get("firstimage").toString();
+
+                firstImageVo = new ImageVO();
+                firstImageVo.setCotid(newCotId);
+                firstImageVo.setUrl(url);
+                firstImageVo.setImagedescription(greenMaster.getTitle());
+                firstImageVo.setIsthubnail(1);
+
+                String imageId = imageService.findOneByCotId(newCotId, url);
+                if (imageId == null) {
+                    firstImageVo.setImgid(createImgId());
+                    imageService.insert(firstImageVo);
+                } else {
+                    // 이미지가 존재하므로 스킵
+                    firstImageVo.setImgid(imageId);
+                }
+            }
+
+            // green tour master (content_master)
+            ContentMasterVO content = ContentMasterVO.valueOf(newCotId, greenMaster);
+            contentMasterService.insert(content);
+
+            // green tour master (database_master)
+            DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(newCotId, greenMaster);
+            dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
+            dataBaseMasterVo.setFirstimage2(null);
+            databaseMasterService.insert(dataBaseMasterVo);
+
+            // green tour - department 생태관광
+            String otdId = DepartmentContentVO.OTD_ID_GREENTOUR;
+            if (departmentContentService.findOne(newCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
+            }
+
+            // TODO green tour - TAG 처리
+            return;
+        }
+
         Map<String, Object> common = (Map<String, Object>) item.get("common");
 
         // NOTE. `detailCommon`  API를 통해 유입된 정보의 경우 `withtour` 필드를 `master`에서 확인할 수 없다.
@@ -106,15 +140,7 @@ public class KTOController {
             }
         }
 
-        logger.info(":::INSERT:::{}", master);
-
         ContentMasterVO content = ContentMasterVO.valueOf(newCotId, master, common);
-
-        // NOTE. `그린투어`일 경우 Content Type ID는 `2000`이다.
-        if (master.isGreenTour()) {
-            content.setContenttypeid(TYPE_GREEN_TOUR);
-        }
-
         contentMasterService.insert(content);
 
         // image
@@ -189,28 +215,28 @@ public class KTOController {
         // intro
         Map<String, Object> introMap = (Map<String, Object>) item.get("intro");
         switch (contentTypeId) {
-            case TYPE_TOURIST:
+            case Master.TYPE_TOURIST:
                 introService.insertTouristIntro(TouristIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_CULTURAL:
+            case Master.TYPE_CULTURAL:
                 introService.insertCulturalIntro(CulturalIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_FESTIVAL:
+            case Master.TYPE_FESTIVAL:
                 introService.insertFestivalIntro(FestivalIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_COURSE:
+            case Master.TYPE_COURSE:
                 introService.insertCourseIntro(CourseIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_LEPORTS:
+            case Master.TYPE_LEPORTS:
                 introService.insertLeportsIntro(LeportsIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_ACCOMMODATION:
+            case Master.TYPE_ACCOMMODATION:
                 introService.insertAccommodationIntro(AccommodationIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_SHOPPING:
+            case Master.TYPE_SHOPPING:
                 introService.insertShoppingIntro(ShoppingIntroVO.valueOf(newCotId, introMap));
                 break;
-            case TYPE_EATERY:
+            case Master.TYPE_EATERY:
                 introService.insertEateryIntro(EateryIntroVO.valueOf(newCotId, introMap));
                 break;
         }
@@ -219,7 +245,7 @@ public class KTOController {
         List<Map<String, Object>> infoList = (List<Map<String, Object>>) item.get("info");
         if (infoList != null) {
             switch (contentTypeId) {
-                case TYPE_COURSE: {
+                case Master.TYPE_COURSE: {
                     List<CourseInfoVO> list = new ArrayList<>(infoList.size());
                     for (Map<String, Object> i : infoList) {
                         String imgId = null, subDetailImgUrl = Utils.valueString(i, "subdetailimg");
@@ -242,7 +268,7 @@ public class KTOController {
                     infoService.insertCourseInfoList(list);
                     break;
                 }
-                case TYPE_ACCOMMODATION: {
+                case Master.TYPE_ACCOMMODATION: {
                     List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
                     String[] roomImgKeys = new String[] { "roomimg1", "roomimg2", "roomimg3", "roomimg4", "roomimg5" };
                     String[] roomImgAlts = new String[] { "roomimg1alt", "roomimg2alt", "roomimg3alt", "roomimg4alt", "roomimg5alt" };
@@ -318,14 +344,6 @@ public class KTOController {
             }
         }
 
-        // department 생태관광
-        if (master.isGreenTour()) {
-            String otdId = DepartmentContentVO.OTD_ID_GREENTOUR;
-            if (departmentContentService.findOne(newCotId, otdId) == null) {
-                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
-            }
-        }
-
         // department 한국관광품질인증
         if (content.getTitle().matches("(?:.*한국관광\\s*품질인증.*)|(?:.*Korea Quality.*)")) {
             String otdId = DepartmentContentVO.OTD_ID_KOREA_QUALITY;
@@ -375,6 +393,55 @@ public class KTOController {
     @SuppressWarnings("unchecked")
     private void update(String oldCotId, Map<String, Object> item) {
         Master master = Master.wrap((Map<String, Object>) item.get("master"));
+        logger.info(":::UPDATE:::{}", master);
+        if (master.isGreenTour()) {
+            GreenMaster greenMaster = (GreenMaster) master;
+
+            // green tour - image
+            ImageVO firstImageVo = null;
+            if (greenMaster.get("firstimage") != null) {
+                String url = greenMaster.get("firstimage").toString();
+
+                firstImageVo = new ImageVO();
+                firstImageVo.setCotid(oldCotId);
+                firstImageVo.setUrl(url);
+                firstImageVo.setImagedescription(greenMaster.getTitle());
+                firstImageVo.setIsthubnail(1);
+
+                String imageId = imageService.findOneByCotId(oldCotId, url);
+                if (imageId == null) {
+                    firstImageVo.setImgid(createImgId());
+                    imageService.insert(firstImageVo);
+                } else {
+                    // 이미지가 존재하므로 스킵
+                    firstImageVo.setImgid(imageId);
+                }
+            }
+
+            // green tour master (content_master)
+            ContentMasterVO content = ContentMasterVO.valueOf(oldCotId, greenMaster);
+            contentMasterService.update(content);
+
+            // green tour master (database_master)
+            DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(oldCotId, greenMaster);
+            dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
+            dataBaseMasterVo.setFirstimage2(null);
+            if (databaseMasterService.findOne(oldCotId) == null) {
+                databaseMasterService.insert(dataBaseMasterVo);
+            } else {
+                databaseMasterService.update(dataBaseMasterVo);
+            }
+
+            // department 생태관광
+            String otdId = DepartmentContentVO.OTD_ID_GREENTOUR;
+            if (departmentContentService.findOne(oldCotId, otdId) == null) {
+                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
+            }
+
+            // TODO green tour - TAG 처리
+            return;
+        }
+
         Map<String, Object> common = (Map<String, Object>) item.get("common");
 
         // NOTE. `detailCommon`  API를 통해 유입된 정보의 경우 `withtour` 필드를 `master`에서 확인할 수 없다.
@@ -386,17 +453,7 @@ public class KTOController {
             }
         }
 
-        logger.info(":::UPDATE:::{}", master);
-
         ContentMasterVO content = ContentMasterVO.valueOf(oldCotId, master, common);
-
-        // NOTE. `그린투어(생태관광)`일 경우 Content Type ID는 `2000`이다.
-        //       하지만, 업데이트 시에는 `그린투어` 인지 여부를 확인할 수 없다.
-        //       아래는 무조건 `false`로 처리되어 무시됨에 유의하라.
-        if (master.isGreenTour()) {
-            content.setContenttypeid(TYPE_GREEN_TOUR);
-        }
-
         contentMasterService.update(content);
 
         // image
@@ -483,28 +540,28 @@ public class KTOController {
         // intro
         Map<String, Object> introMap = (Map<String, Object>) item.get("intro");
         switch (contentTypeId) {
-            case TYPE_TOURIST:
+            case Master.TYPE_TOURIST:
                 introService.updateTouristIntro(TouristIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_CULTURAL:
+            case Master.TYPE_CULTURAL:
                 introService.updateCulturalIntro(CulturalIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_FESTIVAL:
+            case Master.TYPE_FESTIVAL:
                 introService.updateFestivalIntro(FestivalIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_COURSE:
+            case Master.TYPE_COURSE:
                 introService.updateCourseIntro(CourseIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_LEPORTS:
+            case Master.TYPE_LEPORTS:
                 introService.updateLeportsIntro(LeportsIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_ACCOMMODATION:
+            case Master.TYPE_ACCOMMODATION:
                 introService.updateAccommodationIntro(AccommodationIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_SHOPPING:
+            case Master.TYPE_SHOPPING:
                 introService.updateShoppingIntro(ShoppingIntroVO.valueOf(oldCotId, introMap));
                 break;
-            case TYPE_EATERY:
+            case Master.TYPE_EATERY:
                 introService.updateEateryIntro(EateryIntroVO.valueOf(oldCotId, introMap));
                 break;
         }
@@ -513,13 +570,13 @@ public class KTOController {
         List<Map<String, Object>> infoList = (List<Map<String, Object>>) item.get("info");
         if (infoList != null) {
             switch (contentTypeId) {
-                case TYPE_COURSE:
+                case Master.TYPE_COURSE:
                     infoService.deleteCourseInfo(oldCotId);
                     for (Map<String, Object> i : infoList) {
                         infoService.insertCourseInfo(CourseInfoVO.valueOf(oldCotId, i));
                     }
                     break;
-                case TYPE_ACCOMMODATION:
+                case Master.TYPE_ACCOMMODATION:
                     infoService.deleteAccommodationInfo(oldCotId);
 
                     List<AccommodationInfoVO> list = new ArrayList<>(infoList.size());
@@ -614,14 +671,6 @@ public class KTOController {
 
         // NOTE. TAG 처리는 신규건에 대해서만 적용하기로 하여 update()에서는 처리하지 아니함.
         // NOTE. 하지만, UPDATE 시에도 아래 로직 적용하기로 함. (2018.11.12)
-
-        // department 생태관광
-        if (master.isGreenTour()) {
-            String otdId = DepartmentContentVO.OTD_ID_GREENTOUR;
-            if (departmentContentService.findOne(oldCotId, otdId) == null) {
-                departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
-            }
-        }
 
         // department 한국관광품질인증
         if (content.getTitle().matches("(?:.*한국관광\\s*품질인증.*)|(?:.*Korea Quality.*)")) {

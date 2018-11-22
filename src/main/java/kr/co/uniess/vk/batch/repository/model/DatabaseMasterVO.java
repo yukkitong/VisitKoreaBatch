@@ -1,5 +1,6 @@
 package kr.co.uniess.vk.batch.repository.model;
 
+import kr.co.uniess.vk.batch.component.model.GreenMaster;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
@@ -60,12 +61,52 @@ public class DatabaseMasterVO {
         vo.mlevel = Utils.valueString(item, "mlevel");
         vo.overview = Utils.valueString(item, "overview").replaceAll("'", "''");
 
+        // NOTE. `DATABASE_MASTER` 테이블에는 관광지 정보에 해당하는 전화번호가 저장된다.
+        vo.admintel = Utils.valueString(item, "tel");
+        vo.adminname = Utils.valueString(item, "title");
+
         if (vo.mapx.trim().equals("") || vo.mapx.trim().equals("null")) {
             vo.mapx = null;
         }
         if (vo.mapy.trim().equals("") || vo.mapy.trim().equals("null")) {
             vo.mapy = null;
         }
+
+        // NOTE. 이미지는 `IMAGE`에 등록후 해당 ID를 등록하여야 한다.
+        //       따라서 외부에서 이미지 등록후 ID를 설정해야만 정상적용 된다.
+        // vo.firstimage = Utils.valueString(item, "firstimage");
+        // vo.firstimage2 = Utils.valueString(item, "firstimage2");
+
+        // NOTE. 나머지 미등록 컬럼에 대해서는 디폴트 값으로 대체되므로 여기서 따로 설정하지 않는다. (종전 로직과 동일)
+        return vo;
+    }
+
+    public static DatabaseMasterVO valueOf(String cotId, GreenMaster item) {
+        DatabaseMasterVO vo = new DatabaseMasterVO();
+        vo.cotid = cotId;
+
+        vo.areacode = Utils.valueInteger(item, "areacode");
+        vo.siguguncode = Utils.valueInteger(item, "sigungucode");
+
+        vo.addr1 = Utils.valueString(item, "addr");
+        vo.addr2 = null; // NOTE. 생태관광의 경우 `addr` -> `addr1`로만 처리하고 `addr2 = null`
+
+        vo.cat1 = Utils.valueString(item, "cat1"); // TODO DB에서 확인됨 하지만 어디에서 갖고옴?
+        vo.cat2 = Utils.valueString(item, "cat2"); // TODO DB에서 확인됨 하지만 어디에서 갖고옴?
+        vo.cat3 = null; // NOTE. 단순 `NULL`처리됨
+
+        vo.overview = Utils.valueString(item, "overview").replaceAll("'", "''");
+
+        // NOTE. `DATABASE_MASTER` 테이블에는 관광지 정보에 해당하는 전화번호가 저장된다.
+        vo.admintel = Utils.valueString(item, "tel");
+        vo.adminname = Utils.valueString(item, "telname");
+
+        vo.booktour = null;
+        vo.homepage = null;
+        vo.zipcode = null;
+        vo.mapx = null;
+        vo.mapy = null;
+        vo.mlevel = null;
 
         // NOTE. 이미지는 `IMAGE`에 등록후 해당 ID를 등록하여야 한다.
         //       따라서 외부에서 이미지 등록후 ID를 설정해야만 정상적용 된다.

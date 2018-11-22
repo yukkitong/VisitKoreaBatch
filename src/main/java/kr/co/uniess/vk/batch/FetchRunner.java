@@ -89,6 +89,8 @@ public class FetchRunner implements Command<String> {
             // 생태관광 정보의 경우 태깅 처리하여
             // 이후 DB 업데이트 처리할때 부서 처리를 할수 있도록 한다.
             // 생태관광의 경우 Tour API로 부터 내려오는 데이터 포맷이 다르다.
+            // - 마스터 정보만 존재하며(상세 반복 정보 등이 없음), `overview` 필드가 아닌 `summary` 필드가 이를 대신한다.
+            // - 생태관광일 경우 Content Type ID 를 `2000` 으로 고정한다. @see GreenMaster
             for (Master item : greenTourList) {
                 item.setGreenTour(true);
             }
@@ -100,31 +102,34 @@ public class FetchRunner implements Command<String> {
 
             for (Master master : result) {
                 try {
-                    final String contentId = master.getContentId();
-                    final int contentTypeId = master.getContentTypeId();
-
-                    Future<Map<String, Object>> futureCommon = threadPool.submit(TourApiClientCallableFactory.getKorServiceCommonCallable(contentId, contentTypeId));
-                    Future<Map<String, Object>> futureIntro = threadPool.submit(TourApiClientCallableFactory.getKorServiceIntroCallable(contentId, contentTypeId));
-                    Future<List<Map<String, Object>>> futureInfoList = threadPool.submit(TourApiClientCallableFactory.getKorServiceInfoCallable(contentId, contentTypeId));
-                    Future<Map<String, Object>> futureWithTour = threadPool.submit(TourApiClientCallableFactory.getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
-                    Future<List<Map<String, Object>>> futureImageList = threadPool.submit(TourApiClientCallableFactory.getKorServiceImageCallable(contentId));
-
                     Map<String, Object> item = new HashMap<>();
-                    item.put("master", master);
-                    item.put("common", futureCommon.get());
-                    if (futureIntro.get() != null) {
-                        item.put("intro", futureIntro.get());
-                    }
-                    if (futureInfoList.get() != null && !futureInfoList.get().isEmpty()) {
-                        item.put("info", futureInfoList.get());
-                    }
-                    if (futureWithTour.get() != null) {
-                        item.put("withtour", futureWithTour.get());
-                    }
-                    if (futureImageList.get() != null && !futureImageList.get().isEmpty()) {
-                        item.put("image", futureImageList.get());
-                    }
+                    if (master.isGreenTour()) {
+                        item.put("master", master);
+                    } else {
+                        final String contentId = master.getContentId();
+                        final int contentTypeId = master.getContentTypeId();
 
+                        Future<Map<String, Object>> futureCommon = threadPool.submit(TourApiClientCallableFactory.getKorServiceCommonCallable(contentId, contentTypeId));
+                        Future<Map<String, Object>> futureIntro = threadPool.submit(TourApiClientCallableFactory.getKorServiceIntroCallable(contentId, contentTypeId));
+                        Future<List<Map<String, Object>>> futureInfoList = threadPool.submit(TourApiClientCallableFactory.getKorServiceInfoCallable(contentId, contentTypeId));
+                        Future<Map<String, Object>> futureWithTour = threadPool.submit(TourApiClientCallableFactory.getKorWithServiceDetailWithTourCallable(contentId, contentTypeId));
+                        Future<List<Map<String, Object>>> futureImageList = threadPool.submit(TourApiClientCallableFactory.getKorServiceImageCallable(contentId));
+
+                        item.put("master", master);
+                        item.put("common", futureCommon.get());
+                        if (futureIntro.get() != null) {
+                            item.put("intro", futureIntro.get());
+                        }
+                        if (futureInfoList.get() != null && !futureInfoList.get().isEmpty()) {
+                            item.put("info", futureInfoList.get());
+                        }
+                        if (futureWithTour.get() != null) {
+                            item.put("withtour", futureWithTour.get());
+                        }
+                        if (futureImageList.get() != null && !futureImageList.get().isEmpty()) {
+                            item.put("image", futureImageList.get());
+                        }
+                    }
                     aggregationList.add(item);
                 } catch(Exception e) {
                     // ignore and skip..
