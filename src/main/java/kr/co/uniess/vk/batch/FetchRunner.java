@@ -61,8 +61,8 @@ public class FetchRunner implements Command<String> {
         }
 
         ExecutorService threadPool = Executors.newFixedThreadPool(10);
-        Future<List<Master>> listFuture1 = null; // threadPool.submit(TourApiClientCallableFactory.getKorServiceMasterCallable(start, end));
-        Future<List<Master>> listFuture2 = null; // threadPool.submit(TourApiClientCallableFactory.getKorWithServiceMasterCallable(start, end));
+        Future<List<Master>> listFuture1 = threadPool.submit(TourApiClientCallableFactory.getKorServiceMasterCallable(start, end));
+        Future<List<Master>> listFuture2 = threadPool.submit(TourApiClientCallableFactory.getKorWithServiceMasterCallable(start, end));
         Future<List<Master>> listFuture3 = threadPool.submit(TourApiClientCallableFactory.getGreenTourServiceMasterCallable(start, end));
 
         ArrayList<Master> result = new ArrayList<>();
