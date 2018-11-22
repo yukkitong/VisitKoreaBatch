@@ -78,6 +78,8 @@ public class TourApiClientCallableFactory {
 
                         if (tracking) {
                             if (i.getModifiedDate() >= start) {
+                                resultList.add(i);
+                            } else {
                                 needToFetchMore = false;
                             }
                         }
@@ -126,6 +128,8 @@ public class TourApiClientCallableFactory {
 
                         if (tracking) {
                             if (i.getModifiedDate() >= start) {
+                                resultList.add(i);
+                            } else {
                                 needToFetchMore = false;
                             }
                         }

@@ -61,45 +61,50 @@ public class FetchRunner implements Command<String> {
         }
 
         ExecutorService threadPool = Executors.newFixedThreadPool(10);
-        Future<List<Master>> listFuture1 = threadPool.submit(TourApiClientCallableFactory.getKorServiceMasterCallable(start, end));
-        Future<List<Master>> listFuture2 = threadPool.submit(TourApiClientCallableFactory.getKorWithServiceMasterCallable(start, end));
+        Future<List<Master>> listFuture1 = null; // threadPool.submit(TourApiClientCallableFactory.getKorServiceMasterCallable(start, end));
+        Future<List<Master>> listFuture2 = null; // threadPool.submit(TourApiClientCallableFactory.getKorWithServiceMasterCallable(start, end));
         Future<List<Master>> listFuture3 = threadPool.submit(TourApiClientCallableFactory.getGreenTourServiceMasterCallable(start, end));
 
         ArrayList<Master> result = new ArrayList<>();
         try {
-            List<Master> korTourList = listFuture1.get();
-            List<Master> withTourList = listFuture2.get();
-            List<Master> greenTourList = listFuture3.get();
-
-            // 국문 지역기반 관광 정보에는 무장애관광 정보가 포함되어있다.
-            // 무장애관광 정보는 부서 정보가 따로 없어 로직으로 표시를 해둬서
-            // 이후 DB 업데이트 과정에서 부서 처리를 하여야 한다.
-            // 때문에 아래와 같이 국문관광 정보에서 무장애 관광정보와 동일한 건에 대해
-            // 삭제 처리한다.
-            for (Master item : withTourList) {
-                korTourList.remove(item);
+            if (listFuture1 != null) {
+                List<Master> korTourList = listFuture1.get();
+                // Aggregation all list
+                result.addAll(korTourList);
             }
 
-            // 무장애관광 정보의 경우 태깅 처리하여
-            // 이후 DB 업데이트 처리할때 부서 처리를 할수 있도록 한다.
-            for (Master item : withTourList) {
-                item.setWithTour(true);
+            if (listFuture2 != null) {
+                List<Master> withTourList = listFuture2.get();
+                // 국문 지역기반 관광 정보에는 무장애관광 정보가 포함되어있다.
+                // 무장애관광 정보는 부서 정보가 따로 없어 로직으로 표시를 해둬서
+                // 이후 DB 업데이트 과정에서 부서 처리를 하여야 한다.
+                // 때문에 아래와 같이 국문관광 정보에서 무장애 관광정보와 동일한 건에 대해
+                // 삭제 처리한다.
+                for (Master item : withTourList) {
+                    // 무장애관광 정보의 경우 태깅 처리하여
+                    // 이후 DB 업데이트 처리할때 부서 처리를 할수 있도록 한다.
+                    if (!result.remove(item)) {
+                        item.setWithTour(true);
+                    }
+                }
+                result.addAll(withTourList);
             }
 
-            // 생태관광 정보의 경우 태깅 처리하여
-            // 이후 DB 업데이트 처리할때 부서 처리를 할수 있도록 한다.
-            // 생태관광의 경우 Tour API로 부터 내려오는 데이터 포맷이 다르다.
-            // - 마스터 정보만 존재하며(상세 반복 정보 등이 없음), `overview` 필드가 아닌 `summary` 필드가 이를 대신한다.
-            // - 생태관광일 경우 Content Type ID 를 `2000` 으로 고정한다. @see GreenMaster
-            for (Master item : greenTourList) {
-                item.setGreenTour(true);
+            if (listFuture3 != null) {
+                List<Master> greenTourList = listFuture3.get();
+                // 생태관광 정보의 경우 태깅 처리하여
+                // 이후 DB 업데이트 처리할때 부서 처리를 할수 있도록 한다.
+                // 생태관광의 경우 Tour API로 부터 내려오는 데이터 포맷이 다르다.
+                // - 마스터 정보만 존재하며(상세 반복 정보 등이 없음), `overview` 필드가 아닌 `summary` 필드가 이를 대신한다.
+                // - 생태관광일 경우 Content Type ID 를 `2000` 으로 고정한다. @see GreenMaster
+                for (Master item : greenTourList) {
+                    item.setGreenTour(true);
+                }
+                // Aggregation all list
+                result.addAll(greenTourList);
             }
 
-            // Aggregation all list
-            result.addAll(korTourList);
-            result.addAll(withTourList);
-            result.addAll(greenTourList);
-
+            // Aggregation 일괄 처리
             for (Master master : result) {
                 try {
                     Map<String, Object> item = new HashMap<>();

@@ -1,11 +1,10 @@
 package kr.co.uniess.vk.batch.component.model;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Master extends HashMap<String, Object> {
+
+    protected HashMap<String, Object> delegateMap = new HashMap<>();
 
     /**
      * CONTENT TYPE IDs
@@ -56,7 +55,62 @@ public class Master extends HashMap<String, Object> {
         if (!GOOD_KEYS.contains(lowercaseKey)) {
             return null;
         }
-        return super.put(key, value);
+        return delegateMap.put(key, value);
+    }
+
+    @Override
+    public Object get(Object key) {
+        return delegateMap.get(key);
+    }
+
+    @Override
+    public Object remove(Object key) {
+        return delegateMap.remove(key);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return delegateMap.containsValue(key);
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return delegateMap.containsValue(value);
+    }
+
+    @Override
+    public int size() {
+        return delegateMap.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return delegateMap.isEmpty();
+    }
+
+    @Override
+    public void clear() {
+        delegateMap.clear();
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return delegateMap.keySet();
+    }
+
+    @Override
+    public Collection<Object> values() {
+        return delegateMap.values();
+    }
+
+    @Override
+    public Set<Map.Entry<String, Object>> entrySet() {
+        return delegateMap.entrySet();
+    }
+
+    @Override
+    public Object clone() {
+        throw new UnsupportedOperationException("Do not use clone() method.");
     }
 
     public String getContentId() {

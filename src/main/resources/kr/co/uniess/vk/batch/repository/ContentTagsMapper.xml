@@ -4,6 +4,7 @@
 <mapper namespace="kr.co.uniess.vk.batch.repository.ContentTagsMapper">
     <select id="findOne" resultType="string">
         SELECT TAG_ID FROM CONTENT_TAGS WHERE COT_ID = #{cotid} AND TAG_ID = #{tagid}
+        LIMIT 1 -- 중복 데이터가 많을 수 있음. DB 제약조건 검토 바람
     </select>
 
     <insert id="insert" parameterType="tags">

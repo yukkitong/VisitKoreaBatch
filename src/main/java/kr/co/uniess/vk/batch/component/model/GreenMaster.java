@@ -1,5 +1,7 @@
 package kr.co.uniess.vk.batch.component.model;
 
+import java.util.HashMap;
+
 /**
  * **Tour API** 를 이용할때 국문관광 서비스와 달리 `생태관광`은 Response Layout (포맷) 이 다르므로
  * 별도의 데이터 모델이 필요하게되었다.
@@ -24,25 +26,25 @@ public class GreenMaster extends Master {
     public Object put(String key, Object value) {
         String lowercaseKey = key.toLowerCase();
         if (lowercaseKey.equals("mainimage")) {
-            return super.put("firstimage", value);
+            return delegateMap.put("firstimage", value);
         }
         // NOTE. `summary` - 생태관광의 경우에 `overview` 필드와 같은 성격의 필드 키이다.
         if (lowercaseKey.equals("summary")) {
-            return super.put("overview", value);
+            return delegateMap.put("overview", value);
         }
-        return super.put(key, value);
+        return delegateMap.put(key, value);
     }
 
     /**
      * 생태관광일 경우 Content Type ID 를 `2000` 으로 고정한다.
      * @param isGreenTour
      */
-    @Override
     public void setGreenTour(boolean isGreenTour) {
         if (isGreenTour) {
             put("contenttypeid", TYPE_GREEN_TOUR);
         } else {
             remove("contenttypeid");
         }
+        super.setGreenTour(isGreenTour);
     }
 }
