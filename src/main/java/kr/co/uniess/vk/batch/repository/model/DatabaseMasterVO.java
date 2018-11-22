@@ -91,9 +91,15 @@ public class DatabaseMasterVO {
         vo.addr1 = Utils.valueString(item, "addr");
         vo.addr2 = null; // NOTE. 생태관광의 경우 `addr` -> `addr1`로만 처리하고 `addr2 = null`
 
-        vo.cat1 = Utils.valueString(item, "cat1"); // TODO DB에서 확인됨 하지만 어디에서 갖고옴?
-        vo.cat2 = Utils.valueString(item, "cat2"); // TODO DB에서 확인됨 하지만 어디에서 갖고옴?
-        vo.cat3 = null; // NOTE. 단순 `NULL`처리됨
+        // NOTE. CAT1: `C02` 로 고정
+        //       CAT2: `C0201` 로 고정
+        //       CAT3: 단순 `NULL`처리됨
+        // - `C02****` 에 대한 카테고리 코드는 어디에도 존재하지 않는다. 어떤 경우로 이렇게 분류하게되었는지 의문?! CMS?
+        // - 임의 분류한 것으로 보인다. 확인필요!!
+        // - 확인결과 `A01`, `A0101` 로 재분류하기로 협의함. (최용훈 과장. 2018.11.22)
+        vo.cat1 = "A01";
+        vo.cat2 = "A0101";
+        vo.cat3 = null;
 
         vo.overview = Utils.valueString(item, "overview").replaceAll("'", "''");
 

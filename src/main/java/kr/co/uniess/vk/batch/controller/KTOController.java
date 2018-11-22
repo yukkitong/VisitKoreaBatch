@@ -116,7 +116,7 @@ public class KTOController {
             // green tour master (database_master)
             DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(newCotId, greenMaster);
             dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
-            dataBaseMasterVo.setFirstimage2(null);
+            dataBaseMasterVo.setFirstimage2(firstImageVo == null ? null : firstImageVo.getImgid());
             databaseMasterService.insert(dataBaseMasterVo);
 
             // green tour - department 생태관광
@@ -125,7 +125,11 @@ public class KTOController {
                 departmentContentService.insert(DepartmentContentVO.valueOf(otdId, newCotId));
             }
 
-            // TODO green tour - TAG 처리
+            // green tour - tag `관광지`로 분류함
+            String tagId = ContentTagsVO.TAG_ID_TOURIST;
+            if (contentTagsService.findOne(newCotId, tagId) == null) {
+                contentTagsService.insert(ContentTagsVO.valueOf(newCotId, tagId));
+            }
             return;
         }
 
@@ -425,7 +429,7 @@ public class KTOController {
             // green tour master (database_master)
             DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(oldCotId, greenMaster);
             dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
-            dataBaseMasterVo.setFirstimage2(null);
+            dataBaseMasterVo.setFirstimage2(firstImageVo == null ? null : firstImageVo.getImgid());
             if (databaseMasterService.findOne(oldCotId) == null) {
                 databaseMasterService.insert(dataBaseMasterVo);
             } else {
@@ -438,7 +442,11 @@ public class KTOController {
                 departmentContentService.insert(DepartmentContentVO.valueOf(otdId, oldCotId));
             }
 
-            // TODO green tour - TAG 처리
+            // green tour - tag `관광지`로 분류함
+            String tagId = ContentTagsVO.TAG_ID_TOURIST;
+            if (contentTagsService.findOne(oldCotId, tagId) == null) {
+                contentTagsService.insert(ContentTagsVO.valueOf(oldCotId, tagId));
+            }
             return;
         }
 
