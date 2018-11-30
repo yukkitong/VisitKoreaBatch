@@ -58,7 +58,7 @@ public class AccommodationInfoVO {
         vo.roombathfacility = Utils.valueString(item, "roombathfacility");
         vo.roombath = Utils.valueString(item, "roombath");
         vo.roomhometheater = Utils.valueString(item, "roomhometheater");
-        vo.roomairconditioner = Utils.valueString(item, "roomairconditioner");
+        vo.roomairconditioner = Utils.valueString(item, "roomaircondition");
         vo.roomtv = Utils.valueString(item, "roomtv");
         vo.roompc = Utils.valueString(item, "roompc");
         vo.roomcable = Utils.valueString(item, "roomcable");

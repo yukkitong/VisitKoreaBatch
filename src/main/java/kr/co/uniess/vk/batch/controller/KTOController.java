@@ -183,6 +183,8 @@ public class KTOController {
         // NOTE. 마스터를 통해 유입된 이미지에도 썸네일이 포함되어 있는데,
         //       이때에는 썸네일을 등록 처리하도록 하자!! (호환성 문제로)
         //       아무튼 이미지 처리는 아직 많은 이슈를 가지고 있다.
+        // NOTE. `FIRST_IMAGE2` 는 썸네일 이미지로 현재 사용되고 있지않다. 또한, 액셀 이미지 처리시 삭제 대상이 되기도 하여 무시토록 한다.
+        /*
         if (common.get("firstimage2") != null) {
             String url = common.get("firstimage2").toString();
 
@@ -200,9 +202,10 @@ public class KTOController {
                 firstImage2Vo.setImgid(imageId);
             }
         }
+        */
 
         // NOTE. API를 통해 마스터로 유입된 이미지가 없다면, 상세 이미지중 첫번째를 메인 이미지로 취한다.
-        if (firstImageVo == null || firstImage2Vo == null) {
+        if (firstImageVo == null) {  // || firstImage2Vo == null
             List<ImageVO> list = imageService.findAllByCotId(newCotId);
             if (list != null && !list.isEmpty()) {
                 firstImageVo = firstImage2Vo = list.get(0);
@@ -212,7 +215,9 @@ public class KTOController {
         // database master
         DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(newCotId, common);
         dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
-        dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
+
+        // NOTE. `FIRST_IMAGE2` 는 썸네일 이미지로 현재 사용되고 있지않다. 또한, 액셀 이미지 처리시 삭제 대상이 되기도 하여 무시토록 한다.
+        // dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
         databaseMasterService.insert(dataBaseMasterVo);
 
         final int contentTypeId = master.getContentTypeId();
@@ -429,7 +434,9 @@ public class KTOController {
             // green tour master (database_master)
             DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(oldCotId, greenMaster);
             dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
-            dataBaseMasterVo.setFirstimage2(firstImageVo == null ? null : firstImageVo.getImgid());
+
+            // NOTE. `FIRST_IMAGE2` 는 썸네일 이미지로 현재 사용되고 있지않다. 또한, 액셀 이미지 처리시 삭제 대상이 되기도 하여 무시토록 한다.
+            // dataBaseMasterVo.setFirstimage2(firstImageVo == null ? null : firstImageVo.getImgid());
             if (databaseMasterService.findOne(oldCotId) == null) {
                 databaseMasterService.insert(dataBaseMasterVo);
             } else {
@@ -504,6 +511,8 @@ public class KTOController {
         // NOTE. 마스터를 통해 유입된 이미지에도 썸네일이 포함되어 있는데,
         //       이때에는 썸네일을 등록 처리하도록 하자!! (호환성 문제로)
         //       아무튼 이미지 처리는 아직 많은 이슈를 가지고 있다.
+        // NOTE. `FIRST_IMAGE2` 는 썸네일 이미지로 현재 사용되고 있지않다. 또한, 액셀 이미지 처리시 삭제 대상이 되기도 하여 무시토록 한다.
+        /*
         if (common.get("firstimage2") != null) {
             String url = common.get("firstimage2").toString();
 
@@ -521,9 +530,10 @@ public class KTOController {
                 firstImage2Vo.setImgid(imageId);
             }
         }
+        */
 
         // NOTE. API를 통해 마스터로 유입된 이미지가 없다면, 상세 이미지중 첫번째를 메인 이미지로 취한다.
-        if (firstImageVo == null || firstImage2Vo == null) {
+        if (firstImageVo == null) {  // || firstImage2Vo == null
             List<ImageVO> list = imageService.findAllByCotId(oldCotId);
             if (list != null && !list.isEmpty()) {
                 firstImageVo = firstImage2Vo = list.get(0);
@@ -533,7 +543,9 @@ public class KTOController {
         // database master
         DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(oldCotId, common);
         dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
-        dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
+
+        // NOTE. `FIRST_IMAGE2` 는 썸네일 이미지로 현재 사용되고 있지않다. 또한, 액셀 이미지 처리시 삭제 대상이 되기도 하여 무시토록 한다.
+        // dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
 
         // database master
         // NOTE. 업데이트의 경우이지만 아래처럼 등록 메소드가 관련된 이유는 데이터의 무결성이 깨어진 상태에서
