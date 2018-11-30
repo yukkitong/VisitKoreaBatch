@@ -40,6 +40,11 @@ public class FilteredFetchRunner implements Command<String> {
             Future<Map<String, Object>> futureCommon = threadPool.submit(TourApiClientCallableFactory.getKorServiceCommonCallable(contentId));
             try {
                 Master master = Master.wrap(futureCommon.get());
+                if (master == null) {
+                    logger.info(":::SKIPPED::: master is null. Content ID - {}", contentId);
+                    continue;
+                }
+
                 int contentTypeId = master.getContentTypeId();
 
                 Future<Map<String, Object>> futureIntro = threadPool.submit(TourApiClientCallableFactory.getKorServiceIntroCallable(contentId, contentTypeId));

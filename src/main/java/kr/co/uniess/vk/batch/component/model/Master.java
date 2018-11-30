@@ -36,6 +36,8 @@ public class Master extends HashMap<String, Object> {
     public static Master wrap(Map<String, Object> map) {
         Master master;
 
+        if (map == null) return null;
+
         Boolean isGreenTour = (Boolean) map.get("greentour");
         if (isGreenTour != null && isGreenTour) {
             master = new GreenMaster();
