@@ -71,12 +71,16 @@ public class KTOController {
         if (list == null || list.size() == 0) return;
         // Update database base on the results
         for (Map<String, Object> item : list) {
-            final String contentId = ((Map<String, Object>) item.get("master")).get("contentid").toString();
-            final String cotId = contentMasterService.findOne(contentId);
-            if (cotId == null) {
-                insert(createCotId(), item);
-            } else {
-                update(cotId, item);
+            try {
+                final String contentId = ((Map<String, Object>) item.get("master")).get("contentid").toString();
+                final String cotId = contentMasterService.findOne(contentId);
+                if (cotId == null) {
+                    insert(createCotId(), item);
+                } else {
+                    update(cotId, item);
+                }
+            } catch(Exception e) {
+                logger.error(e.getMessage());
             }
         }
     }
@@ -97,7 +101,7 @@ public class KTOController {
                 firstImageVo.setCotid(newCotId);
                 firstImageVo.setUrl(url);
                 firstImageVo.setImagedescription(greenMaster.getTitle());
-                firstImageVo.setIsthubnail(1);
+                firstImageVo.setIsthubnail(0);
 
                 String imageId = imageService.findOneByCotId(newCotId, url);
                 if (imageId == null) {
@@ -169,7 +173,7 @@ public class KTOController {
             firstImageVo.setCotid(newCotId);
             firstImageVo.setUrl(url);
             firstImageVo.setImagedescription(content.getTitle());
-            firstImageVo.setIsthubnail(1);
+            firstImageVo.setIsthubnail(0);
 
             String imageId = imageService.findOneByCotId(newCotId, url);
             if (imageId == null) {
@@ -192,7 +196,7 @@ public class KTOController {
             firstImage2Vo.setCotid(newCotId);
             firstImage2Vo.setUrl(url);
             firstImage2Vo.setImagedescription(content.getTitle());
-            firstImage2Vo.setIsthubnail(1);
+            firstImage2Vo.setIsthubnail(0);
 
             String imageId = imageService.findOneByCotId(newCotId, url);
             if (imageId == null) {
@@ -415,7 +419,7 @@ public class KTOController {
                 firstImageVo.setCotid(oldCotId);
                 firstImageVo.setUrl(url);
                 firstImageVo.setImagedescription(greenMaster.getTitle());
-                firstImageVo.setIsthubnail(1);
+                firstImageVo.setIsthubnail(0);
 
                 String imageId = imageService.findOneByCotId(oldCotId, url);
                 if (imageId == null) {
@@ -497,7 +501,7 @@ public class KTOController {
             firstImageVo.setCotid(oldCotId);
             firstImageVo.setUrl(url);
             firstImageVo.setImagedescription(content.getTitle());
-            firstImageVo.setIsthubnail(1);
+            firstImageVo.setIsthubnail(0);
 
             String imageId = imageService.findOneByCotId(oldCotId, url);
             if (imageId == null) {
@@ -520,7 +524,7 @@ public class KTOController {
             firstImage2Vo.setCotid(oldCotId);
             firstImage2Vo.setUrl(url);
             firstImage2Vo.setImagedescription(content.getTitle());
-            firstImage2Vo.setIsthubnail(1);
+            firstImage2Vo.setIsthubnail(0);
 
             String imageId = imageService.findOneByCotId(oldCotId, url);
             if (imageId == null) {
@@ -543,6 +547,7 @@ public class KTOController {
         // database master
         DatabaseMasterVO dataBaseMasterVo = DatabaseMasterVO.valueOf(oldCotId, common);
         dataBaseMasterVo.setFirstimage(firstImageVo == null ? null : firstImageVo.getImgid());
+        dataBaseMasterVo.setFirstimage2(firstImageVo == null ? null : firstImageVo.getImgid());
 
         // NOTE. `FIRST_IMAGE2` 는 썸네일 이미지로 현재 사용되고 있지않다. 또한, 액셀 이미지 처리시 삭제 대상이 되기도 하여 무시토록 한다.
         // dataBaseMasterVo.setFirstimage2(firstImage2Vo == null ? null : firstImage2Vo.getImgid());
