@@ -12,6 +12,9 @@ import java.util.Map;
 @Alias("content")
 public class ContentMasterVO {
 
+    public static final int FESTIVAL = 15;
+    public static final int CULTURAL = 14;
+
     // API 데이터와 일치
     private String contentid;
     private Integer contenttypeid;

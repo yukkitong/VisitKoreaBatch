@@ -217,7 +217,7 @@ public class TourApiClientCallableFactory {
 
                 final int totalCount = root.findPath("totalCount").asInt();
                 if (totalCount == resultList.size() ||
-                        (int) Math.ceil((double) totalCount / client.getRowsPerPage()) <(client.getPageNo() + 1)) {
+                        (int) Math.ceil((double) totalCount / client.getRowsPerPage()) < (client.getPageNo() + 1)) {
                     break;
                 }
                 builder.pageNo(client.getPageNo() + 1); // increase page!!

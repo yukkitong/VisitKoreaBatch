@@ -39,6 +39,16 @@ public class ContentTagsVO {
      */
     public final static String TAG_ID_COURSE = "25e9e811-96e1-11e8-8165-020027310001";
 
+    /**
+     * 축제 TAG_ID
+     */
+    public final static String TAG_ID_FESTIVAL = "b8b89ce0-35d8-4127-a429-0aecd20891e9";
+
+    /**
+     * 문화시설 TAG_ID
+     */
+    public final static String TAG_ID_CULTURAL = "651c5b95-a5b3-11e8-8165-020027310001";
+
     private String tagid;
     private String cotid;
     private String mastertag;
@@ -76,6 +86,8 @@ public class ContentTagsVO {
             case TAG_ID_EATERY:
             case TAG_ID_ACCOMMODATION:
             case TAG_ID_COURSE:
+            case TAG_ID_FESTIVAL:
+            case TAG_ID_CULTURAL:
                 break;
             default:
                 throw new IllegalArgumentException("You have a wrong TAG_ID. [" + tagId + " ]");

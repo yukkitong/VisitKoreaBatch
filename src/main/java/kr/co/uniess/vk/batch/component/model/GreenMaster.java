@@ -25,6 +25,7 @@ public class GreenMaster extends Master {
     @Override
     public Object put(String key, Object value) {
         String lowercaseKey = key.toLowerCase();
+        // NOTE. `mainimage` - 생태관광의 경우에 `firstimage` 필드와 같은 성격의 필드 키이다.
         if (lowercaseKey.equals("mainimage")) {
             return delegateMap.put("firstimage", value);
         }

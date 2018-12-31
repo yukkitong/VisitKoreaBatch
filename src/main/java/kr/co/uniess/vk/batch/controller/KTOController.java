@@ -398,6 +398,17 @@ public class KTOController {
                 break;
         }
 
+        if (tagId == null) {
+            switch (contentTypeId) {
+                case ContentMasterVO.FESTIVAL: // 축제
+                    tagId = ContentTagsVO.TAG_ID_FESTIVAL;
+                    break;
+                case ContentMasterVO.CULTURAL: // 문화시설
+                    tagId = ContentTagsVO.TAG_ID_CULTURAL;
+                    break;
+            }
+        }
+
         if (tagId != null && contentTagsService.findOne(newCotId, tagId) == null) {
             contentTagsService.insert(ContentTagsVO.valueOf(newCotId, tagId));
         }
@@ -736,6 +747,17 @@ public class KTOController {
             case "C01":  // 추천코스
                 tagId = ContentTagsVO.TAG_ID_COURSE;
                 break;
+        }
+
+        if (tagId == null) {
+            switch (contentTypeId) {
+                case ContentMasterVO.FESTIVAL: // 축제
+                    tagId = ContentTagsVO.TAG_ID_FESTIVAL;
+                    break;
+                case ContentMasterVO.CULTURAL: // 문화시설
+                    tagId = ContentTagsVO.TAG_ID_CULTURAL;
+                    break;
+            }
         }
 
         if (tagId != null && contentTagsService.findOne(oldCotId, tagId) == null) {
